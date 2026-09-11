@@ -6,6 +6,8 @@ export type BasketItem = {
   communityId: string;
   communityName: string;
   logoInitial: string;
+  /** Category slug (game/music/charity/…) — drives the affirmation gesture. */
+  category: string;
   amount: number;
 };
 
@@ -14,6 +16,8 @@ export type SupportRecord = {
   communityId: string;
   communityName: string;
   logoInitial: string;
+  /** Category slug (game/music/charity/…) — drives the affirmation gesture. */
+  category: string;
   amount: number;
   /** On-chain records start "pending" until the backend confirms them. */
   status: "pending" | "completed" | "failed";
@@ -23,7 +27,13 @@ export type SupportRecord = {
 
 type AppState = {
   basket: BasketItem[];
-  addToBasket: (item: { communityId: string; communityName: string; logoInitial: string; amount?: number }) => void;
+  addToBasket: (item: {
+    communityId: string;
+    communityName: string;
+    logoInitial: string;
+    category: string;
+    amount?: number;
+  }) => void;
   removeFromBasket: (communityId: string) => void;
   updateBasketAmount: (communityId: string, amount: number) => void;
   clearBasket: () => void;

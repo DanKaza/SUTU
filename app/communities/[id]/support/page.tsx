@@ -9,7 +9,7 @@
  *   address with value = payThisWei → poll intent status.
  */
 
-import { use, useMemo, useState } from "react";
+import { use, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { useBalance, useSendTransaction, useSwitchChain } from "wagmi";
@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import { useCommunity } from "@/lib/community-data";
 import { orientationTransition } from "@/lib/motion";
 import { useAppState, type SupportRecord } from "@/lib/app-state";
+import { AffirmationPop } from "@/components/support/affirmation-pop";
 import { useAuth } from "@/lib/web3/auth-context";
 import { walletErrorMessage } from "@/lib/web3/wallet-errors";
 import { monadTestnet } from "viem/chains";
@@ -38,6 +39,7 @@ import {
   createDonationIntent,
   fetchDonationIntent,
   quoteDonation,
+  reportDonationTx,
   transferFromWallet,
 } from "@/lib/api/endpoints";
 import type { DonationQuote } from "@/lib/api/types";
@@ -146,6 +148,11 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
   const [record, setRecord] = useState<SupportRecord | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [txPhase, setTxPhase] = useState<TxPhase | null>(null);
+  /**
+   * One intent per payment attempt (backend gotcha): reused across retries
+   * until paid, so cancelled attempts don't pile up PENDING_PAYMENT intents.
+   */
+  const intentRef = useRef<{ id: string; payThisWei: string } | null>(null);
 
   // Pick the first active project — the API keys quotes/intents by project slug.
   const project = useMemo(() => projects.find((p) => p.is_active) ?? projects[0], [projects]);
@@ -179,6 +186,7 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
         communityId: community.slug,
         communityName: community.name,
         logoInitial: community.logoInitial,
+        category: community.category,
         amount: amountUsd,
         status: "completed",
         date: new Date().toISOString().slice(0, 10),
@@ -216,13 +224,19 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
         throw new Error(walletErrorMessage(err));
       }
 
-      // 1. Lock the discount with an intent (idempotency key = one per donation attempt).
+      // 1. Lock the discount with an intent. Reuse the pending one from a
+      // previous cancelled attempt (same amount) instead of creating a new one.
       setTxPhase("signing");
-      const idempotencyKey = crypto.randomUUID();
-      const { data: intent } = await createDonationIntent(
-        { projectSlug: project.slug, amount: amountMon },
-        idempotencyKey,
-      );
+      let intent = intentRef.current;
+      if (!intent) {
+        const idempotencyKey = crypto.randomUUID();
+        const { data } = await createDonationIntent(
+          { projectSlug: project.slug, amount: amountMon },
+          idempotencyKey,
+        );
+        intent = { id: data.intentId, payThisWei: data.payThisWei };
+        intentRef.current = intent;
+      }
 
       // 2. Pay the EXACT intent value on-chain. Never recompute from the quote.
       setTxPhase("broadcasting");
@@ -231,17 +245,29 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
         value: BigInt(intent.payThisWei),
         chainId: monadTestnet.id,
       });
+      // Paid — the attempt is spent; the next donation gets a fresh intent.
+      intentRef.current = null;
+
+      // 2b. Report the hash so the backend verifies & confirms instantly
+      // (backend_update.md §4.3b) instead of waiting for the watcher.
+      try {
+        await reportDonationTx(intent.id, txHash);
+      } catch {
+        // Optional endpoint — the watcher is the backstop, keep going.
+      }
 
       // 3. The tx is broadcast — record it and show success NOW.
-      // The backend watcher confirms the intent on its own; we poll its status
-      // in the background and flip the record to confirmed when it lands.
-      // (Blocking on that here caused the "stuck loading after confirm" bug:
-      // the backend has no tx-report endpoint and its indexer can lag.)
+      // The backend already verified the hash via reportDonationTx above (the
+      // watcher remains the backstop); we poll the intent status in the
+      // background and flip the record to confirmed when it lands.
+      // (Blocking on that here caused the "stuck loading after confirm" bug
+      // when the backend's indexer lagged.)
       const newRecord: SupportRecord = {
-        id: intent.intentId,
+        id: intent.id,
         communityId: community.slug,
         communityName: community.name,
         logoInitial: community.logoInitial,
+        category: community.category,
         amount: Number(formatMon(intent.payThisWei)),
         status: "pending",
         date: new Date().toISOString().slice(0, 10),
@@ -252,9 +278,9 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
       setStep("success");
       void refreshUser();
 
-      startStatusPolling(intent.intentId, (finalStatus) => {
+      startStatusPolling(intent.id, (finalStatus) => {
         updateSupportStatus(
-          intent.intentId,
+          intent.id,
           finalStatus === "FAILED" ? "failed" : "completed",
         );
       });
@@ -275,7 +301,44 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
     );
   }
 
-  if (communityNotFound || !community || !project) notFound();
+  if (communityNotFound || !community) notFound();
+
+  if (!project) {
+    // The community exists but has no active project to donate to (e.g. the
+    // backend is down and we're on mock data, which carries no projects).
+    // Show a friendly state instead of a raw 404.
+    return (
+      <div className="mx-auto max-w-lg px-6 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={orientationTransition}
+          className="flex flex-col items-center gap-4 text-center"
+        >
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-500/10">
+            <CircleAlert className="h-8 w-8 text-amber-500" />
+          </div>
+          <div>
+            <p className="font-display text-xl font-bold text-charcoal dark:text-warm-white">
+              Support is unavailable right now
+            </p>
+            <p className="mt-2 max-w-sm font-body text-sm text-graphite dark:text-white/60">
+              We couldn&apos;t load the funding projects for {community.name}. The
+              service may be temporarily down — please try again later.
+            </p>
+          </div>
+          <div className="mt-2 flex gap-3">
+            <Button variant="outline" onClick={() => router.refresh()}>
+              Retry
+            </Button>
+            <Link href="/discover">
+              <Button>Back to Discover</Button>
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   const monLabel = rail === "onchain" ? "MON" : "USD";
   const effectiveAmount = Number(amountMon) || 0;
@@ -504,39 +567,18 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
         )}
 
         {step === "success" && record && (
-          <motion.div
-            key="success"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={orientationTransition}
-            className="mt-16 flex flex-col items-center gap-4 text-center"
+          <AffirmationPop
+            category={community.category}
+            ctaHref="/discover"
+            ctaLabel="Discover more"
+            secondaryHref={`/my-supports/${record.id}`}
+            secondaryLabel="View My Supports"
           >
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-cobalt/10">
-              <Check className="h-8 w-8 text-cobalt" />
-            </div>
-            <div>
-              <p className="font-display text-xl font-bold text-charcoal dark:text-warm-white">Support sent</p>
-              <p className="mt-1 font-body text-sm text-graphite dark:text-white/60">You supported</p>
-            </div>
-            <p className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">{community.name}</p>
-            <p className="font-display text-3xl font-extrabold text-cobalt">
-              {rail === "onchain" ? `${record.amount} MON` : `$${record.amount}`}
+            <p className="text-center font-body text-xs text-graphite dark:text-white/50">
+              {community.name} · {rail === "onchain" ? `${record.amount} MON` : `$${record.amount}`}
+              {rail === "onchain" && " · confirming on Monad"}
             </p>
-            <p className="font-body text-sm text-graphite dark:text-white/50">
-              {rail === "onchain"
-                ? "Transaction submitted to Monad. Confirmation on-chain may take a moment — check My Supports for live status."
-                : "Demo transfer completed."}
-            </p>
-
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <Link href={`/my-supports/${record.id}`}>
-                <Button variant="outline">View Transaction</Button>
-              </Link>
-              <Link href="/discover">
-                <Button>Back to Discover</Button>
-              </Link>
-            </div>
-          </motion.div>
+          </AffirmationPop>
         )}
 
         {step === "error" && (

@@ -1,18 +1,25 @@
 /**
  * SUTU backend API client.
  *
- * - Auth: the LIVE backend (tested 2026-09-10) expects an `X-Wallet-Address`
- *   header instead of the documented SIWE Bearer JWT — `/auth/nonce` and
- *   `/auth/verify` are NOT deployed yet (404). We send the connected wallet
- *   address, persisted in localStorage under `sutu_wallet`.
+ * - Auth (backend_update.md): EVERY request requires an `X-API-Key` header
+ *   (missing/wrong key → 401 + counted against the 2 req/min unauthenticated
+ *   quota). Identity endpoints additionally send `X-Wallet-Address` from the
+ *   connected wallet, persisted in localStorage under `sutu_wallet`.
  * - Response envelope: { data, meta? } on success, { error: { code, message } } on failure.
  * - All `/api/v1/*` calls go same-origin through a Next.js rewrite →
- *   https://sutu.tixrouter.my.id (see next.config.ts) to sidestep CORS.
+ *   https://sutu.tixrouter.my.id (see next.config.ts). CORS is now open on
+ *   the backend, so the proxy is an optimization, not a requirement.
  */
 
 import type { ApiErrorBody, ApiEnvelope } from "./types";
 
 export const API_PROXY_PREFIX = "/api/v1";
+
+/**
+ * API key for the backend gateway. `NEXT_PUBLIC_SUTU_API_KEY` wins so the key
+ * can be rotated per environment without a redeploy of this constant.
+ */
+export const SUTU_API_KEY = process.env.NEXT_PUBLIC_SUTU_API_KEY ?? "sutu-dev-key";
 
 const WALLET_KEY = "sutu_wallet";
 
@@ -78,6 +85,7 @@ export async function request<T>(
   const res = await fetch(`${API_PROXY_PREFIX}${path}`, {
     method,
     headers: {
+      "x-api-key": SUTU_API_KEY,
       ...(body !== undefined ? { "content-type": "application/json" } : {}),
       ...(wallet ? { "x-wallet-address": wallet } : {}),
       ...headers,

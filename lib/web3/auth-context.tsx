@@ -157,7 +157,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }),
     // getWalletAddress() is read on every render on purpose — it's a sync
     // localStorage read that tracks the persisted session.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [status, address, user, signIn, signOut, refreshUser],
   );
 

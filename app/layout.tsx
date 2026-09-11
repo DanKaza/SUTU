@@ -6,18 +6,8 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { AppStateProvider } from "@/lib/app-state";
 import { Web3Provider } from "@/lib/web3/web3-provider";
 import { AuthProvider } from "@/lib/web3/auth-context";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
-
-const THEME_INIT_SCRIPT = `
-(function () {
-  try {
-    var stored = window.localStorage.getItem("commons-theme");
-    var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    var isDark = stored ? stored === "dark" : prefersDark;
-    document.documentElement.classList.toggle("dark", isDark);
-  } catch (e) {}
-})();
-`;
 
 const manrope = Manrope({
   subsets: ["latin"],

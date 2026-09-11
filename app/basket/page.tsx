@@ -18,6 +18,9 @@ import { Input } from "@/components/ui/input";
 import { orientationTransition, fadeInUp, staggerContainer } from "@/lib/motion";
 import { useAppState, type SupportRecord } from "@/lib/app-state";
 import { useAuth } from "@/lib/web3/auth-context";
+import { AffirmationPop, GestureIcon } from "@/components/support/affirmation-pop";
+import { getAffirmation } from "@/lib/affirmations";
+import { Gamepad2, Music2, Heart, Sparkles, type LucideIcon } from "lucide-react";
 import { walletErrorMessage } from "@/lib/web3/wallet-errors";
 import { monadTestnet } from "viem/chains";
 import { useSendTransaction, useSwitchChain } from "wagmi";
@@ -132,6 +135,7 @@ export default function BasketPage() {
           communityId: item.communityId,
           communityName: item.communityName,
           logoInitial: item.logoInitial,
+          category: item.category,
           amount: item.amount,
           status: "completed",
           date: new Date().toISOString().slice(0, 10),
@@ -199,6 +203,7 @@ export default function BasketPage() {
           communityId: item.communityId,
           communityName: item.communityName,
           logoInitial: item.logoInitial,
+          category: item.category,
           amount: item.amount,
           status: "pending",
           date: new Date().toISOString().slice(0, 10),
@@ -404,39 +409,43 @@ export default function BasketPage() {
         )}
 
         {step === "success" && (
-          <motion.div key="success" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={orientationTransition} className="mt-12 flex flex-col items-center gap-4 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-cobalt/10">
-              <Check className="h-8 w-8 text-cobalt" />
-            </div>
-            <p className="font-display text-xl font-bold text-charcoal dark:text-warm-white">Support sent</p>
-            <p className="font-body text-sm text-graphite dark:text-white/60">
-              You supported {completed.length} communities
-            </p>
-
-            <Card className="mt-2 w-full max-w-sm p-5">
-              {completed.map((record) => (
-                <div key={record.id} className="flex items-center justify-between py-1.5">
-                  <span className="font-body text-sm text-graphite dark:text-white/60">{record.communityName}</span>
-                  <span className="font-body text-sm font-medium text-charcoal dark:text-warm-white">${record.amount}</span>
-                </div>
-              ))}
+          <AffirmationPop
+            category={completed.length === 1 ? completed[0].category : null}
+            ctaHref="/discover"
+            ctaLabel="Discover more"
+            secondaryHref="/my-supports"
+            secondaryLabel="View My Supports"
+          >
+            <Card className="p-5">
+              {completed.map((record) => {
+                const gesture = getAffirmation(record.category);
+                return (
+                  <div key={record.id} className="flex items-center justify-between gap-2 py-1.5">
+                    <span className="flex min-w-0 items-center gap-2">
+                      <GestureIcon category={record.category} className="h-4 w-4 shrink-0" />
+                      <span className="truncate font-body text-sm text-graphite dark:text-white/60">
+                        {record.communityName}
+                      </span>
+                    </span>
+                    <span className="shrink-0 font-body text-sm font-medium text-charcoal dark:text-warm-white">
+                      ${record.amount}
+                    </span>
+                  </div>
+                );
+              })}
               <div className="mt-2 flex items-center justify-between border-t border-graphite/15 pt-3 dark:border-white/10">
                 <span className="font-body text-sm text-graphite dark:text-white/60">Total</span>
                 <span className="font-display text-lg font-bold text-charcoal dark:text-warm-white">
                   ${completed.reduce((sum, r) => sum + r.amount, 0)}
                 </span>
               </div>
+              <p className="mt-3 text-center font-body text-xs text-graphite dark:text-white/50">
+                {completed.length > 1
+                  ? `${completed.map((r) => getAffirmation(r.category).word).join(" · ")} — every gesture counts`
+                  : `${getAffirmation(completed[0]?.category).message}`}
+              </p>
             </Card>
-
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <Link href="/my-supports">
-                <Button variant="outline">View My Supports</Button>
-              </Link>
-              <Link href="/discover">
-                <Button>Back to Discover</Button>
-              </Link>
-            </div>
-          </motion.div>
+          </AffirmationPop>
         )}
 
         {step === "error" && (

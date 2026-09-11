@@ -1,12 +1,13 @@
 {
-  "name": "SUTU - Support Us Together",
+  "name": "sutu",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.102.8",
@@ -22,12 +23,13 @@
     "wagmi": "^3.7.7"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.4",
     "@types/react-dom": "^19.0.2",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.18.0",
-    "eslint-config-next": "15.5.25",
+    "eslint-config-next": "^15.5.25",
     "postcss": "^8.5.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3"

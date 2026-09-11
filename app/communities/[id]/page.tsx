@@ -110,6 +110,7 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
                   communityId: community.slug,
                   communityName: community.name,
                   logoInitial: community.logoInitial,
+                  category: community.category,
                 })
               }
             >

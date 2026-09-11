@@ -1,10 +1,11 @@
-import { apiGet, apiPost } from "./client";
+import { apiGet, apiPost, SUTU_API_KEY } from "./client";
 import type {
   Community,
   CommunityDetail,
   DonationIntent,
   DonationQuote,
   DonationRecord,
+  DonationTxReport,
   MeResponse,
   Paginated,
   StatsResponse,
@@ -44,6 +45,15 @@ export function fetchCommunityBySlug(slug: string) {
 
 export function quoteDonation(input: { projectSlug: string; amount: string }) {
   return apiPost<DonationQuote>("/donations/quote", input);
+}
+
+/** Report a broadcast tx hash so the backend verifies & confirms the intent instantly (4.3b). */
+export function reportDonationTx(intentId: string, txHash: string) {
+  return apiPost<DonationTxReport>(
+    `/donations/intents/${encodeURIComponent(intentId)}/tx`,
+    { txHash },
+    { auth: true },
+  );
 }
 
 export function createDonationIntent(input: { projectSlug: string; amount: string }, idempotencyKey: string) {
@@ -104,8 +114,12 @@ export function fetchStats() {
 // ---------------------------------------------------------------------------
 
 export async function fetchHealth() {
-  // /health lives outside /api/v1, so bypass the proxy prefix.
-  const res = await fetch("/health", { cache: "no-store" });
+  // /health lives outside /api/v1, so bypass the proxy prefix. It now requires
+  // the API key like everything else (backend_update.md §8).
+  const res = await fetch("/health", {
+    cache: "no-store",
+    headers: { "x-api-key": SUTU_API_KEY },
+  });
   const json = (await res.json()) as { data?: { status?: string } };
   return json.data ?? { status: res.ok ? "ok" : "unknown" };
 }

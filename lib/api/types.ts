@@ -129,6 +129,15 @@ export type DonationRecord = {
   confirmed_at: string | null;
 };
 
+/** Response of POST /donations/intents/:id/tx (report a broadcast tx hash). */
+export type DonationTxReport = {
+  intentId: string;
+  status: DonationIntent["status"];
+  txHash: string;
+  /** Present when status is still PENDING_PAYMENT (e.g. value mismatch, not yet indexed). */
+  reason?: string;
+};
+
 export type Paginated<T> = {
   data: T[];
   meta?: { limit: number; offset: number };
