@@ -1,4 +1,4 @@
-export const COMMUNITY_CATEGORIES = [
+const COMMUNITY_CATEGORIES = [
   "Gaming",
   "Education",
   "Open Source",
@@ -84,38 +84,5 @@ export const communities: Community[] = [
     supporterCount: 5200,
     totalSupported: 8300,
     createdDaysAgo: 21,
-  },
-];
-
-export const seedSupports = [
-  {
-    id: "s1",
-    communityId: "pixel-forge",
-    communityName: "Pixel Forge",
-    logoInitial: "P",
-    amount: 5,
-    status: "completed" as const,
-    date: "2026-09-10",
-    txHash: "0x1a2b...c3d4",
-  },
-  {
-    id: "s2",
-    communityId: "open-classroom",
-    communityName: "Open Classroom",
-    logoInitial: "O",
-    amount: 10,
-    status: "completed" as const,
-    date: "2026-09-08",
-    txHash: "0x9f8e...7d6c",
-  },
-  {
-    id: "s3",
-    communityId: "libre-stack",
-    communityName: "Libre Stack",
-    logoInitial: "L",
-    amount: 3,
-    status: "completed" as const,
-    date: "2026-09-05",
-    txHash: "0x4e5f...6a7b",
   },
 ];
