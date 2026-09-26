@@ -15,9 +15,7 @@ import type {
   WalletTransferRecord,
 } from "./types";
 
-// ---------------------------------------------------------------------------
 // Auth
-// ---------------------------------------------------------------------------
 // NOTE: the documented SIWE routes (POST /auth/nonce, POST /auth/verify) are
 // NOT deployed on the live backend (404 as of 2026-09-10). Auth is done via
 // the X-Wallet-Address header in lib/api/client.ts instead. Re-add the
@@ -27,9 +25,7 @@ export function fetchMe() {
   return apiGet<MeResponse>("/users/me", { auth: true });
 }
 
-// ---------------------------------------------------------------------------
 // Communities & projects (public)
-// ---------------------------------------------------------------------------
 
 export function fetchCommunities() {
   return apiGet<Community[]>("/communities");
@@ -39,9 +35,7 @@ export function fetchCommunityBySlug(slug: string) {
   return apiGet<CommunityDetail>(`/communities/${encodeURIComponent(slug)}`);
 }
 
-// ---------------------------------------------------------------------------
 // Donations (on-chain)
-// ---------------------------------------------------------------------------
 
 export function quoteDonation(input: { projectSlug: string; amount: string }) {
   return apiPost<DonationQuote>("/donations/quote", input);
@@ -73,9 +67,7 @@ export async function fetchMyDonations(limit = 20, offset = 0) {
   return { data: res.data.data ?? [], meta: res.data.meta };
 }
 
-// ---------------------------------------------------------------------------
 // Demo wallet
-// ---------------------------------------------------------------------------
 
 export function fetchWalletBalance() {
   return apiGet<WalletBalance>("/wallet/balance", { auth: true });
@@ -101,9 +93,7 @@ export async function fetchWalletTransfers(limit = 20, offset = 0) {
   return { data: res.data.data ?? [], meta: res.data.meta };
 }
 
-// ---------------------------------------------------------------------------
 // Stats (public)
-// ---------------------------------------------------------------------------
 
 export function fetchStats() {
   return apiGet<StatsResponse>("/stats");

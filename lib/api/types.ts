@@ -31,9 +31,7 @@ export type MeResponse = {
   };
 };
 
-// ---------------------------------------------------------------------------
 // Communities & projects (public)
-// ---------------------------------------------------------------------------
 
 export type CommunityCategory = "music" | "game" | "charity" | null;
 
@@ -63,9 +61,7 @@ export type CommunityDetail = Community & {
   projects: CommunityProject[];
 };
 
-// ---------------------------------------------------------------------------
 // Donations (on-chain)
-// ---------------------------------------------------------------------------
 
 export type DonationQuote = {
   projectId: string;
@@ -123,9 +119,7 @@ export type Paginated<T> = {
   meta?: { limit: number; offset: number };
 };
 
-// ---------------------------------------------------------------------------
 // Demo wallet (USD, off-chain ledger)
-// ---------------------------------------------------------------------------
 
 export type WalletBalance = {
   /** String with 2 decimals — render as-is, never do float math on it. */
@@ -158,9 +152,7 @@ export type WalletTransferRecord = {
   project_slug: string | null;
 };
 
-// ---------------------------------------------------------------------------
 // Stats (public)
-// ---------------------------------------------------------------------------
 
 export type CommunityStats = {
   community_slug: string;
