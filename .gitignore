@@ -8,7 +8,5 @@ out
 next-env.d.ts
 tsconfig.tsbuildinfo
 
-# Local secrets — never commit
-.env
-.env.*
-!.env.example
+# Personal per-machine overrides — .env and .env.example are shared
+.env.local
