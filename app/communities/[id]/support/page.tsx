@@ -277,7 +277,7 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
 
   if (isLoading) {
     return (
-      <div className="mx-auto max-w-lg px-6 py-16">
+      <div className="mx-auto min-h-[420px] max-w-lg px-6 py-16">
         <Card className="p-8">
           <div className="h-6 w-48 animate-pulse rounded bg-white/[0.06]" />
           <div className="mt-6 h-24 animate-pulse rounded-2xl bg-white/[0.06]" />
@@ -291,36 +291,32 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
   if (!project) {
     // The community exists but has no active project to donate to (e.g. the
     // backend is down and we're on mock data, which carries no projects).
-    // Show a friendly state instead of a raw 404.
+    // No entrance animation here: this is an error, and delaying it also made
+    // the message the last and largest thing painted on the page.
     return (
       <div className="mx-auto max-w-lg px-6 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={orientationTransition}
-          className="flex flex-col items-center gap-4 text-center"
-        >
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-500/10">
-            <CircleAlert className="h-8 w-8 text-amber-500" />
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10">
+            <CircleAlert className="h-6 w-6 text-amber-500" />
           </div>
           <div>
-            <p className="font-display text-xl font-bold text-ink">
-              Support is unavailable right now
+            <p className="font-display text-lg font-bold text-ink">
+              Nothing to back here yet
             </p>
-            <p className="mt-2 max-w-sm font-body text-sm text-muted">
-              We couldn&apos;t load the funding projects for {community.name}. The
-              service may be temporarily down — please try again later.
+            <p className="mt-2 font-body text-sm text-muted">
+              {community.name} has no open funding project right now. Their profile still
+              lists their payout details.
             </p>
           </div>
-          <div className="mt-2 flex gap-3">
-            <Button variant="outline" onClick={() => router.refresh()}>
-              Retry
-            </Button>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href={`/communities/${community.slug}`}>
+              <Button variant="outline">View {community.name}</Button>
+            </Link>
             <Link href="/discover">
-              <Button>Back to Discover</Button>
+              <Button>Find another community</Button>
             </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
     );
   }

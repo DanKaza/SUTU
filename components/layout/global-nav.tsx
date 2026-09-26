@@ -131,7 +131,7 @@ export function GlobalNav() {
       </div>
 
       <motion.div 
-        className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-violet-400 to-pink"
+        className="motion-live absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-violet-400 to-pink"
         style={{ scaleX }}
       />
 

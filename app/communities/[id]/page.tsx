@@ -22,7 +22,7 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
 
   if (isLoading || !community) {
     return (
-      <div className="mx-auto max-w-3xl px-6 py-16">
+      <div className="mx-auto min-h-[580px] max-w-3xl px-6 py-16">
         <Card className="p-8">
           <div className="flex items-center gap-4">
             <div className="h-16 w-16 animate-pulse rounded-full bg-white/[0.06]" />

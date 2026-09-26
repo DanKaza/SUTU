@@ -41,11 +41,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Web3Provider>
           <AuthProvider>
             <AppStateProvider>
-                <div className="flex min-h-screen flex-col bg-ink-950">
-                  <GlobalNav />
-                  <main className="flex-1">{children}</main>
-                  <Footer />
-                </div>
+              <div className="flex min-h-screen flex-col bg-ink-950">
+                <GlobalNav />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
             </AppStateProvider>
           </AuthProvider>
         </Web3Provider>

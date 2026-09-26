@@ -147,5 +147,17 @@ body {
     transition-duration: 0.2s !important;
     scroll-behavior: auto !important;
   }
+
+  /* framer-motion writes transform and opacity as inline styles, so the reset
+     above never reaches it — MotionConfig reducedMotion was tried and does not
+     strip transform values in 11.18.2. Every inline transform on these pages
+     is motion-driven; layout transforms live in utility classes, not the style
+     attribute. .motion-live opts out anything functional, such as the scroll
+     progress line, which must keep tracking. */
+  [style*="transform"]:not(.motion-live),
+  [style*="opacity"]:not(.motion-live) {
+    transform: none !important;
+    opacity: 1 !important;
+  }
 }
 

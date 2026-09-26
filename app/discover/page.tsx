@@ -83,27 +83,33 @@ export default function DiscoverPage() {
         </p>
       </motion.div>
 
-      {isFallback && !isLoadingCommunities && (
-        <p className="mx-auto mt-6 max-w-xl rounded-card border border-white/11 bg-ink-800 px-4 py-3 text-center font-body text-sm text-muted">
-          Showing sample communities. Live figures appear once the backend is reachable.
-        </p>
-      )}
+      {/* Reserved whether or not it shows, so the tabs below never move. */}
+      <div className="mx-auto mt-6 min-h-[58px] max-w-xl">
+        {isFallback && !isLoadingCommunities && (
+          <p className="rounded-card border border-white/11 bg-ink-800 px-4 py-3 text-center font-body text-sm text-muted">
+            Showing sample communities. Live figures appear once the backend is reachable.
+          </p>
+        )}
+      </div>
 
-      {!isLoadingCommunities && communities.length > 0 && (
-        <dl className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-card border border-white/11 bg-white/11 sm:grid-cols-4">
-          {[
-            { label: "Communities", value: communities.length.toLocaleString() },
-            { label: "Confirmed supports", value: totals.supporters.toLocaleString() },
-            { label: "Total supported", value: `${displayMon(totals.funded)} MON` },
-            { label: "Ready to receive", value: `${totals.withPayout} of ${communities.length}` },
-          ].map((stat) => (
-            <div key={stat.label} className="bg-ink-800 px-4 py-5 text-center">
-              <dt className="font-mono text-[11px] text-faint">{stat.label}</dt>
-              <dd className="mt-2 font-display text-2xl font-semibold text-ink">{stat.value}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
+      {/* Always mounted so the block below never moves when the data lands. */}
+      <div className="mx-auto mt-10 min-h-[228px] max-w-3xl sm:min-h-[104px]">
+        {!isLoadingCommunities && communities.length > 0 && (
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-white/11 bg-white/11 sm:grid-cols-4">
+            {[
+              { label: "Communities", value: communities.length.toLocaleString() },
+              { label: "Confirmed supports", value: totals.supporters.toLocaleString() },
+              { label: "Total supported", value: `${displayMon(totals.funded)} MON` },
+              { label: "Ready to receive", value: `${totals.withPayout} of ${communities.length}` },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-ink-800 px-4 py-5 text-center">
+                <dt className="font-mono text-[11px] text-faint">{stat.label}</dt>
+                <dd className="mt-2 font-display text-2xl font-semibold text-ink">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
 
       <div className="mx-auto mt-8 max-w-xl">
         <div className="relative">
@@ -125,9 +131,9 @@ export default function DiscoverPage() {
         </div>
       </div>
 
-      {showTop && !isLoadingCommunities && (
-        <div className="mt-12">
-          <TopCommunities communities={communities} />
+      {showTop && (
+        <div className="mt-12 min-h-[320px]">
+          {!isLoadingCommunities && <TopCommunities communities={communities} />}
         </div>
       )}
 
