@@ -18,14 +18,12 @@ export function HeroSection() {
       <div className="mx-auto w-full max-w-[1280px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
-          {/* Left: Content */}
           <motion.div
             variants={staggerGroup}
             initial="hidden"
             animate="show"
             className="lg:col-span-7 flex flex-col items-start text-left z-10"
           >
-            {/* Headline */}
             <motion.h1
               variants={revealUp}
               className="font-display text-[48px] sm:text-[64px] lg:text-[88px] font-semibold tracking-[-0.03em] leading-[0.95] text-white"
@@ -34,7 +32,6 @@ export function HeroSection() {
               that <span className="text-violet-400">matters</span>.
             </motion.h1>
 
-            {/* Description */}
             <motion.p 
               variants={revealUp}
               className="mt-8 max-w-[520px] font-body text-[18px] sm:text-[20px] leading-[1.55] text-muted"
@@ -43,7 +40,6 @@ export function HeroSection() {
               actually lands, and small steps taken consistently.
             </motion.p>
 
-            {/* CTAs */}
             <motion.div variants={revealUp} className="mt-10 flex flex-wrap items-center gap-4">
               <Link href="/discover">
                 <Button size="lg" className="h-14 px-8 text-[16px] font-semibold shadow-glow-violet transition-all duration-300 hover:scale-[1.02]">
@@ -68,7 +64,6 @@ export function HeroSection() {
             </motion.ul>
           </motion.div>
 
-          {/* Right: a real support moment, shown as the product's own UI */}
           <motion.div
             variants={revealUp}
             initial="hidden"

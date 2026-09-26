@@ -33,7 +33,6 @@ export function DeviceMockup() {
           style={{ rotateX, rotateY }}
           className="relative mx-auto max-w-[900px] rounded-card border border-white/10 bg-ink-950 shadow-glow-violet-lg overflow-hidden"
         >
-          {/* Screen Bezel Top */}
           <div className="flex items-center gap-2 border-b border-white/5 bg-ink-900 px-4 py-3">
             <div className="flex gap-1.5">
               <div className="h-3 w-3 rounded-full bg-white/10" />
@@ -48,7 +47,6 @@ export function DeviceMockup() {
           {/* Screen Content - Dashboard-like placeholder */}
           <div className="p-8 bg-ink-950 min-h-[400px]">
             <div className="grid grid-cols-3 gap-4">
-              {/* Sidebar */}
               <div className="col-span-1 space-y-3">
                 <div className="rounded-xl bg-ink-800 p-4 border border-white/5">
                   <div className="font-display text-sm font-semibold text-white">Communities</div>
@@ -61,7 +59,6 @@ export function DeviceMockup() {
                 </div>
               </div>
 
-              {/* Main Area */}
               <div className="col-span-2 space-y-3">
                 <div className="rounded-xl bg-ink-800 p-6 border border-white/5">
                   <div className="font-display text-sm font-semibold text-white">Activity Feed</div>

@@ -26,9 +26,8 @@ const BENEFITS = [
 
 export function BenefitsSection() {
   return (
-    <section className="">
+    <section>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        {/* Left */}
         <motion.div
           variants={staggerGroup}
           initial="hidden"
@@ -57,7 +56,6 @@ export function BenefitsSection() {
             </Link>
           </motion.div>
 
-          {/* Abstract violet accent */}
           <motion.div 
             variants={revealUp}
             aria-hidden
@@ -70,7 +68,6 @@ export function BenefitsSection() {
           </motion.div>
         </motion.div>
 
-        {/* Right: Benefit Cards */}
         <motion.div
           variants={staggerGroup}
           initial="hidden"
