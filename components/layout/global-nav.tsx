@@ -101,10 +101,14 @@ export function GlobalNav() {
             </>
           ) : (
             <>
-              <Link href="/basket" className="relative flex h-9 w-9 items-center justify-center rounded-full text-white transition-colors duration-200 ease-quintic-out hover:bg-white/10">
+              <Link
+                href="/basket"
+                aria-label={`Support basket, ${basket.length} item${basket.length === 1 ? "" : "s"}`}
+                className="relative flex h-9 w-9 items-center justify-center rounded-full text-white transition-colors duration-200 ease-quintic-out hover:bg-white/10"
+              >
                 <ShoppingBasket className="h-5 w-5" />
                 {basket.length > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-violet-500 text-[10px] font-bold text-white">
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-violet-500 text-[10px] font-bold text-ink-950">
                     {basket.length}
                   </span>
                 )}
@@ -116,6 +120,9 @@ export function GlobalNav() {
           <button
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
             className="flex h-9 w-9 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 lg:hidden"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -133,6 +140,7 @@ export function GlobalNav() {
         {mobileOpen && (
           <motion.div
             key="mobile-nav"
+            id="mobile-nav"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

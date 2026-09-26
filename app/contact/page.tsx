@@ -65,17 +65,17 @@ export default function ContactPage() {
               >
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="font-body text-sm font-medium text-ink">Name</label>
-                    <Input required placeholder="Your name" className="mt-2" />
+                    <label htmlFor="contact-name" className="font-body text-sm font-medium text-ink">Name</label>
+                    <Input id="contact-name" required placeholder="Your name" className="mt-2" />
                   </div>
                   <div>
-                    <label className="font-body text-sm font-medium text-ink">Email</label>
-                    <Input required type="email" placeholder="you@example.com" className="mt-2" />
+                    <label htmlFor="contact-email" className="font-body text-sm font-medium text-ink">Email</label>
+                    <Input id="contact-email" required type="email" placeholder="you@example.com" className="mt-2" />
                   </div>
                 </div>
                 <div>
-                  <label className="font-body text-sm font-medium text-ink">Message</label>
-                  <Textarea required rows={5} placeholder="Tell us what you need..." className="mt-2" />
+                  <label htmlFor="contact-message" className="font-body text-sm font-medium text-ink">Message</label>
+                  <Textarea id="contact-message" required rows={5} placeholder="Tell us what you need..." className="mt-2" />
                 </div>
                 <Button type="submit" size="lg" className="w-fit">
                   Send message

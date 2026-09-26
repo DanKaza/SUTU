@@ -376,8 +376,9 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             </div>
 
             <div className="mt-4">
-              <label className="font-body text-sm font-medium text-ink">Custom amount</label>
+              <label htmlFor="custom-amount" className="font-body text-sm font-medium text-ink">Custom amount</label>
               <Input
+                id="custom-amount"
                 type="number"
                 min={0}
                 step="0.01"
