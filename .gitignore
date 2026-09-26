@@ -1,6 +1,7 @@
 node_modules
 .next
 out
+.codegraph
 tsconfig.tsbuildinfo
 .env
 .env.*

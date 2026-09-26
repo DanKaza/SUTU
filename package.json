@@ -23,6 +23,7 @@
     "wagmi": "^3.7.7"
   },
   "devDependencies": {
+    "@colbymchenry/codegraph": "^1.6.0",
     "@eslint/eslintrc": "^3.3.7",
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.4",

@@ -1,11 +1,107 @@
 {
   "version": 1,
   "skills": {
+    "a11y-audit": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/a11y-audit/SKILL.md",
+      "computedHash": "4ed2b77077f66ae8862861d1e0a3a8c8bd0ce6ce04a0a4edd68474edc43f1bc2"
+    },
+    "code-reviewer": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering-team/skills/code-reviewer/SKILL.md",
+      "computedHash": "a517e3f8d79a9569bedcd012013b47681677d3f5bd0ca2d05b659d914704d3f9"
+    },
+    "code-tour": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/code-tour/skills/code-tour/SKILL.md",
+      "computedHash": "f85f798ea6d6ab47115d156eaf9ebd9f3ff886bad703a6e318f956646b488ba2"
+    },
+    "codebase-onboarding": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/codebase-onboarding/SKILL.md",
+      "computedHash": "0fa46b41dedcb7e735aa16e75b3f2f4f6754af95a75861c84cc7e00c4de29dd4"
+    },
+    "context-engine": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "c-level-advisor/skills/context-engine/SKILL.md",
+      "computedHash": "2932dbea60910861f576d9fb980c9276bb5475439b20cc64c7afbef6f6d2889f"
+    },
+    "design-code": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/design-code/SKILL.md",
+      "computedHash": "87eed3510c1fc73425c26c66c801ff5cadf3b3d8efd0ffb2a8b736bc1403d58e"
+    },
+    "design-component": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/design-component/SKILL.md",
+      "computedHash": "f4ba5f0b0d493eacfc3749efc9356ccbabfcf5bf0502d63a39f01d487401c0e0"
+    },
+    "design-doctrine": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/design-doctrine/SKILL.md",
+      "computedHash": "835b9d342a5e253309aa4b6c7313aec9dbf26da5d5543333745179ea0a91f3da"
+    },
+    "design-review": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/design-review/SKILL.md",
+      "computedHash": "7c44ccad130ba9d76af4c1742f2ca18e0a2db2c1ceed97b1814a90f05095340e"
+    },
+    "design-system": {
+      "source": "IbrahimBadawy/claude-system-design-plugin",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/design-system/SKILL.md",
+      "computedHash": "728729e865f82b525c5eebc1613e058b4b5f6f0d3a61cdc296e44fd2d4c7fe7f"
+    },
+    "design-tokens": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/design-tokens/SKILL.md",
+      "computedHash": "d3ac6e79a5cfdf8b9a0675ede69621a0d791227bdf625109fb991ab701ca2e00"
+    },
+    "evaluate-system": {
+      "source": "IbrahimBadawy/claude-system-design-plugin",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/evaluate-system/SKILL.md",
+      "computedHash": "eb6d37b92e58f062114fadcc6c0091c11da2d7f92fd36ca4886f4669df258ee4"
+    },
+    "foundry-solidity": {
+      "source": "tenequm/skills",
+      "sourceType": "github",
+      "skillPath": "skills/foundry-solidity/SKILL.md",
+      "computedHash": "f2435650a523631224c2a2b3a97d779875a2cb7fbab9610ae5b9e732a2226700"
+    },
+    "implement-system": {
+      "source": "IbrahimBadawy/claude-system-design-plugin",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/implement-system/SKILL.md",
+      "computedHash": "a757100d8ef6ed199950b15d2e8284bc138c466da5243ef462b2d5bed2fabc84"
+    },
+    "llm-wiki": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/llm-wiki/skills/llm-wiki/SKILL.md",
+      "computedHash": "0c35d8d8d17d34b4913788e9dc349d7a8cc20fbf9fb0d007cc959720c8c60462"
+    },
     "migrate-radix-to-base": {
       "source": "shadcn/ui",
       "sourceType": "github",
       "skillPath": "skills/migrate-radix-to-base/SKILL.md",
       "computedHash": "4fdc31bf287f674ba6bf91a648120f7b34cd7ef370f998f2cc116fed067789c5"
+    },
+    "monorepo-navigator": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/monorepo-navigator/SKILL.md",
+      "computedHash": "f4c9e0af88721ddc5a64a601fc5d153b2636f2758b189ce033ae91fcb2d93149"
     },
     "no-ai-design-slop": {
       "source": "mengto/skills",
@@ -13,11 +109,113 @@
       "skillPath": "agent-skills/ui/no-ai-design-slop/SKILL.md",
       "computedHash": "6c87844491447014047812c128f3196cc7855af4df5363654d2c0ce811513810"
     },
+    "performance": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/performance/SKILL.md",
+      "computedHash": "1ffcca8ea3b0210a8d72307244dfecef9001c8d1e484adf6c010c28fae689aa6"
+    },
+    "playwright-pro": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering-team/playwright-pro/skills/pw/SKILL.md",
+      "computedHash": "71b4fcb7f2ffe226d5c436b2b4909d79cfa018e0dbf2f04eb8d669749732587c"
+    },
+    "redesign": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/redesign/SKILL.md",
+      "computedHash": "4046c7432659c4c7379b75b880368ee92dd82b944cac684854d0808cdd4679f4"
+    },
+    "security-guidance": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/security-guidance/skills/security-guidance/SKILL.md",
+      "computedHash": "11b445e0cae60d4cf3ddbf5aacfb31363a8251c1afbf8012b6f6c88fdd03ac84"
+    },
+    "senior-frontend": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering-team/skills/senior-frontend/SKILL.md",
+      "computedHash": "e106cfe8f4d644c3b4d8177abde66e34e0f3f83cae114038715fa7aa4a06d57d"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "d04e43ec01e921558b93bb8046c14a42a22556689a2827243df900825a4e1604"
+    },
+    "spec-driven-workflow": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/spec-driven-workflow/SKILL.md",
+      "computedHash": "a786d3de148b99c01926e4d1442397bf8b1e73e78c402ec91d6083b87afd2280"
+    },
+    "tanstack": {
+      "source": "tenequm/skills",
+      "sourceType": "github",
+      "skillPath": "skills/tanstack/SKILL.md",
+      "computedHash": "ef2e9913e72c802cd07bbbe30f7b85f36171b1c96a3abeb87966374d863e0e43"
+    },
+    "tdd-guide": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering-team/skills/tdd-guide/SKILL.md",
+      "computedHash": "e1f2aa0c23d7878b095ebfae31c3d009898ec5276803e4317d8ead8b4ecc5f38"
+    },
+    "tech-debt-tracker": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/skills/tech-debt-tracker/SKILL.md",
+      "computedHash": "98fe3edc8768cd20dd1b646093588ad8f2be588807afb49ee18390e8ad61f19b"
+    },
+    "typescript-dev": {
+      "source": "tenequm/skills",
+      "sourceType": "github",
+      "skillPath": "skills/typescript-dev/SKILL.md",
+      "computedHash": "5ce6c98a0c8543ea85b96dd03627acfa1168fde521e0bd448db5f178b4513e6f"
+    },
+    "ux-writing": {
+      "source": "plugin87/ux-ui-agent-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ux-writing/SKILL.md",
+      "computedHash": "16c98ae70c6c4911bf81a6de704281598b7d2e1061aa608000fe524d61f4d681"
+    },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "computedHash": "10eb4ec94577b79ae98c63ce3e7f35f8a6a06436a4011bff083b397de6960eeb"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "6b526d013e28073246a36f99b529bc43745d30832ecfa8217b359c34f260ca6b"
+    },
+    "vercel-react-view-transitions": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-view-transitions/SKILL.md",
+      "computedHash": "12f8e118b8ca5fa45e3f0b56c269fb2e35251b705d2320b26b0727a0f58adefc"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "d8e7d3afe37dcc8a97b99ffb5afdb4d0919ae0092ea8b68f44eb201f035e33ac"
+    },
+    "x402": {
+      "source": "tenequm/skills",
+      "sourceType": "github",
+      "skillPath": "skills/x402/SKILL.md",
+      "computedHash": "ab64f905dc5393f9939e7c20bac4a90f8f4c6ea525ea51a6aec026874d98814b"
+    },
+    "zero-hallucination-coder": {
+      "source": "alirezarezvani/claude-skills",
+      "sourceType": "github",
+      "skillPath": "engineering/zero-hallucination-coder/skills/zero-hallucination-coder/SKILL.md",
+      "computedHash": "ffd0f3d381049b13f406de46c7df2bb4a399c2308c37a2ae95ad9407da263123"
     }
   }
 }
