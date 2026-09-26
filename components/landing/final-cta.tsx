@@ -8,7 +8,7 @@ import { revealUp, staggerGroup } from "@/lib/motion";
 
 export function FinalCTA() {
   return (
-    <section className="py-24 text-center">
+    <section className="text-center">
       <motion.div
         variants={staggerGroup}
         initial="hidden"

@@ -15,7 +15,7 @@ export function DeviceMockup() {
   const rotateY = useTransform(scrollYProgress, [0, 0.5], [-5, 0]);
 
   return (
-    <section ref={sectionRef} className="relative py-24 overflow-hidden">
+    <section ref={sectionRef} className="relative overflow-hidden">
       {/* Large blurred purple shadow */}
       <div 
         aria-hidden 
@@ -31,7 +31,7 @@ export function DeviceMockup() {
       >
         <motion.div 
           style={{ rotateX, rotateY }}
-          className="relative mx-auto max-w-[900px] rounded-[20px] border border-white/10 bg-ink-950 shadow-glow-violet-lg overflow-hidden"
+          className="relative mx-auto max-w-[900px] rounded-card border border-white/10 bg-ink-950 shadow-glow-violet-lg overflow-hidden"
         >
           {/* Screen Bezel Top */}
           <div className="flex items-center gap-2 border-b border-white/5 bg-ink-900 px-4 py-3">

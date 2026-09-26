@@ -2,30 +2,31 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { Compass, ShieldCheck, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { revealUp, staggerGroup, cardHover } from "@/lib/motion";
 
 const BENEFITS = [
   {
-    icon: "◎",
-    title: "Belonging",
-    description: "Find a community that feels relevant from the first line you read.",
+    icon: Compass,
+    title: "Find it",
+    description: "Search by name, cause or category instead of chasing links across the web.",
   },
   {
-    icon: "↗",
-    title: "Momentum",
-    description: "Turn small gestures into habits and shared action.",
+    icon: TrendingUp,
+    title: "Keep it going",
+    description: "Small contributions on a rhythm beat one large gesture followed by silence.",
   },
   {
-    icon: "✦",
-    title: "Care",
-    description: "Interactions that stay safe, open and human.",
+    icon: ShieldCheck,
+    title: "Trust it",
+    description: "Every contribution is recorded on-chain, so the record is the receipt.",
   },
 ];
 
 export function BenefitsSection() {
   return (
-    <section className="py-20">
+    <section className="">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Left */}
         <motion.div
@@ -77,19 +78,21 @@ export function BenefitsSection() {
           viewport={{ once: true }}
           className="lg:col-span-7 flex flex-col gap-4"
         >
-          {BENEFITS.map((b) => (
+          {BENEFITS.map((b) => {
+            const Icon = b.icon;
+            return (
             <motion.div
               key={b.title}
               variants={revealUp}
               initial="rest"
               whileHover="hover"
             >
-              <motion.div 
+              <motion.div
                 variants={cardHover}
-                className="flex items-start gap-5 rounded-[20px] border border-white/11 bg-ink-800 p-6 cursor-default transition-colors duration-300"
+                className="flex items-start gap-5 rounded-card border border-white/11 bg-ink-800 p-6 cursor-default transition-colors duration-300"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink-700 text-xl text-violet-400">
-                  {b.icon}
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink-700 text-violet-400">
+                  <Icon className="h-5 w-5" />
                 </div>
                 <div>
                   <h3 className="font-display text-lg font-semibold text-white">{b.title}</h3>
@@ -97,7 +100,8 @@ export function BenefitsSection() {
                 </div>
               </motion.div>
             </motion.div>
-          ))}
+            );
+          })}
         </motion.div>
       </div>
     </section>

@@ -13,8 +13,8 @@ import { useAppState } from "@/lib/app-state";
 
 const LANDING_LINKS = [
   { href: "/discover", label: "Communities" },
-  { href: "/stories", label: "Stories" },
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const APP_LINKS = [
@@ -92,14 +92,11 @@ export function GlobalNav() {
         <div className="flex items-center gap-6">
           {!isApp ? (
             <>
-              <Link href="/join" className="hidden text-[15px] font-medium text-muted hover:text-white sm:block">
-                Join a community
+              <Link href="/discover" className="hidden text-[15px] font-medium text-muted hover:text-white sm:block">
+                Find a community
               </Link>
-              <Button variant="outline" className="hidden border-white/10 bg-white/5 hover:bg-white/10 sm:block">
-                Sign in
-              </Button>
-              <Button>
-                Start with SUTU
+              <Button size="lg">
+                Start supporting
               </Button>
             </>
           ) : (
@@ -180,7 +177,7 @@ export function GlobalNav() {
                 </Link>
               ) : (
                 <Link href="/discover" onClick={() => setMobileOpen(false)} className="mt-2">
-                  <Button className="w-full">Discover Communities</Button>
+                  <Button size="lg" className="w-full">Start supporting</Button>
                 </Link>
               )}
             </div>

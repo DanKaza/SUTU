@@ -24,7 +24,7 @@ const BLOCKS = [
 
 export function NarrativeSection() {
   return (
-    <section className="py-20">
+    <section className="">
       <motion.div
         variants={staggerGroup}
         initial="hidden"
@@ -32,15 +32,9 @@ export function NarrativeSection() {
         viewport={{ once: true }}
         className="mx-auto max-w-[860px] px-6"
       >
-        <motion.span 
+        <motion.h2
           variants={revealUp}
-          className="font-mono text-[11px] font-semibold tracking-[0.12em] uppercase text-violet-400"
-        >
-          WHY SUTU
-        </motion.span>
-        <motion.h2 
-          variants={revealUp}
-          className="mt-4 font-display text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-[1.05] text-white"
+          className="font-display text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-[1.05] text-white"
         >
           What we believe
         </motion.h2>

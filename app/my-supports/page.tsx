@@ -11,7 +11,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, Clock } from "lucide-react";
+import { ArrowRight, Check, Clock, Link2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
@@ -224,7 +224,7 @@ export default function MySupportsPage() {
                 <Link href={row.kind === "onchain" ? `/my-supports/${row.id}` : `/my-supports/${row.id}`}>
                   <Card className="flex items-center gap-4 p-4 transition-colors duration-200 ease-quintic-out hover:border-violet-400">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-bold text-void">
-                      {row.kind === "demo" ? "$" : "⛓"}
+                      {row.kind === "demo" ? "$" : <Link2 className="h-4 w-4" />}
                     </div>
                     <div className="flex-1">
                       <p className="font-body text-sm font-medium text-ink">{row.title}</p>

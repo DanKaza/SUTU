@@ -13,34 +13,39 @@ export default function LandingPage() {
   return (
     <div className="relative overflow-hidden bg-ink-950">
       <div className="mx-auto max-w-[1280px] px-6 sm:px-12">
-        
+
         <HeroSection />
-        
-        <div className="py-[clamp(80px,10vw,140px)]">
+
+        {/* Statement: the fullest pause on the page, it carries one argument. */}
+        <div className="py-32">
           <EditorialStatement />
         </div>
 
-        <div className="py-[clamp(80px,10vw,140px)]">
+        {/* Visual band: tighter, so the panel reads as an object. */}
+        <div className="py-24">
           <ShowcasePanel />
         </div>
 
-        <div className="py-[clamp(80px,10vw,140px)]">
+        {/* Argument returns at full weight. */}
+        <div className="py-32">
           <NarrativeSection />
         </div>
 
-        <div className="py-[clamp(80px,10vw,140px)]">
+        {/* Densest content sits closest to its neighbours. */}
+        <div className="py-16">
           <DeviceMockup />
         </div>
 
-        <div className="py-[clamp(80px,10vw,140px)]">
+        <div className="py-24">
           <BenefitsSection />
         </div>
 
-        <div className="py-[clamp(80px,10vw,140px)]">
+        <div className="py-28">
           <HowItWorksSection />
         </div>
 
-        <div className="py-[clamp(80px,10vw,140px)]">
+        {/* Long approach into the close. */}
+        <div className="pb-24 pt-40">
           <FinalCTA />
         </div>
 
