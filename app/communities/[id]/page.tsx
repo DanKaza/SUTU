@@ -80,7 +80,7 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
           </div>
 
           {activeProjects.length > 0 && (
-            <div className="mt-6 border-t border-white/10 pt-5 border-white/10">
+            <div className="mt-6 border-t border-white/10 pt-5">
               <p className="font-body text-xs font-medium uppercase tracking-wide text-muted">
                 Active projects
               </p>

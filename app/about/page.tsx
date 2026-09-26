@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { fadeInUp, hoverInteraction, orientationTransition, staggerContainer } from "@/lib/motion";
@@ -74,14 +75,16 @@ export default function AboutPage() {
         whileInView="show"
         viewport={{ once: true, margin: "-80px" }}
       >
-        <Card className="mt-14 flex flex-col items-start justify-between gap-4 bg-white/[0.04] p-8 bg-white/5 sm:flex-row sm:items-center">
+        <Card className="mt-14 flex flex-col items-start justify-between gap-4 bg-white/5 p-8 sm:flex-row sm:items-center">
           <div>
             <h3 className="font-display text-lg font-bold text-ink">Ready to back something?</h3>
             <p className="mt-1 font-body text-sm text-muted">
               Find a community you care about and make your first contribution today.
             </p>
           </div>
-          <Button size="lg">Explore communities</Button>
+          <Link href="/discover" className="shrink-0">
+            <Button size="lg">Explore communities</Button>
+          </Link>
         </Card>
       </motion.div>
     </div>

@@ -73,7 +73,7 @@ function QuoteBreakdown({ quote, monLabel }: { quote: DonationQuote; monLabel: s
           </span>
         </div>
       )}
-      <div className="flex items-center justify-between border-t border-white/10 pt-2 border-white/10">
+      <div className="flex items-center justify-between border-t border-white/10 pt-2">
         <span className="font-body text-sm text-muted">You pay</span>
         <span className="font-display text-base font-bold text-ink">
           {formatMon(quote.netAmountWei)} {monLabel}

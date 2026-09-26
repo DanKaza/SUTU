@@ -140,9 +140,11 @@ export default function ProfilePage() {
               Recent wallet activity
             </p>
             {history.length === 0 ? (
-              <p className="mt-3 font-body text-sm text-muted">No activity yet.</p>
+              <p className="mt-3 font-body text-sm text-muted">
+                Wallet transfers you make will appear here once your wallet is connected.
+              </p>
             ) : (
-              <ul className="mt-3 flex flex-col divide-y divide-white/10 divide-white/10">
+              <ul className="mt-3 flex flex-col divide-y divide-white/10">
                 {history.map((entry) => (
                   <li key={entry.id} className="flex items-center justify-between py-2.5">
                     <div>

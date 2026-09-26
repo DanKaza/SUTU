@@ -98,7 +98,7 @@ export default function SupportDetailPage({ params }: { params: Promise<{ id: st
             <Badge>{donation ? "On-chain" : "Demo wallet"}</Badge>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4 border-white/10">
+          <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
             <div>
               <p className="font-body text-xs text-muted">Amount</p>
               <p className="mt-1 font-display text-lg font-bold text-ink">{amountLabel}</p>

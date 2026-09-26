@@ -363,7 +363,7 @@ export default function BasketPage() {
                   <span className="font-body text-sm font-medium text-ink">${item.amount}</span>
                 </div>
               ))}
-              <div className="mt-2 flex items-center justify-between border-t border-white/10 pt-3 border-white/10">
+              <div className="mt-2 flex items-center justify-between border-t border-white/10 pt-3">
                 <span className="font-body text-sm text-muted">Total</span>
                 <span className="font-display text-lg font-bold text-ink">${basketTotal}</span>
               </div>
@@ -433,7 +433,7 @@ export default function BasketPage() {
                   </div>
                 );
               })}
-              <div className="mt-2 flex items-center justify-between border-t border-white/10 pt-3 border-white/10">
+              <div className="mt-2 flex items-center justify-between border-t border-white/10 pt-3">
                 <span className="font-body text-sm text-muted">Total</span>
                 <span className="font-display text-lg font-bold text-ink">
                   ${completed.reduce((sum, r) => sum + r.amount, 0)}
