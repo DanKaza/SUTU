@@ -6,19 +6,19 @@ import { revealUp, staggerGroup } from "@/lib/motion";
 const BLOCKS = [
   {
     title: "The gap",
-    body: "Internet terasa ramai, tetapi banyak orang tetap merasa sendiri. Platform berkompetisi untuk atensi, bukan untuk kebersamaan.",
+    body: "The internet feels loud, but plenty of people still feel alone. Platforms compete for attention, not for connection.",
   },
   {
     title: "The approach",
-    body: "SUTU memprioritaskan percakapan yang berniat, konteks yang jelas, dan ruang untuk berkontribusi tanpa tekanan metrik.",
+    body: "SUTU puts intentional support first, keeps context clear, and leaves room to contribute without a metric chasing you.",
   },
   {
     title: "The result",
-    body: "Komunitas menjadi lebih mudah ditemukan, diikuti, dan dirawat. Koneksi tumbuh dari konsistensi, bukan viralitas.",
+    body: "Communities become easier to find and easier to back. Real support compounds, it does not go viral.",
   },
   {
     title: "Made with care",
-    body: "Desain, teknologi, dan moderasi bekerja bersama untuk membuat ruang yang aman, inklusif, dan tetap hidup.",
+    body: "Design, engineering and moderation work together to keep the space safe, inclusive and alive.",
   },
 ];
 

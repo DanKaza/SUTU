@@ -9,17 +9,17 @@ const BENEFITS = [
   {
     icon: "◎",
     title: "Belonging",
-    description: "Temukan ruang yang terasa relevan sejak percakapan pertama.",
+    description: "Find a community that feels relevant from the first line you read.",
   },
   {
     icon: "↗",
     title: "Momentum",
-    description: "Ubah ide kecil menjadi kebiasaan dan aksi bersama.",
+    description: "Turn small gestures into habits and shared action.",
   },
   {
     icon: "✦",
     title: "Care",
-    description: "Bangun interaksi yang lebih aman, terbuka, dan manusiawi.",
+    description: "Interactions that stay safe, open and human.",
   },
 ];
 
@@ -45,12 +45,13 @@ export function BenefitsSection() {
             variants={revealUp}
             className="mt-6 font-body text-base sm:text-lg leading-relaxed text-muted"
           >
-            Bergabung dengan komunitas yang memiliki ritme, tujuan, dan nilai bersama — bukan sekadar channel ramai yang terlupakan.
+            Back communities that have a rhythm, a purpose and shared values — not another loud
+            channel nobody reads.
           </motion.p>
           <motion.div variants={revealUp} className="mt-8">
             <Link href="/discover">
               <Button className="h-12 px-7 text-[15px] font-semibold">
-                Start a circle
+                Find a community
               </Button>
             </Link>
           </motion.div>

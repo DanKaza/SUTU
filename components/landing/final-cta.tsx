@@ -26,7 +26,7 @@ export function FinalCTA() {
           variants={revealUp}
           className="mt-6 font-body text-lg sm:text-xl text-muted"
         >
-          SUTU memberi mereka tempat untuk bertemu. Kamu tinggal mulai.
+          SUTU is where they already are. Back the first one today.
         </motion.p>
         <motion.div variants={revealUp} className="mt-10">
           <Link href="/discover">

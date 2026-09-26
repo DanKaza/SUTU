@@ -29,8 +29,8 @@ export default function ContactPage() {
         Contact
       </motion.h1>
       <p className="mt-3 max-w-xl font-body text-muted">
-        Ada pertanyaan, feedback, atau ide kolaborasi? Kirim pesan, tim kami akan merespons secepat
-        mungkin.
+        Questions, feedback, or an idea for working together? Send a message and we will get back to
+        you as soon as we can.
       </p>
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_320px]">
@@ -45,9 +45,9 @@ export default function ContactPage() {
                 transition={orientationTransition}
                 className="flex flex-col items-start gap-2 py-10"
               >
-                <h3 className="font-display text-lg font-bold text-ink">Pesan terkirim</h3>
+                <h3 className="font-display text-lg font-bold text-ink">Message sent</h3>
                 <p className="font-body text-sm text-muted">
-                  Terima kasih! Kami akan membalas ke email kamu segera.
+                  Thank you. We will reply to your email shortly.
                 </p>
               </motion.div>
             ) : (
@@ -65,8 +65,8 @@ export default function ContactPage() {
               >
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="font-body text-sm font-medium text-ink">Nama</label>
-                    <Input required placeholder="Nama kamu" className="mt-2" />
+                    <label className="font-body text-sm font-medium text-ink">Name</label>
+                    <Input required placeholder="Your name" className="mt-2" />
                   </div>
                   <div>
                     <label className="font-body text-sm font-medium text-ink">Email</label>
@@ -74,11 +74,11 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="font-body text-sm font-medium text-ink">Pesan</label>
-                  <Textarea required rows={5} placeholder="Ceritakan kebutuhan kamu..." className="mt-2" />
+                  <label className="font-body text-sm font-medium text-ink">Message</label>
+                  <Textarea required rows={5} placeholder="Tell us what you need..." className="mt-2" />
                 </div>
                 <Button type="submit" size="lg" className="w-fit">
-                  Kirim pesan
+                  Send message
                 </Button>
               </motion.form>
             )}
@@ -86,7 +86,7 @@ export default function ContactPage() {
         </Card>
 
         <Card className="flex flex-col gap-4 bg-white/[0.04] p-6 bg-white/5">
-          <h3 className="font-display text-lg font-bold text-ink">Kanal lain</h3>
+          <h3 className="font-display text-lg font-bold text-ink">Other channels</h3>
           {CHANNELS.map((c) => (
             <div key={c.label} className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.06]">

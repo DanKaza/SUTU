@@ -1,27 +1,27 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, Map, Users } from "lucide-react";
+import { Heart, Repeat, Search } from "lucide-react";
 import { revealUp, staggerGroup, cardHover } from "@/lib/motion";
 
 const STEPS = [
   {
     id: "01",
     icon: Search,
-    title: "Find your signal",
-    description: "Pilih minat, nilai, atau kota yang ingin kamu dekati. Temukan ruang yang sefrekuensi.",
+    title: "Find a community",
+    description: "Search by name, cause or category. Every profile shows what the community is actually building.",
   },
   {
     id: "02",
-    icon: Map,
-    title: "Enter the room",
-    description: "Bergabung dalam komunitas dengan ritme dan konteks yang jelas, bukan sekadar join channel.",
+    icon: Heart,
+    title: "Back it in one flow",
+    description: "Pick an amount and send it. No account juggling, no hunting for a donation address.",
   },
   {
     id: "03",
-    icon: Users,
-    title: "Show up together",
-    description: "Ikut percakapan, acara, atau proyek yang berarti. Konsistensi mengalahkan intensitas.",
+    icon: Repeat,
+    title: "Keep showing up",
+    description: "Support compounds. Track every contribution and back the same community again.",
   },
 ];
 
@@ -39,13 +39,13 @@ export function HowItWorksSection() {
           variants={revealUp}
           className="font-mono text-[11px] font-semibold tracking-[0.12em] uppercase text-cyan-400"
         >
-          SMALL STEPS, SHARED ENERGY
+          HOW SUTU WORKS
         </motion.span>
         <motion.h2
           variants={revealUp}
           className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.05] text-white"
         >
-          Cara kerja SUTU
+          Three steps, no account required
         </motion.h2>
       </motion.div>
 

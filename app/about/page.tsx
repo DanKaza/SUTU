@@ -8,27 +8,27 @@ import { fadeInUp, hoverInteraction, orientationTransition, staggerContainer } f
 const WHY_SUTU = [
   {
     id: "01",
-    title: "Satu pencarian, semua komunitas",
+    title: "One search, every community",
     description:
-      "Alih-alih hafal atau bookmark alamat web tiap komunitas, cukup cari namanya di SUTU dan profil lengkapnya langsung ketemu.",
+      "Instead of memorising or bookmarking each community's site, search its name in SUTU and the full profile is right there.",
   },
   {
     id: "02",
-    title: "Dukungan dalam satu klik",
+    title: "Support in one flow",
     description:
-      "Semua kanal support dan donasi komunitas terkumpul di satu halaman, jadi kamu bisa langsung bantu tanpa lompat ke situs lain.",
+      "Every support and donation channel sits on a single page, so you can back a community without jumping to another site.",
   },
   {
     id: "03",
-    title: "Dukunganmu terasa nyata",
+    title: "Support that lands",
     description:
-      "Setiap kali kamu support, ada afirmasi dan badge dari komunitas — buktinya kontribusimu diperhatikan, bukan sekadar transaksi.",
+      "Every time you back a community you get an affirmation back — proof your contribution was seen, not just settled.",
   },
   {
     id: "04",
-    title: "Fokus ke komunitas, bukan ribet teknis",
+    title: "Built for the community, not the plumbing",
     description:
-      "Tampilan yang tenang dan jelas membuat proses menemukan serta mendukung komunitas jadi cepat, tanpa friksi yang tidak perlu.",
+      "A calm, legible interface makes finding and backing a community fast, with none of the friction that gets in the way.",
   },
 ];
 
@@ -40,16 +40,15 @@ export default function AboutPage() {
           About SUTU
         </h1>
         <p className="mt-4 font-body text-muted">
-          Mendukung komunitas Web3 sering kali berarti berpindah-pindah dari satu situs ke situs
-          lain hanya untuk mencari alamat donasi atau kanal supportnya. SUTU menyatukan itu semua:
-          cukup cari nama komunitasnya di SUTU, dan kamu langsung menemukan profil serta semua cara
-          untuk mendukungnya dalam satu tempat — tanpa ribet, tanpa harus tahu alamat web mereka
-          sebelumnya.
+          Backing a Web3 community usually means hopping between sites just to find a donation
+          address or a support channel. SUTU puts all of it in one place: search for a community by
+          name and you land on its profile, with every way to support it already on the page — no
+          bookmarks, no having to know their links in advance.
         </p>
       </motion.div>
 
       <div className="mt-14">
-        <h2 className="font-display text-xl font-bold text-ink">Kenapa SUTU</h2>
+        <h2 className="font-display text-xl font-bold text-ink">Why SUTU</h2>
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -77,12 +76,12 @@ export default function AboutPage() {
       >
         <Card className="mt-14 flex flex-col items-start justify-between gap-4 bg-white/[0.04] p-8 bg-white/5 sm:flex-row sm:items-center">
           <div>
-            <h3 className="font-display text-lg font-bold text-ink">Siap bergabung?</h3>
+            <h3 className="font-display text-lg font-bold text-ink">Ready to back something?</h3>
             <p className="mt-1 font-body text-sm text-muted">
-              Temukan komunitas yang tepat dan mulai berkontribusi hari ini.
+              Find a community you care about and make your first contribution today.
             </p>
           </div>
-          <Button size="lg">Join community</Button>
+          <Button size="lg">Explore communities</Button>
         </Card>
       </motion.div>
     </div>

@@ -55,7 +55,8 @@ export function HeroSection() {
               variants={revealUp}
               className="mt-8 max-w-[520px] font-body text-[18px] sm:text-[20px] leading-[1.55] text-muted"
             >
-              SUTU membantu komunitas tumbuh melalui ruang yang lebih terbuka, percakapan yang lebih bermakna, dan langkah kecil yang dilakukan bersama.
+              SUTU helps communities grow through one open place to back them, support that
+              actually lands, and small steps taken consistently.
             </motion.p>
 
             {/* CTAs */}

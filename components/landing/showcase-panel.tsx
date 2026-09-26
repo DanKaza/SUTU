@@ -33,7 +33,8 @@ export function ShowcasePanel() {
               variants={revealUp}
               className="mt-6 font-body text-base sm:text-lg leading-relaxed text-muted"
             >
-              Ruang interaksi yang dirancang untuk fokus pada substansi percakapan dan kebersamaan, bebas dari algoritma berisik dan metrik yang menekan.
+              An interaction space built around the substance of support and community, free from
+              noisy algorithms and metrics that squeeze the life out of it.
             </motion.p>
             <motion.div variants={revealUp} className="mt-8">
               <Button variant="ghost" className="p-0 text-[15px] font-semibold text-violet-400 hover:text-violet-300 hover:bg-transparent">

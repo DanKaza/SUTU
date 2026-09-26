@@ -20,7 +20,8 @@ export function EditorialStatement() {
           “The strongest communities are not built around noise. They are built around people who keep showing up.”
         </blockquote>
         <p className="mt-6 font-body text-base sm:text-lg text-muted">
-          Kami percaya koneksi sejati lahir dari konsistensi, ruang yang tenang, dan keinginan tulus untuk saling mendukung tanpa beban instan.
+          We believe real connection comes from showing up consistently, in a calm space, with no
+          pressure to perform.
         </p>
       </motion.div>
     </section>
