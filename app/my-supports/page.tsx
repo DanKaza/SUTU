@@ -222,7 +222,7 @@ export default function MySupportsPage() {
             {rows.map((row) => (
               <motion.div key={row.id} variants={fadeInUp}>
                 <Link href={row.kind === "onchain" ? `/my-supports/${row.id}` : `/my-supports/${row.id}`}>
-                  <Card className="flex items-center gap-4 p-4 transition-colors duration-200 ease-quintic-out hover:border-violet">
+                  <Card className="flex items-center gap-4 p-4 transition-colors duration-200 ease-quintic-out hover:border-violet-400">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-bold text-void">
                       {row.kind === "demo" ? "$" : "⛓"}
                     </div>

@@ -8,6 +8,7 @@ const config: Config = {
       colors: {
         // ── SUTU DESIGN SPECIFICATION §3 ────────────────────────────────
         ink: {
+          DEFAULT: "#F7F5FB", // Foreground — alias untuk `text-ink` (app dark-only)
           950: "#07060A", // Canvas utama
           900: "#0D0B12", // Section gelap
           800: "#17131F", // Surface elevated
@@ -15,8 +16,9 @@ const config: Config = {
         },
         white: "#F7F5FB", // Headline
         muted: "#AAA3B6", // Teks sekunder
-        faint: "#746D80", // Caption
+        faint: "#837B8F", // Caption
         violet: {
+          DEFAULT: "#A78BFA", // Alias untuk `text-violet` (accent terang, kontras aman)
           500: "#8B5CF6", // Aksen utama
           400: "#A78BFA", // Highlight
           700: "#5B21B6", // Glow dalam

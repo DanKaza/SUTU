@@ -32,7 +32,7 @@ export function FinalCTA() {
           <Link href="/discover">
             <Button 
               size="lg" 
-              className="group h-16 rounded-full bg-violet-500 px-10 text-[17px] font-semibold text-white shadow-glow-violet transition-all duration-300 hover:bg-violet-400 hover:scale-[1.03]"
+              className="group h-16 px-10 text-[17px] font-semibold shadow-glow-violet transition-all duration-300 hover:scale-[1.03]"
             >
               Enter SUTU
               <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />

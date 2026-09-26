@@ -175,7 +175,7 @@ export default function ProfilePage() {
 
       <div className="mt-6 flex flex-col gap-3">
         <Link href="/my-supports">
-          <Card className="flex items-center gap-3 p-4 transition-colors duration-200 ease-quintic-out hover:border-violet">
+          <Card className="flex items-center gap-3 p-4 transition-colors duration-200 ease-quintic-out hover:border-violet-400">
             <History className="h-4 w-4 text-muted" />
             <span className="flex-1 font-body text-sm font-medium text-ink">My Supports</span>
             <ArrowRight className="h-4 w-4 text-muted" />

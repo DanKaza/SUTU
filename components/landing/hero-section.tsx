@@ -61,7 +61,7 @@ export function HeroSection() {
             {/* CTAs */}
             <motion.div variants={revealUp} className="mt-10 flex flex-wrap items-center gap-4">
               <Link href="/discover">
-                <Button size="lg" className="h-14 rounded-full bg-violet-500 px-8 text-[16px] font-semibold text-white shadow-glow-violet transition-all duration-300 hover:bg-violet-400 hover:scale-[1.02]">
+                <Button size="lg" className="h-14 px-8 text-[16px] font-semibold shadow-glow-violet transition-all duration-300 hover:scale-[1.02]">
                   Explore communities
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>

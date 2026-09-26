@@ -49,7 +49,7 @@ export function BenefitsSection() {
           </motion.p>
           <motion.div variants={revealUp} className="mt-8">
             <Link href="/discover">
-              <Button className="rounded-full bg-violet-500 hover:bg-violet-400 h-12 px-7 text-[15px] font-semibold">
+              <Button className="h-12 px-7 text-[15px] font-semibold">
                 Start a circle
               </Button>
             </Link>

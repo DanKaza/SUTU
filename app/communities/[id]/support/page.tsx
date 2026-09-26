@@ -366,8 +366,8 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
                   className={cn(
                     "rounded-2xl border py-3 font-body text-sm font-medium transition-colors duration-200 ease-quintic-out",
                     preset === p && !customAmount
-                      ? "border-violet bg-violet/10 text-violet"
-                      : "border-white/[0.12] text-ink hover:border-violet border-white/15 text-ink",
+                      ? "border-violet-400 bg-violet/10 text-violet-400"
+                      : "border-white/15 text-ink hover:border-violet-400",
                   )}
                 >
                   {p}

@@ -98,7 +98,7 @@ export function GlobalNav() {
               <Button variant="outline" className="hidden border-white/10 bg-white/5 hover:bg-white/10 sm:block">
                 Sign in
               </Button>
-              <Button className="rounded-full bg-violet-500 hover:bg-violet-400">
+              <Button>
                 Start with SUTU
               </Button>
             </>

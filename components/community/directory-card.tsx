@@ -30,7 +30,7 @@ export function DirectoryCard({ community }: { community: CommunityView }) {
       transition={orientationTransition}
       className="h-full"
     >
-      <Card className="glow-hover flex h-full flex-col gap-4 p-5">
+      <Card className="flex h-full flex-col gap-4 p-5 transition-colors duration-300 ease-quintic-out hover:border-violet-400">
         <div className="flex items-start justify-between">
           <div
             className="flex h-11 w-11 items-center justify-center rounded-2xl font-display text-sm font-bold"
