@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { CommunityView } from "@/lib/community-data";
+import { displayMon } from "@/lib/api/format";
 import { fadeInUp, hoverInteraction, orientationTransition } from "@/lib/motion";
 
 // Trio aksen DESIGN.MD — dipetakan stabil per kartu (indeks tidak dipakai, jadi
@@ -47,7 +48,7 @@ export function DirectoryCard({ community }: { community: CommunityView }) {
         {/* Stat mono kecil — angka = mono (DESIGN.MD §2) */}
         <div className="flex items-center gap-4 font-mono text-[11px] text-muted">
           <span>{formatCount(community.supporterCount)} supporters</span>
-          <span>{community.totalSupported} MON</span>
+          <span>{displayMon(community.totalSupported)} MON</span>
         </div>
         <Link href={`/communities/${community.slug}`}>
           <Button variant="outline" className="w-full">

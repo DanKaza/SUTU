@@ -26,7 +26,7 @@ export type CommunityView = {
   logoInitial: string;
   /** Number of CONFIRMED donations from /stats (0 when unknown). */
   supporterCount: number;
-  /** Total MON received, formatted for display. */
+  /** Total MON received, as a plain numeric string. Format at the point of display. */
   totalSupported: string;
   /** Payout address from the backend (undefined on the mock fallback). */
   payoutAddress?: string;
@@ -69,7 +69,7 @@ function mockToView(c: MockCommunity): CommunityView {
     categoryLabel: c.category,
     logoInitial: c.logoInitial,
     supporterCount: c.supporterCount,
-    totalSupported: c.totalSupported.toLocaleString(),
+    totalSupported: String(c.totalSupported),
     isFallback: true,
   };
 }

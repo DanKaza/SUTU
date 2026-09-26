@@ -28,6 +28,22 @@ export function shortHex(hex: string, chars = 4): string {
   return `${hex.slice(0, 2 + chars)}…${hex.slice(-chars)}`;
 }
 
+/**
+ * Read a displayed MON total back as a number. Display strings may carry
+ * thousands separators, so strip them before parsing.
+ */
+export function parseMon(value: string | number): number {
+  if (typeof value === "number") return value;
+  const cleaned = value.replace(/[,\s]/g, "");
+  const parsed = Number.parseFloat(cleaned);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+/** Format a MON total for display, e.g. 12400 -> "12,400". */
+export function displayMon(value: string | number): string {
+  return parseMon(value).toLocaleString();
+}
+
 /** Map backend donation status to UI state. */
 export type SupportStatusUi = "pending" | "confirmed" | "failed";
 

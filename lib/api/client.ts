@@ -23,6 +23,9 @@ export const SUTU_API_KEY = process.env.NEXT_PUBLIC_SUTU_API_KEY ?? "sutu-dev-ke
 
 const WALLET_KEY = "sutu_wallet";
 
+/** Request budget. Past this the caller falls back rather than spinning. */
+const REQUEST_TIMEOUT_MS = 8000;
+
 /** Connected wallet address, persisted so API calls can authenticate. */
 export function getWalletAddress(): `0x${string}` | null {
   if (typeof window === "undefined") return null;
@@ -74,6 +77,9 @@ export async function request<T>(
 
   const res = await fetch(`${API_PROXY_PREFIX}${path}`, {
     method,
+    // Without a budget a stalled origin leaves the caller on its loading state
+    // forever, which reads as an empty screen rather than an error.
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     headers: {
       "x-api-key": SUTU_API_KEY,
       ...(body !== undefined ? { "content-type": "application/json" } : {}),

@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCommunity } from "@/lib/community-data";
-import { formatMon } from "@/lib/api/format";
+import { displayMon, formatMon } from "@/lib/api/format";
 import { fadeInUp } from "@/lib/motion";
 import { useAppState } from "@/lib/app-state";
 
@@ -73,7 +73,7 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
             </div>
             <div>
               <p className="font-display text-xl font-bold text-ink">
-                {community.totalSupported} MON
+                {displayMon(community.totalSupported)} MON
               </p>
               <p className="font-body text-xs text-muted">Total Supported</p>
             </div>

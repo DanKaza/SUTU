@@ -20,7 +20,7 @@ export function FinalCTA() {
           variants={revealUp}
           className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] text-white"
         >
-          Your people are already out there.
+          Someone is already building the thing you want to see exist.
         </motion.h2>
         <motion.p 
           variants={revealUp}

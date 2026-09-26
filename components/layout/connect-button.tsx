@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/web3/auth-context";
@@ -10,6 +10,12 @@ import { shortHex } from "@/lib/api/format";
 export function ConnectButton() {
   const { isAuthenticated, status, address, user, signIn, signOut } = useAuth();
   const [busy, setBusy] = useState(false);
+  // Wallet detection reads window, so it can only run after mount. Rendering
+  // the "no wallet" state on the first client pass would not match the server
+  // markup and React would discard the whole tree.
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const handleSignIn = async () => {
     setBusy(true);
@@ -23,23 +29,8 @@ export function ConnectButton() {
   };
 
   if (isAuthenticated && address) {
-    return (
-      <div className="flex items-center gap-2">
-        {user && (
-          <span className="hidden rounded-full bg-violet/15 px-2.5 py-1 font-body text-xs font-medium text-cyan sm:block">
-            ${user.wallet.balanceUsd}
-          </span>
-        )}
-        <Button variant="subtle" size="sm" onClick={signOut}>
-          <LogOut className="h-3.5 w-3.5" />
-          {shortHex(address)}
-        </Button>
-      </div>
-    );
-  }
-
   // No wallet extension installed → guide the user instead of erroring.
-  if (typeof window !== "undefined" && !hasInjectedProvider()) {
+  if (mounted && !hasInjectedProvider()) {
     return (
       <a
         href="https://metamask.io/download/"
@@ -55,8 +46,23 @@ export function ConnectButton() {
     );
   }
 
+  return (
+      <div className="flex items-center gap-2">
+        {user && (
+          <span className="hidden rounded-full bg-violet/15 px-2.5 py-1 font-body text-xs font-medium text-cyan sm:block">
+            ${user.wallet.balanceUsd}
+          </span>
+        )}
+        <Button variant="subtle" size="sm" onClick={signOut}>
+          <LogOut className="h-3.5 w-3.5" />
+          {shortHex(address)}
+        </Button>
+      </div>
+    );
+  }
+
   const connecting = busy || status === "connecting-wallet";
-  const walletName = detectWalletName();
+  const walletName = mounted ? detectWalletName() : "";
 
   return (
     <Button size="sm" onClick={handleSignIn} disabled={connecting} title={walletName ? `Connect ${walletName}` : undefined}>

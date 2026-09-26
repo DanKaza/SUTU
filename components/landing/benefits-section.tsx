@@ -39,7 +39,7 @@ export function BenefitsSection() {
             variants={revealUp}
             className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.05] text-white"
           >
-            Community, with intention.
+              Support that compounds.
           </motion.h2>
           <motion.p 
             variants={revealUp}

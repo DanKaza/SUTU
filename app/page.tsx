@@ -4,7 +4,7 @@ import { HeroSection } from "@/components/landing/hero-section";
 import { EditorialStatement } from "@/components/landing/editorial-statement";
 import { ShowcasePanel } from "@/components/landing/showcase-panel";
 import { NarrativeSection } from "@/components/landing/narrative-section";
-import { DeviceMockup } from "@/components/landing/device-mockup";
+import { SupportFlowPreview } from "@/components/landing/support-flow-preview";
 import { BenefitsSection } from "@/components/landing/benefits-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { FinalCTA } from "@/components/landing/final-cta";
@@ -33,7 +33,7 @@ export default function LandingPage() {
 
         {/* Densest content sits closest to its neighbours. */}
         <div className="py-16">
-          <DeviceMockup />
+          <SupportFlowPreview />
         </div>
 
         <div className="py-24">

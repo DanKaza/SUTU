@@ -6,12 +6,13 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { FeaturedCommunities } from "@/components/community/featured-communities";
+import { TopCommunities } from "@/components/community/top-communities";
 import { DirectoryCard } from "@/components/community/directory-card";
 import { useCommunities } from "@/lib/community-data";
+import { displayMon, parseMon } from "@/lib/api/format";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 
-const SORTS = ["Popular", "Recently Added"];
+const SORTS = ["Most supported", "Most funded", "A to Z"];
 
 function DirectoryCardSkeleton() {
   return (
@@ -31,10 +32,10 @@ function DirectoryCardSkeleton() {
 }
 
 export default function DiscoverPage() {
-  const { communities, isLoading: isLoadingCommunities } = useCommunities();
+  const { communities, isLoading: isLoadingCommunities, isFallback } = useCommunities();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
-  const [sort, setSort] = useState("Popular");
+  const [sort, setSort] = useState("Most supported");
 
   // Build category tabs from the loaded data (API categories + "All").
   const categories = useMemo(() => {
@@ -45,7 +46,7 @@ export default function DiscoverPage() {
   const filteredAndSorted = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    let list = communities.filter((c) => {
+    const list = communities.filter((c) => {
       const matchesCategory = category === "All" || c.categoryLabel === category;
       const matchesQuery =
         query === "" ||
@@ -54,14 +55,22 @@ export default function DiscoverPage() {
       return matchesCategory && matchesQuery;
     });
 
-    list = [...list];
-    if (sort === "Popular") return list.sort((a, b) => b.supporterCount - a.supporterCount);
-    // If Recently Added, we can just sort by a pseudo-random or ID logic for now as a mock
-    if (sort === "Recently Added") return list.sort((a, b) => b.id.localeCompare(a.id));
-    return list.sort((a, b) => a.name.localeCompare(b.name));
+    return [...list].sort((a, b) => {
+      if (sort === "Most supported") return b.supporterCount - a.supporterCount;
+      if (sort === "Most funded") return parseMon(b.totalSupported) - parseMon(a.totalSupported);
+      return a.name.localeCompare(b.name);
+    });
   }, [communities, search, category, sort]);
 
-  const showFeatured = search.trim() === "" && category === "All";
+  // Every figure below is summed from the loaded rows, never hardcoded.
+  const totals = useMemo(() => {
+    const supporters = communities.reduce((sum, c) => sum + c.supporterCount, 0);
+    const funded = communities.reduce((sum, c) => sum + parseMon(c.totalSupported), 0);
+    const withPayout = communities.filter((c) => c.payoutAddress).length;
+    return { supporters, funded, withPayout };
+  }, [communities]);
+
+  const showTop = search.trim() === "" && category === "All";
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
@@ -73,6 +82,28 @@ export default function DiscoverPage() {
           Find a community you care about, and support it in one place.
         </p>
       </motion.div>
+
+      {isFallback && !isLoadingCommunities && (
+        <p className="mx-auto mt-6 max-w-xl rounded-card border border-white/11 bg-ink-800 px-4 py-3 text-center font-body text-sm text-muted">
+          Showing sample communities. Live figures appear once the backend is reachable.
+        </p>
+      )}
+
+      {!isLoadingCommunities && communities.length > 0 && (
+        <dl className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-card border border-white/11 bg-white/11 sm:grid-cols-4">
+          {[
+            { label: "Communities", value: communities.length.toLocaleString() },
+            { label: "Confirmed supports", value: totals.supporters.toLocaleString() },
+            { label: "Total supported", value: `${displayMon(totals.funded)} MON` },
+            { label: "Ready to receive", value: `${totals.withPayout} of ${communities.length}` },
+          ].map((stat) => (
+            <div key={stat.label} className="bg-ink-800 px-4 py-5 text-center">
+              <dt className="font-mono text-[11px] text-faint">{stat.label}</dt>
+              <dd className="mt-2 font-display text-2xl font-semibold text-ink">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
       <div className="mx-auto mt-8 max-w-xl">
         <div className="relative">
@@ -94,20 +125,20 @@ export default function DiscoverPage() {
         </div>
       </div>
 
-      {showFeatured && (
+      {showTop && !isLoadingCommunities && (
         <div className="mt-12">
-          <FeaturedCommunities communities={communities} />
+          <TopCommunities communities={communities} />
         </div>
       )}
 
       <div className="mt-14">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-xl font-bold text-white">
-            {search.trim() ? `Results for "${search}"` : (sort === "Recently Added" ? "Recently Added" : "All communities")}
+            {search.trim() ? `Results for "${search}"` : "All communities"}
           </h2>
         </div>
 
-        {        isLoadingCommunities ? (
+        {isLoadingCommunities ? (
           <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {Array.from({ length: 5 }).map((_, i) => (
               <DirectoryCardSkeleton key={i} />
