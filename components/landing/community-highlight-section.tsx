@@ -5,10 +5,9 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useCommunities } from "@/lib/community-data";
 import { communities as mockCommunities } from "@/lib/mock-data";
-import { fadeInUp, staggerContainer } from "@/lib/motion";
+import { fadeInUp, staggerContainer, orientationTransition } from "@/lib/motion";
 
-const ACCENTS = ["#FF7A59", "#C6F135", "#F72585"];
-const ROTATIONS = ["-rotate-2", "rotate-1", "-rotate-1"];
+const ACCENTS = ["#7C5CFF", "#22D3EE", "#7C5CFF"];
 
 export function CommunityHighlightSection() {
   const { communities } = useCommunities();
@@ -32,13 +31,13 @@ export function CommunityHighlightSection() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          className="font-display text-3xl font-extrabold tracking-tight text-charcoal dark:text-warm-white sm:text-4xl"
+          className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl"
         >
-          Sudah ada di <span className="text-[#2563EB]">SUTU</span>
+          Sudah ada di <span className="text-iridescent">SUTU</span>
         </motion.h2>
         <Link
           href="/discover"
-          className="flex items-center gap-1 font-body text-sm font-medium text-charcoal hover:text-[#FF7A59] dark:text-warm-white dark:hover:text-[#FF7A59]"
+          className="flex items-center gap-1 font-body text-sm font-medium text-ink hover:text-cyan"
         >
           Lihat semua komunitas
           <ArrowRight className="h-4 w-4" />
@@ -58,32 +57,34 @@ export function CommunityHighlightSection() {
             <motion.div
               key={community.id}
               variants={fadeInUp}
-              whileHover={{ rotate: 0, scale: 1.02 }}
-              className={`rounded-3xl bg-warm-white p-6 shadow-xl transition-transform duration-300 ease-quintic-out dark:bg-charcoal ${ROTATIONS[i % ROTATIONS.length]}`}
-              style={{ boxShadow: `0 20px 45px -20px ${accent}55` }}
+              whileHover={{ scale: 1.02 }}
+              transition={orientationTransition}
+              className="h-full"
             >
+              <div className="glass group h-full rounded-3xl p-6 transition-colors duration-300">
               <span
-                className="inline-block rounded-full px-2.5 py-0.5 font-body text-[11px] font-bold uppercase tracking-wide text-charcoal dark:text-warm-white"
+                className="inline-block rounded-full px-2.5 py-0.5 font-body text-[11px] font-bold uppercase tracking-wide text-ink"
                 style={{ backgroundColor: `${accent}40` }}
               >
                 {community.categoryLabel}
               </span>
-              <h3 className="mt-3 font-display text-lg font-bold text-charcoal dark:text-warm-white">
+              <h3 className="mt-3 font-display text-lg font-bold text-ink">
                 {community.name}
               </h3>
-              <p className="mt-1.5 font-body text-sm text-graphite dark:text-white/60">
+              <p className="mt-1.5 font-body text-sm text-muted">
                 {community.description}
               </p>
               <div className="mt-4 flex items-center justify-between">
                 <div
-                  className="flex h-9 w-9 items-center justify-center rounded-full font-display text-xs font-bold text-charcoal dark:text-warm-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-full font-display text-xs font-bold text-ink"
                   style={{ backgroundColor: `${accent}30` }}
                 >
                   {community.logoInitial}
                 </div>
-                <span className="font-body text-xs text-graphite dark:text-white/50">
+                <span className="font-body text-xs text-muted">
                   {community.supporterCount.toLocaleString()} supporters
                 </span>
+              </div>
               </div>
             </motion.div>
           );

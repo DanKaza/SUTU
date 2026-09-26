@@ -12,7 +12,7 @@ export function FeaturedCommunities({ communities }: { communities: CommunityVie
 
   return (
     <div>
-      <h2 className="font-display text-xl font-bold text-charcoal dark:text-warm-white">Featured Communities</h2>
+      <h2 className="font-display text-xl font-bold text-ink">Featured Communities</h2>
       <motion.div
         variants={staggerContainer}
         initial="hidden"

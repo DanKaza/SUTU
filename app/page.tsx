@@ -1,32 +1,49 @@
 "use client";
 
 import { HeroSection } from "@/components/landing/hero-section";
-import { CommunityTicker } from "@/components/landing/community-ticker";
+import { EditorialStatement } from "@/components/landing/editorial-statement";
+import { ShowcasePanel } from "@/components/landing/showcase-panel";
+import { NarrativeSection } from "@/components/landing/narrative-section";
+import { DeviceMockup } from "@/components/landing/device-mockup";
+import { BenefitsSection } from "@/components/landing/benefits-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
-import { CommunityHighlightSection } from "@/components/landing/community-highlight-section";
-import { PrinciplesSection } from "@/components/landing/principles-section";
+import { FinalCTA } from "@/components/landing/final-cta";
 
 export default function LandingPage() {
   return (
-    <div className="relative overflow-hidden">
-      <div className="relative mx-auto max-w-6xl px-6 py-16">
+    <div className="relative overflow-hidden bg-ink-950">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-12">
+        
         <HeroSection />
-
-        <div className="mt-12">
-          <CommunityTicker />
+        
+        <div className="py-[clamp(80px,10vw,140px)]">
+          <EditorialStatement />
         </div>
 
-        <div id="how-it-works" className="mt-20 scroll-mt-24">
+        <div className="py-[clamp(80px,10vw,140px)]">
+          <ShowcasePanel />
+        </div>
+
+        <div className="py-[clamp(80px,10vw,140px)]">
+          <NarrativeSection />
+        </div>
+
+        <div className="py-[clamp(80px,10vw,140px)]">
+          <DeviceMockup />
+        </div>
+
+        <div className="py-[clamp(80px,10vw,140px)]">
+          <BenefitsSection />
+        </div>
+
+        <div className="py-[clamp(80px,10vw,140px)]">
           <HowItWorksSection />
         </div>
 
-        <div className="mt-20">
-          <CommunityHighlightSection />
+        <div className="py-[clamp(80px,10vw,140px)]">
+          <FinalCTA />
         </div>
 
-        <div className="mt-20">
-          <PrinciplesSection />
-        </div>
       </div>
     </div>
   );

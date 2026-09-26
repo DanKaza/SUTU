@@ -36,10 +36,10 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
       <motion.div variants={fadeInUp} initial="hidden" animate="show" className="max-w-2xl">
-        <h1 className="font-display text-4xl font-bold tracking-tight text-charcoal dark:text-warm-white sm:text-5xl">
+        <h1 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
           About SUTU
         </h1>
-        <p className="mt-4 font-body text-graphite dark:text-white/60">
+        <p className="mt-4 font-body text-muted">
           Mendukung komunitas Web3 sering kali berarti berpindah-pindah dari satu situs ke situs
           lain hanya untuk mencari alamat donasi atau kanal supportnya. SUTU menyatukan itu semua:
           cukup cari nama komunitasnya di SUTU, dan kamu langsung menemukan profil serta semua cara
@@ -49,7 +49,7 @@ export default function AboutPage() {
       </motion.div>
 
       <div className="mt-14">
-        <h2 className="font-display text-xl font-bold text-charcoal dark:text-warm-white">Kenapa SUTU</h2>
+        <h2 className="font-display text-xl font-bold text-ink">Kenapa SUTU</h2>
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -60,9 +60,9 @@ export default function AboutPage() {
           {WHY_SUTU.map((p) => (
             <motion.div key={p.id} variants={fadeInUp} whileHover={hoverInteraction} transition={orientationTransition}>
               <Card className="h-full p-6">
-                <span className="font-body text-xs font-medium text-graphite dark:text-white/40">{p.id}</span>
-                <h3 className="mt-1 font-display text-lg font-bold text-charcoal dark:text-warm-white">{p.title}</h3>
-                <p className="mt-2 font-body text-sm text-graphite dark:text-white/60">{p.description}</p>
+                <span className="font-body text-xs font-medium text-muted/70">{p.id}</span>
+                <h3 className="mt-1 font-display text-lg font-bold text-ink">{p.title}</h3>
+                <p className="mt-2 font-body text-sm text-muted">{p.description}</p>
               </Card>
             </motion.div>
           ))}
@@ -75,10 +75,10 @@ export default function AboutPage() {
         whileInView="show"
         viewport={{ once: true, margin: "-80px" }}
       >
-        <Card className="mt-14 flex flex-col items-start justify-between gap-4 bg-aluminum/60 p-8 dark:bg-white/5 sm:flex-row sm:items-center">
+        <Card className="mt-14 flex flex-col items-start justify-between gap-4 bg-white/[0.04] p-8 bg-white/5 sm:flex-row sm:items-center">
           <div>
-            <h3 className="font-display text-lg font-bold text-charcoal dark:text-warm-white">Siap bergabung?</h3>
-            <p className="mt-1 font-body text-sm text-graphite dark:text-white/60">
+            <h3 className="font-display text-lg font-bold text-ink">Siap bergabung?</h3>
+            <p className="mt-1 font-body text-sm text-muted">
               Temukan komunitas yang tepat dan mulai berkontribusi hari ini.
             </p>
           </div>

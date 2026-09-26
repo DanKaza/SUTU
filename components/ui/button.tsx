@@ -7,11 +7,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-charcoal text-warm-white hover:bg-charcoal/90 dark:bg-warm-white dark:text-charcoal dark:hover:bg-warm-white/90",
-        accent: "bg-cobalt text-warm-white hover:bg-cobalt/90",
-        subtle: "bg-aluminum text-charcoal hover:bg-aluminum/70 dark:bg-white/10 dark:text-warm-white dark:hover:bg-white/15",
-        outline: "border border-graphite/30 text-charcoal hover:border-cobalt dark:border-white/20 dark:text-warm-white",
-        ghost: "text-charcoal hover:bg-aluminum dark:text-warm-white dark:hover:bg-white/10",
+        primary: "bg-ink text-void hover:bg-ink/90",
+        accent: "bg-violet text-white shadow-glow-violet hover:bg-violet/90",
+        subtle: "bg-white/10 text-ink hover:bg-white/15",
+        outline: "border border-white/20 text-ink hover:border-violet hover:text-ink",
+        ghost: "text-ink hover:bg-white/10",
       },
       size: {
         sm: "h-8 px-3.5",

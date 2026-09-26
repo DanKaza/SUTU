@@ -7,18 +7,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ShoppingBasket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { ConnectButton } from "@/components/layout/connect-button";
 import { orientationTransition } from "@/lib/motion";
 import { useAppState } from "@/lib/app-state";
 
 const LANDING_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/#how-it-works", label: "How It Works" },
+  { href: "/discover", label: "Communities" },
+  { href: "/stories", label: "Stories" },
   { href: "/about", label: "About" },
 ];
 
 const APP_LINKS = [
+  { href: "/", label: "Home" },
   { href: "/discover", label: "Discover" },
   { href: "/my-supports", label: "My Supports" },
   { href: "/profile", label: "Profile" },
@@ -26,10 +26,25 @@ const APP_LINKS = [
 
 const APP_ROUTE_PREFIXES = ["/discover", "/communities", "/basket", "/my-supports", "/profile"];
 
+import { useScroll, useSpring, useTransform } from "framer-motion";
+
 export function GlobalNav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollYProgress } = useScroll();
   const { basket } = useAppState();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const isApp = APP_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
   const links = isApp ? APP_LINKS : LANDING_LINKS;
@@ -39,72 +54,84 @@ export function GlobalNav() {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-graphite/15 bg-warm-white/90 backdrop-blur transition-colors duration-300 ease-quintic-out dark:border-white/10 dark:bg-dark-base/90">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+    <header 
+      className={cn(
+        "sticky top-0 z-50 h-[76px] transition-all duration-300",
+        scrolled ? "bg-ink-950/78 backdrop-blur-[18px]" : "bg-transparent"
+      )}
+    >
+      <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between px-6 sm:px-12">
         <Link
           href="/"
           onClick={() => setMobileOpen(false)}
-          className="font-display text-lg font-bold tracking-tight text-charcoal dark:text-warm-white"
+          className="font-display text-xl font-bold tracking-[-0.04em] text-white"
         >
-          SUTU
+          <span className="bg-gradient-to-r from-violet-400 to-pink bg-clip-text text-transparent">SUTU</span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
-          {links.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "relative pb-1 font-body text-sm transition-colors duration-200 ease-quintic-out",
-                  active
-                    ? "font-medium text-charcoal dark:text-warm-white"
-                    : "text-graphite hover:text-charcoal dark:hover:text-warm-white"
-                )}
-              >
-                {link.label}
-                {active && (
-                  <motion.span
-                    layoutId="nav-active-indicator"
-                    transition={orientationTransition}
-                    className="absolute inset-x-0 -bottom-0 h-[2px] rounded-full bg-charcoal dark:bg-warm-white"
-                  />
+        {(!isApp || isApp) && (
+          <nav className="hidden items-center gap-12 lg:flex">
+            {links.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "font-body text-[15px] transition-colors duration-300",
+                    active ? "text-white" : "text-muted hover:text-white"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+        )}
+
+        <div className="flex items-center gap-6">
+          {!isApp ? (
+            <>
+              <Link href="/join" className="hidden text-[15px] font-medium text-muted hover:text-white sm:block">
+                Join a community
+              </Link>
+              <Button variant="outline" className="hidden border-white/10 bg-white/5 hover:bg-white/10 sm:block">
+                Sign in
+              </Button>
+              <Button className="rounded-full bg-violet-500 hover:bg-violet-400">
+                Start with SUTU
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/basket" className="relative flex h-9 w-9 items-center justify-center rounded-full text-white transition-colors duration-200 ease-quintic-out hover:bg-white/10">
+                <ShoppingBasket className="h-5 w-5" />
+                {basket.length > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-violet-500 text-[10px] font-bold text-white">
+                    {basket.length}
+                  </span>
                 )}
               </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <ConnectButton />
-          {isApp ? (
-            <Link href="/basket" className="relative flex h-9 w-9 items-center justify-center rounded-full text-charcoal transition-colors duration-200 ease-quintic-out hover:bg-aluminum dark:text-warm-white dark:hover:bg-white/10">
-              <ShoppingBasket className="h-5 w-5" />
-              {basket.length > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-cobalt text-[10px] font-bold text-warm-white">
-                  {basket.length}
-                </span>
-              )}
-            </Link>
-          ) : (
-            <Link href="/discover" className="hidden sm:block">
-              <Button size="sm">Discover Communities</Button>
-            </Link>
+              <ConnectButton />
+            </>
           )}
-          <ThemeToggle />
-
+          
           <button
             type="button"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((v) => !v)}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-charcoal transition-colors duration-200 ease-quintic-out hover:bg-aluminum dark:text-warm-white dark:hover:bg-white/10 md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 lg:hidden"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
+
+      {/* Progress Line */}
+      <motion.div 
+        className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-violet-400 to-pink"
+        style={{ scaleX }}
+      />
+
 
       <AnimatePresence initial={false}>
         {mobileOpen && (
@@ -114,7 +141,7 @@ export function GlobalNav() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={orientationTransition}
-            className="overflow-hidden border-t border-graphite/15 bg-warm-white dark:border-white/10 dark:bg-dark-base md:hidden"
+            className="overflow-hidden border-t border-white/10 bg-void md:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4 sm:px-6">
               <div className="pb-2 sm:hidden">
@@ -130,8 +157,8 @@ export function GlobalNav() {
                     className={cn(
                       "rounded-xl px-3 py-2.5 font-body text-sm transition-colors duration-200 ease-quintic-out",
                       active
-                        ? "bg-aluminum font-medium text-charcoal dark:bg-white/10 dark:text-warm-white"
-                        : "text-graphite hover:bg-aluminum/60 hover:text-charcoal dark:hover:bg-white/5 dark:hover:text-warm-white"
+                        ? "bg-white/[0.06] font-medium text-ink"
+                        : "text-muted hover:bg-white/5 hover:text-ink"
                     )}
                   >
                     {link.label}
@@ -142,11 +169,11 @@ export function GlobalNav() {
                 <Link
                   href="/basket"
                   onClick={() => setMobileOpen(false)}
-                  className="mt-1 flex items-center justify-between rounded-xl px-3 py-2.5 font-body text-sm text-graphite hover:bg-aluminum/60 hover:text-charcoal dark:hover:bg-white/5 dark:hover:text-warm-white"
+                  className="mt-1 flex items-center justify-between rounded-xl px-3 py-2.5 font-body text-sm text-muted hover:bg-white/5 hover:text-ink"
                 >
                   Basket
                   {basket.length > 0 && (
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cobalt text-[11px] font-bold text-warm-white">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-violet text-[11px] font-bold text-white">
                       {basket.length}
                     </span>
                   )}

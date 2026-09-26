@@ -34,7 +34,7 @@ import { useAuth } from "@/lib/web3/auth-context";
 import { walletErrorMessage } from "@/lib/web3/wallet-errors";
 import { monadTestnet } from "viem/chains";
 import { formatUnits } from "viem";
-import { formatMon, parseMonToWei } from "@/lib/api/format";
+import { formatMon } from "@/lib/api/format";
 import {
   createDonationIntent,
   fetchDonationIntent,
@@ -54,51 +54,36 @@ const POLL_INTERVAL_MS = 4_000;
 /** Background live-status polling cap (UI already shows "submitted" before this). */
 const POLL_TIMEOUT_MS = 5 * 60_000;
 
-/** Poll one donation intent until it leaves PENDING_PAYMENT (or timeout). */
-async function pollIntentStatus(
-  intentId: string,
-  onTick: (status: string) => void,
-): Promise<string> {
-  const started = Date.now();
-  for (;;) {
-    const { data } = await fetchDonationIntent(intentId);
-    onTick(data.status);
-    if (data.status !== "PENDING_PAYMENT") return data.status;
-    if (Date.now() - started > POLL_TIMEOUT_MS) throw new Error("timeout waiting for confirmation");
-    await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
-  }
-}
-
 function QuoteBreakdown({ quote, monLabel }: { quote: DonationQuote; monLabel: string }) {
   return (
     <Card className="mt-4 flex flex-col gap-2 p-4">
       <div className="flex items-center justify-between">
-        <span className="font-body text-sm text-graphite dark:text-white/60">You donate</span>
-        <span className="font-body text-sm font-medium text-charcoal dark:text-warm-white">
+        <span className="font-body text-sm text-muted">You donate</span>
+        <span className="font-body text-sm font-medium text-ink">
           {formatMon(quote.grossAmountWei)} {monLabel}
         </span>
       </div>
       {quote.discountApplied && (
         <div className="flex items-center justify-between">
-          <span className="font-body text-sm text-graphite dark:text-white/60">
+          <span className="font-body text-sm text-muted">
             Campaign: {quote.campaignName} (−{quote.discountBps / 100}%)
           </span>
-          <span className="font-body text-sm font-medium text-cobalt">
+          <span className="font-body text-sm font-medium text-violet">
             −{formatMon(quote.discountWei)} {monLabel}
           </span>
         </div>
       )}
-      <div className="flex items-center justify-between border-t border-graphite/15 pt-2 dark:border-white/10">
-        <span className="font-body text-sm text-graphite dark:text-white/60">You pay</span>
-        <span className="font-display text-base font-bold text-charcoal dark:text-warm-white">
+      <div className="flex items-center justify-between border-t border-white/10 pt-2 border-white/10">
+        <span className="font-body text-sm text-muted">You pay</span>
+        <span className="font-display text-base font-bold text-ink">
           {formatMon(quote.netAmountWei)} {monLabel}
         </span>
       </div>
       <div className="flex items-center justify-between">
-        <span className="font-body text-sm text-graphite dark:text-white/60">
+        <span className="font-body text-sm text-muted">
           Community receives (fee {quote.platformFeeBps / 100}%)
         </span>
-        <span className="font-body text-sm text-charcoal dark:text-warm-white">
+        <span className="font-body text-sm text-ink">
           {formatMon(quote.communityAmountWei)} {monLabel}
         </span>
       </div>
@@ -294,8 +279,8 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
     return (
       <div className="mx-auto max-w-lg px-6 py-16">
         <Card className="p-8">
-          <div className="h-6 w-48 animate-pulse rounded bg-aluminum dark:bg-white/10" />
-          <div className="mt-6 h-24 animate-pulse rounded-2xl bg-aluminum dark:bg-white/10" />
+          <div className="h-6 w-48 animate-pulse rounded bg-white/[0.06]" />
+          <div className="mt-6 h-24 animate-pulse rounded-2xl bg-white/[0.06]" />
         </Card>
       </div>
     );
@@ -319,10 +304,10 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             <CircleAlert className="h-8 w-8 text-amber-500" />
           </div>
           <div>
-            <p className="font-display text-xl font-bold text-charcoal dark:text-warm-white">
+            <p className="font-display text-xl font-bold text-ink">
               Support is unavailable right now
             </p>
-            <p className="mt-2 max-w-sm font-body text-sm text-graphite dark:text-white/60">
+            <p className="mt-2 max-w-sm font-body text-sm text-muted">
               We couldn&apos;t load the funding projects for {community.name}. The
               service may be temporarily down — please try again later.
             </p>
@@ -348,7 +333,7 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
       {step !== "success" && step !== "processing" && step !== "error" && (
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-1 font-body text-sm font-medium text-graphite hover:text-charcoal dark:hover:text-warm-white"
+          className="flex items-center gap-1 font-body text-sm font-medium text-muted hover:text-ink"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -365,10 +350,10 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             transition={orientationTransition}
             className="mt-6"
           >
-            <h1 className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">
+            <h1 className="font-display text-2xl font-bold text-ink">
               Support {community.name}
             </h1>
-            <p className="mt-1 font-body text-sm text-graphite dark:text-white/60">Choose an amount</p>
+            <p className="mt-1 font-body text-sm text-muted">Choose an amount</p>
 
             <div className="mt-6 grid grid-cols-4 gap-3">
               {PRESETS.map((p) => (
@@ -381,8 +366,8 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
                   className={cn(
                     "rounded-2xl border py-3 font-body text-sm font-medium transition-colors duration-200 ease-quintic-out",
                     preset === p && !customAmount
-                      ? "border-cobalt bg-cobalt/10 text-cobalt"
-                      : "border-graphite/20 text-charcoal hover:border-cobalt dark:border-white/15 dark:text-warm-white",
+                      ? "border-violet bg-violet/10 text-violet"
+                      : "border-white/[0.12] text-ink hover:border-violet border-white/15 text-ink",
                   )}
                 >
                   {p}
@@ -391,7 +376,7 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             </div>
 
             <div className="mt-4">
-              <label className="font-body text-sm font-medium text-charcoal dark:text-warm-white">Custom amount</label>
+              <label className="font-body text-sm font-medium text-ink">Custom amount</label>
               <Input
                 type="number"
                 min={0}
@@ -430,46 +415,46 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             transition={orientationTransition}
             className="mt-6"
           >
-            <h1 className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">Payment</h1>
-            <p className="mt-1 font-body text-sm text-graphite dark:text-white/60">Select payment method</p>
+            <h1 className="font-display text-2xl font-bold text-ink">Payment</h1>
+            <p className="mt-1 font-body text-sm text-muted">Select payment method</p>
 
             <div className="mt-6 flex flex-col gap-3">
               <button
                 onClick={() => setRail("demo")}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl border-2 p-4 text-left transition-colors duration-200 ease-quintic-out",
-                  rail === "demo" ? "border-cobalt bg-cobalt/5" : "border-graphite/15 dark:border-white/10",
+                  rail === "demo" ? "border-violet bg-violet/5" : "border-white/10",
                 )}
               >
-                <Coins className="h-5 w-5 text-cobalt" />
+                <Coins className="h-5 w-5 text-violet" />
                 <div className="flex-1">
-                  <p className="font-body text-sm font-medium text-charcoal dark:text-warm-white">Demo wallet</p>
-                  <p className="font-body text-xs text-graphite dark:text-white/50">
+                  <p className="font-body text-sm font-medium text-ink">Demo wallet</p>
+                  <p className="font-body text-xs text-muted">
                     {isAuthenticated && address
                       ? "Pay instantly from your $1,000 demo balance"
                       : "Sign in to use your $1,000 demo balance"}
                   </p>
                 </div>
-                {rail === "demo" && <Check className="h-5 w-5 text-cobalt" />}
+                {rail === "demo" && <Check className="h-5 w-5 text-violet" />}
               </button>
 
               <button
                 onClick={() => setRail("onchain")}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl border-2 p-4 text-left transition-colors duration-200 ease-quintic-out",
-                  rail === "onchain" ? "border-cobalt bg-cobalt/5" : "border-graphite/15 dark:border-white/10",
+                  rail === "onchain" ? "border-violet bg-violet/5" : "border-white/10",
                 )}
               >
-                <Wallet className="h-5 w-5 text-cobalt" />
+                <Wallet className="h-5 w-5 text-violet" />
                 <div className="flex-1">
-                  <p className="font-body text-sm font-medium text-charcoal dark:text-warm-white">Wallet (on-chain)</p>
-                  <p className="font-body text-xs text-graphite dark:text-white/50">
+                  <p className="font-body text-sm font-medium text-ink">Wallet (on-chain)</p>
+                  <p className="font-body text-xs text-muted">
                     {balance
                       ? `Send MON on Monad testnet — balance ${formatUnits(balance.value, balance.decimals)} ${balance.symbol}`
                       : "Send MON on Monad testnet from your connected wallet"}
                   </p>
                 </div>
-                {rail === "onchain" && <Check className="h-5 w-5 text-cobalt" />}
+                {rail === "onchain" && <Check className="h-5 w-5 text-violet" />}
               </button>
             </div>
 
@@ -495,40 +480,40 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             transition={orientationTransition}
             className="mt-6"
           >
-            <h1 className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">Review Support</h1>
+            <h1 className="font-display text-2xl font-bold text-ink">Review Support</h1>
 
             <Card className="mt-6 flex flex-col gap-4 p-6">
               <div className="flex items-center justify-between">
-                <span className="font-body text-sm text-graphite dark:text-white/60">Community</span>
-                <span className="font-body text-sm font-medium text-charcoal dark:text-warm-white">
+                <span className="font-body text-sm text-muted">Community</span>
+                <span className="font-body text-sm font-medium text-ink">
                   {community.name}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="font-body text-sm text-graphite dark:text-white/60">Amount</span>
-                <span className="font-display text-lg font-bold text-charcoal dark:text-warm-white">
+                <span className="font-body text-sm text-muted">Amount</span>
+                <span className="font-display text-lg font-bold text-ink">
                   {amountMon} {rail === "onchain" ? "MON" : "USD"}
                 </span>
               </div>
               {rail === "onchain" && quote && quote.discountApplied && (
                 <div className="flex items-center justify-between">
-                  <span className="font-body text-sm text-graphite dark:text-white/60">Campaign discount</span>
-                  <span className="font-body text-sm font-medium text-cobalt">
+                  <span className="font-body text-sm text-muted">Campaign discount</span>
+                  <span className="font-body text-sm font-medium text-violet">
                     −{formatMon(quote.discountWei)} MON
                   </span>
                 </div>
               )}
               {rail === "onchain" && quote && (
                 <div className="flex items-center justify-between">
-                  <span className="font-body text-sm text-graphite dark:text-white/60">You pay</span>
-                  <span className="font-body text-sm font-medium text-charcoal dark:text-warm-white">
+                  <span className="font-body text-sm text-muted">You pay</span>
+                  <span className="font-body text-sm font-medium text-ink">
                     {formatMon(quote.netAmountWei)} MON
                   </span>
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="font-body text-sm text-graphite dark:text-white/60">Payment method</span>
-                <span className="font-body text-sm font-medium text-charcoal dark:text-warm-white">
+                <span className="font-body text-sm text-muted">Payment method</span>
+                <span className="font-body text-sm font-medium text-ink">
                   {rail === "onchain" ? "Wallet (on-chain)" : "Demo wallet"}
                 </span>
               </div>
@@ -552,16 +537,16 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             exit={{ opacity: 0 }}
             className="mt-24 flex flex-col items-center gap-4 text-center"
           >
-            <Loader2 className="h-10 w-10 animate-spin text-cobalt" />
+            <Loader2 className="h-10 w-10 animate-spin text-violet" />
             <div>
-              <p className="font-display text-lg font-bold text-charcoal dark:text-warm-white">
+              <p className="font-display text-lg font-bold text-ink">
                 {rail === "onchain"
                   ? txPhase === "signing"
                     ? "Waiting for wallet confirmation…"
                     : "Sending your transaction…"
                   : "Processing support..."}
               </p>
-              <p className="mt-1 font-body text-sm text-graphite dark:text-white/60">Please wait.</p>
+              <p className="mt-1 font-body text-sm text-muted">Please wait.</p>
             </div>
           </motion.div>
         )}
@@ -574,7 +559,7 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             secondaryHref={`/my-supports/${record.id}`}
             secondaryLabel="View My Supports"
           >
-            <p className="text-center font-body text-xs text-graphite dark:text-white/50">
+            <p className="text-center font-body text-xs text-muted">
               {community.name} · {rail === "onchain" ? `${record.amount} MON` : `$${record.amount}`}
               {rail === "onchain" && " · confirming on Monad"}
             </p>
@@ -592,8 +577,8 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
               <CircleAlert className="h-8 w-8 text-red-500" />
             </div>
-            <p className="font-display text-lg font-bold text-charcoal dark:text-warm-white">Something went wrong</p>
-            <p className="max-w-xs break-words font-body text-sm text-graphite dark:text-white/60">{errorMessage}</p>
+            <p className="font-display text-lg font-bold text-ink">Something went wrong</p>
+            <p className="max-w-xs break-words font-body text-sm text-muted">{errorMessage}</p>
             <div className="mt-2 flex gap-3">
               <Button
                 variant="outline"

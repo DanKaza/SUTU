@@ -1,4 +1,4 @@
-import { apiGet, apiPost, SUTU_API_KEY } from "./client";
+import { apiGet, apiPost } from "./client";
 import type {
   Community,
   CommunityDetail,
@@ -109,17 +109,3 @@ export function fetchStats() {
   return apiGet<StatsResponse>("/stats");
 }
 
-// ---------------------------------------------------------------------------
-// Health (public)
-// ---------------------------------------------------------------------------
-
-export async function fetchHealth() {
-  // /health lives outside /api/v1, so bypass the proxy prefix. It now requires
-  // the API key like everything else (backend_update.md §8).
-  const res = await fetch("/health", {
-    cache: "no-store",
-    headers: { "x-api-key": SUTU_API_KEY },
-  });
-  const json = (await res.json()) as { data?: { status?: string } };
-  return json.data ?? { status: res.ok ? "ok" : "unknown" };
-}

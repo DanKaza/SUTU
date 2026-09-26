@@ -38,16 +38,6 @@ export function clearWalletAddress() {
   window.localStorage.removeItem(WALLET_KEY);
 }
 
-/** @deprecated legacy JWT storage — cleaned up on sign-out. */
-export function getToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return window.localStorage.getItem("sutu_token");
-}
-
-export function clearToken() {
-  window.localStorage.removeItem("sutu_token");
-}
-
 /** Error thrown for every non-2xx backend response. */
 export class ApiError extends Error {
   code: string;

@@ -234,11 +234,11 @@ export default function BasketPage() {
   if (step === "basket" && basket.length === 0) {
     return (
       <div className="mx-auto max-w-lg px-6 py-24 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-aluminum dark:bg-white/10">
-          <ShoppingBasket className="h-7 w-7 text-graphite dark:text-white/60" />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/[0.06]">
+          <ShoppingBasket className="h-7 w-7 text-muted" />
         </div>
-        <h1 className="mt-6 font-display text-xl font-bold text-charcoal dark:text-warm-white">Your basket is empty</h1>
-        <p className="mt-2 font-body text-sm text-graphite dark:text-white/60">
+        <h1 className="mt-6 font-display text-xl font-bold text-ink">Your basket is empty</h1>
+        <p className="mt-2 font-body text-sm text-muted">
           Add communities from Discover to support them together in one payment.
         </p>
         <Link href="/discover">
@@ -255,20 +255,20 @@ export default function BasketPage() {
       <AnimatePresence mode="wait">
         {step === "basket" && (
           <motion.div key="basket" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={orientationTransition}>
-            <h1 className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">Your Support Basket</h1>
+            <h1 className="font-display text-2xl font-bold text-ink">Your Support Basket</h1>
 
             <motion.div variants={staggerContainer} initial="hidden" animate="show" className="mt-6 flex flex-col gap-3">
               {basket.map((item) => (
                 <motion.div key={item.communityId} variants={fadeInUp}>
                   <Card className="flex items-center gap-3 p-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-charcoal font-display text-sm font-bold text-warm-white dark:bg-warm-white dark:text-charcoal">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-bold text-void">
                       {item.logoInitial}
                     </div>
-                    <p className="flex-1 font-body text-sm font-medium text-charcoal dark:text-warm-white">
+                    <p className="flex-1 font-body text-sm font-medium text-ink">
                       {item.communityName}
                     </p>
                     <div className="relative w-24">
-                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-body text-sm text-graphite">$</span>
+                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-body text-sm text-muted">$</span>
                       <Input
                         type="number"
                         min={1}
@@ -280,7 +280,7 @@ export default function BasketPage() {
                     <button
                       onClick={() => removeFromBasket(item.communityId)}
                       aria-label={`Remove ${item.communityName}`}
-                      className="flex h-9 w-9 items-center justify-center rounded-full text-graphite transition-colors duration-200 ease-quintic-out hover:bg-aluminum hover:text-charcoal dark:hover:bg-white/10 dark:hover:text-warm-white"
+                      className="flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors duration-200 ease-quintic-out hover:bg-white/10 hover:text-ink"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -290,8 +290,8 @@ export default function BasketPage() {
             </motion.div>
 
             <Card className="mt-6 flex items-center justify-between p-5">
-              <span className="font-body text-sm text-graphite dark:text-white/60">Total</span>
-              <span className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">${basketTotal}</span>
+              <span className="font-body text-sm text-muted">Total</span>
+              <span className="font-display text-2xl font-bold text-ink">${basketTotal}</span>
             </Card>
 
             <Button size="lg" className="mt-6 w-full" onClick={() => setStep("payment")}>
@@ -302,42 +302,42 @@ export default function BasketPage() {
 
         {step === "payment" && (
           <motion.div key="payment" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={orientationTransition}>
-            <h1 className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">Payment</h1>
-            <p className="mt-1 font-body text-sm text-graphite dark:text-white/60">Select payment method</p>
+            <h1 className="font-display text-2xl font-bold text-ink">Payment</h1>
+            <p className="mt-1 font-body text-sm text-muted">Select payment method</p>
 
             <div className="mt-6 flex flex-col gap-3">
               <button
                 onClick={() => setRail("demo")}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl border-2 p-4 text-left transition-colors duration-200 ease-quintic-out",
-                  rail === "demo" ? "border-cobalt bg-cobalt/5" : "border-graphite/15 dark:border-white/10",
+                  rail === "demo" ? "border-violet bg-violet/5" : "border-white/10",
                 )}
               >
-                <Coins className="h-5 w-5 text-cobalt" />
+                <Coins className="h-5 w-5 text-violet" />
                 <div className="flex-1">
-                  <p className="font-body text-sm font-medium text-charcoal dark:text-warm-white">Demo wallet</p>
-                  <p className="font-body text-xs text-graphite dark:text-white/50">
+                  <p className="font-body text-sm font-medium text-ink">Demo wallet</p>
+                  <p className="font-body text-xs text-muted">
                     Pay all communities from your $1,000 demo balance
                   </p>
                 </div>
-                {rail === "demo" && <Check className="h-5 w-5 text-cobalt" />}
+                {rail === "demo" && <Check className="h-5 w-5 text-violet" />}
               </button>
 
               <button
                 onClick={() => setRail("onchain")}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl border-2 p-4 text-left transition-colors duration-200 ease-quintic-out",
-                  rail === "onchain" ? "border-cobalt bg-cobalt/5" : "border-graphite/15 dark:border-white/10",
+                  rail === "onchain" ? "border-violet bg-violet/5" : "border-white/10",
                 )}
               >
-                <Wallet className="h-5 w-5 text-cobalt" />
+                <Wallet className="h-5 w-5 text-violet" />
                 <div className="flex-1">
-                  <p className="font-body text-sm font-medium text-charcoal dark:text-warm-white">Wallet (on-chain)</p>
-                  <p className="font-body text-xs text-graphite dark:text-white/50">
+                  <p className="font-body text-sm font-medium text-ink">Wallet (on-chain)</p>
+                  <p className="font-body text-xs text-muted">
                     One signed transaction per community on Monad testnet
                   </p>
                 </div>
-                {rail === "onchain" && <Check className="h-5 w-5 text-cobalt" />}
+                {rail === "onchain" && <Check className="h-5 w-5 text-violet" />}
               </button>
             </div>
 
@@ -354,27 +354,27 @@ export default function BasketPage() {
 
         {step === "review" && (
           <motion.div key="review" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={orientationTransition}>
-            <h1 className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">Review Support</h1>
+            <h1 className="font-display text-2xl font-bold text-ink">Review Support</h1>
 
             <Card className="mt-6 flex flex-col gap-3 p-6">
               {basket.map((item) => (
                 <div key={item.communityId} className="flex items-center justify-between">
-                  <span className="font-body text-sm text-graphite dark:text-white/60">{item.communityName}</span>
-                  <span className="font-body text-sm font-medium text-charcoal dark:text-warm-white">${item.amount}</span>
+                  <span className="font-body text-sm text-muted">{item.communityName}</span>
+                  <span className="font-body text-sm font-medium text-ink">${item.amount}</span>
                 </div>
               ))}
-              <div className="mt-2 flex items-center justify-between border-t border-graphite/15 pt-3 dark:border-white/10">
-                <span className="font-body text-sm text-graphite dark:text-white/60">Total</span>
-                <span className="font-display text-lg font-bold text-charcoal dark:text-warm-white">${basketTotal}</span>
+              <div className="mt-2 flex items-center justify-between border-t border-white/10 pt-3 border-white/10">
+                <span className="font-body text-sm text-muted">Total</span>
+                <span className="font-display text-lg font-bold text-ink">${basketTotal}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="font-body text-sm text-graphite dark:text-white/60">Payment method</span>
-                <span className="font-body text-sm font-medium text-charcoal dark:text-warm-white">
+                <span className="font-body text-sm text-muted">Payment method</span>
+                <span className="font-body text-sm font-medium text-ink">
                   {rail === "onchain" ? "Wallet (on-chain)" : "Demo wallet"}
                 </span>
               </div>
               {rail === "onchain" && (
-                <p className="font-body text-xs text-graphite dark:text-white/50">
+                <p className="font-body text-xs text-muted">
                   {basket.length} transaction{basket.length > 1 ? "s" : ""} — your wallet will ask to confirm each one.
                 </p>
               )}
@@ -392,16 +392,16 @@ export default function BasketPage() {
 
         {step === "processing" && (
           <motion.div key="processing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mt-24 flex flex-col items-center gap-4 text-center">
-            <Loader2 className="h-10 w-10 animate-spin text-cobalt" />
+            <Loader2 className="h-10 w-10 animate-spin text-violet" />
             <div>
-              <p className="font-display text-lg font-bold text-charcoal dark:text-warm-white">
+              <p className="font-display text-lg font-bold text-ink">
                 {rail === "onchain"
                   ? txPhase === "signing"
                     ? "Waiting for wallet confirmation…"
                     : "Sending your transaction…"
                   : "Processing support..."}
               </p>
-              <p className="mt-1 font-body text-sm text-graphite dark:text-white/60">
+              <p className="mt-1 font-body text-sm text-muted">
                 {progress.total > 0 ? `${progress.done} of ${progress.total} submitted` : "Please wait."}
               </p>
             </div>
@@ -423,23 +423,23 @@ export default function BasketPage() {
                   <div key={record.id} className="flex items-center justify-between gap-2 py-1.5">
                     <span className="flex min-w-0 items-center gap-2">
                       <GestureIcon category={record.category} className="h-4 w-4 shrink-0" />
-                      <span className="truncate font-body text-sm text-graphite dark:text-white/60">
+                      <span className="truncate font-body text-sm text-muted">
                         {record.communityName}
                       </span>
                     </span>
-                    <span className="shrink-0 font-body text-sm font-medium text-charcoal dark:text-warm-white">
+                    <span className="shrink-0 font-body text-sm font-medium text-ink">
                       ${record.amount}
                     </span>
                   </div>
                 );
               })}
-              <div className="mt-2 flex items-center justify-between border-t border-graphite/15 pt-3 dark:border-white/10">
-                <span className="font-body text-sm text-graphite dark:text-white/60">Total</span>
-                <span className="font-display text-lg font-bold text-charcoal dark:text-warm-white">
+              <div className="mt-2 flex items-center justify-between border-t border-white/10 pt-3 border-white/10">
+                <span className="font-body text-sm text-muted">Total</span>
+                <span className="font-display text-lg font-bold text-ink">
                   ${completed.reduce((sum, r) => sum + r.amount, 0)}
                 </span>
               </div>
-              <p className="mt-3 text-center font-body text-xs text-graphite dark:text-white/50">
+              <p className="mt-3 text-center font-body text-xs text-muted">
                 {completed.length > 1
                   ? `${completed.map((r) => getAffirmation(r.category).word).join(" · ")} — every gesture counts`
                   : `${getAffirmation(completed[0]?.category).message}`}
@@ -453,8 +453,8 @@ export default function BasketPage() {
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
               <CircleAlert className="h-8 w-8 text-red-500" />
             </div>
-            <p className="font-display text-lg font-bold text-charcoal dark:text-warm-white">Something went wrong</p>
-            <p className="max-w-xs break-words font-body text-sm text-graphite dark:text-white/60">{errorMessage}</p>
+            <p className="font-display text-lg font-bold text-ink">Something went wrong</p>
+            <p className="max-w-xs break-words font-body text-sm text-muted">{errorMessage}</p>
             <div className="mt-2 flex gap-3">
               <Button
                 variant="outline"

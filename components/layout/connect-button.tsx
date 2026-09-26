@@ -26,11 +26,11 @@ export function ConnectButton() {
     return (
       <div className="flex items-center gap-2">
         {user && (
-          <span className="hidden rounded-full bg-cobalt/10 px-2.5 py-1 font-body text-xs font-medium text-cobalt sm:block">
+          <span className="hidden rounded-full bg-violet/15 px-2.5 py-1 font-body text-xs font-medium text-cyan sm:block">
             ${user.wallet.balanceUsd}
           </span>
         )}
-        <Button variant="outline" size="sm" onClick={signOut}>
+        <Button variant="subtle" size="sm" onClick={signOut}>
           <LogOut className="h-3.5 w-3.5" />
           {shortHex(address)}
         </Button>

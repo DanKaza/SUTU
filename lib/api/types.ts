@@ -20,26 +20,6 @@ export type ApiErrorBody = {
   };
 };
 
-// ---------------------------------------------------------------------------
-// Auth (SIWE)
-// ---------------------------------------------------------------------------
-
-export type NonceResponse = {
-  /** One-time, expires in 5 minutes. */
-  nonce: string;
-  /** SIWE message. Sign EXACTLY as-is — do not rebuild or trim. */
-  message: string;
-};
-
-export type VerifyResponse = {
-  /** JWT, valid 7 days. */
-  token: string;
-  user: {
-    id: string;
-    wallet_address: string;
-  };
-};
-
 export type MeResponse = {
   id: string;
   walletAddress: string;

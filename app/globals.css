@@ -2,13 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens (SUTU SPEC §3) — dark-only ─────────────────────────── */
 :root {
-  --warm-white: #fbfbf9;
-  --aluminum: #f3f4f6;
-  --graphite: #5e5e5e;
-  --charcoal: #1a1a1a;
-  --cobalt: #2563eb;
-  --dark-base: #121212;
+  --bg: #07060A;
+  --fg: #F7F5FB;
+  --muted: #AAA3B6;
+  --faint: #746D80;
+  --surface: rgba(255, 255, 255, 0.035);
+  --border: rgba(255, 255, 255, 0.11);
+  --grid-line: rgba(255, 255, 255, 0.05);
 }
 
 html,
@@ -17,14 +19,115 @@ body {
 }
 
 body {
-  background-color: var(--warm-white);
-  color: var(--charcoal);
-  transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
-.dark body {
-  background-color: var(--dark-base);
-  color: var(--warm-white);
+@layer utilities {
+  .glass {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .text-iridescent {
+    background-image: linear-gradient(135deg, #A78BFA, #7C3AED, #EC4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Hero gradient mesh background */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .aurora::before,
+  .aurora::after {
+    content: "";
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+  }
+
+  .aurora::before {
+    width: 40rem;
+    height: 40rem;
+    top: -14rem;
+    left: -10rem;
+    background: radial-gradient(circle, rgba(76, 29, 149, 0.3), transparent 65%);
+  }
+
+  .aurora::after {
+    width: 36rem;
+    height: 36rem;
+    top: -8rem;
+    right: -12rem;
+    background: radial-gradient(circle, rgba(240, 171, 252, 0.2), transparent 65%);
+  }
+
+  .aurora-orb {
+    position: absolute;
+    bottom: -12rem;
+    left: 35%;
+    width: 32rem;
+    height: 32rem;
+    border-radius: 9999px;
+    filter: blur(90px);
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.15), transparent 65%);
+  }
+
+  /* Blueprint grid */
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black, transparent 100%);
+  }
+
+  /* Subtle grain texture */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* Pointer glow utility for card hover effects */
+  .pointer-glow {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pointer-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+      rgba(167, 139, 250, 0.18),
+      transparent 32%
+    );
+    transition: opacity 0.3s ease-out;
+  }
+
+  .pointer-glow:hover::before {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -37,3 +140,4 @@ body {
     scroll-behavior: auto !important;
   }
 }
+

@@ -7,6 +7,12 @@
       "skillPath": "skills/migrate-radix-to-base/SKILL.md",
       "computedHash": "4fdc31bf287f674ba6bf91a648120f7b34cd7ef370f998f2cc116fed067789c5"
     },
+    "no-ai-design-slop": {
+      "source": "mengto/skills",
+      "sourceType": "github",
+      "skillPath": "agent-skills/ui/no-ai-design-slop/SKILL.md",
+      "computedHash": "6c87844491447014047812c128f3196cc7855af4df5363654d2c0ce811513810"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",

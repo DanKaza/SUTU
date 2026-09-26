@@ -80,32 +80,32 @@ export default function SupportDetailPage({ params }: { params: Promise<{ id: st
     <div className="mx-auto max-w-lg px-6 py-16">
       <Link
         href="/my-supports"
-        className="flex items-center gap-1 font-body text-sm font-medium text-graphite hover:text-charcoal dark:hover:text-warm-white"
+        className="flex items-center gap-1 font-body text-sm font-medium text-muted hover:text-ink"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to My Supports
       </Link>
 
       <motion.div variants={fadeInUp} initial="hidden" animate="show" className="mt-6">
-        <h1 className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">Support Detail</h1>
+        <h1 className="font-display text-2xl font-bold text-ink">Support Detail</h1>
 
         <Card className="mt-6 flex flex-col gap-4 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-body text-xs text-graphite dark:text-white/50">Support</p>
-              <p className="font-body text-sm font-medium text-charcoal dark:text-warm-white">{title}</p>
+              <p className="font-body text-xs text-muted">Support</p>
+              <p className="font-body text-sm font-medium text-ink">{title}</p>
             </div>
             <Badge>{donation ? "On-chain" : "Demo wallet"}</Badge>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 border-t border-graphite/15 pt-4 dark:border-white/10">
+          <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4 border-white/10">
             <div>
-              <p className="font-body text-xs text-graphite dark:text-white/50">Amount</p>
-              <p className="mt-1 font-display text-lg font-bold text-charcoal dark:text-warm-white">{amountLabel}</p>
+              <p className="font-body text-xs text-muted">Amount</p>
+              <p className="mt-1 font-display text-lg font-bold text-ink">{amountLabel}</p>
             </div>
             <div>
-              <p className="font-body text-xs text-graphite dark:text-white/50">Status</p>
-              <p className="mt-1 flex items-center gap-1 font-body text-sm font-medium text-cobalt">
+              <p className="font-body text-xs text-muted">Status</p>
+              <p className="mt-1 flex items-center gap-1 font-body text-sm font-medium text-violet">
                 {status === "confirmed" ? (
                   <>
                     <Check className="h-4 w-4" />
@@ -125,14 +125,14 @@ export default function SupportDetailPage({ params }: { params: Promise<{ id: st
               </p>
             </div>
             <div>
-              <p className="font-body text-xs text-graphite dark:text-white/50">Date</p>
-              <p className="mt-1 font-body text-sm text-charcoal dark:text-warm-white">
+              <p className="font-body text-xs text-muted">Date</p>
+              <p className="mt-1 font-body text-sm text-ink">
                 {createdAt ? new Date(createdAt).toLocaleDateString() : "—"}
               </p>
             </div>
             <div>
-              <p className="font-body text-xs text-graphite dark:text-white/50">Transaction</p>
-              <p className="mt-1 break-all font-body text-sm text-charcoal dark:text-warm-white">
+              <p className="font-body text-xs text-muted">Transaction</p>
+              <p className="mt-1 break-all font-body text-sm text-ink">
                 {txHash ? shortHex(txHash, 6) : "—"}
               </p>
             </div>

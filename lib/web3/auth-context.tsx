@@ -15,7 +15,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import {
-  clearToken,
   clearWalletAddress,
   getWalletAddress,
   setWalletAddress,
@@ -129,7 +128,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(() => {
     clearWalletAddress();
-    clearToken();
     setUser(null);
     setStatus(isConnected ? "connecting-wallet" : "disconnected");
     // Best-effort wallet disconnect; ignore rejection (e.g. MetaMask).

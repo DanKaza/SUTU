@@ -24,11 +24,11 @@ export default function ContactPage() {
         variants={fadeInUp}
         initial="hidden"
         animate="show"
-        className="font-display text-4xl font-bold tracking-tight text-charcoal dark:text-warm-white sm:text-5xl"
+        className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl"
       >
         Contact
       </motion.h1>
-      <p className="mt-3 max-w-xl font-body text-graphite dark:text-white/60">
+      <p className="mt-3 max-w-xl font-body text-muted">
         Ada pertanyaan, feedback, atau ide kolaborasi? Kirim pesan, tim kami akan merespons secepat
         mungkin.
       </p>
@@ -45,8 +45,8 @@ export default function ContactPage() {
                 transition={orientationTransition}
                 className="flex flex-col items-start gap-2 py-10"
               >
-                <h3 className="font-display text-lg font-bold text-charcoal dark:text-warm-white">Pesan terkirim</h3>
-                <p className="font-body text-sm text-graphite dark:text-white/60">
+                <h3 className="font-display text-lg font-bold text-ink">Pesan terkirim</h3>
+                <p className="font-body text-sm text-muted">
                   Terima kasih! Kami akan membalas ke email kamu segera.
                 </p>
               </motion.div>
@@ -65,16 +65,16 @@ export default function ContactPage() {
               >
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="font-body text-sm font-medium text-charcoal dark:text-warm-white">Nama</label>
+                    <label className="font-body text-sm font-medium text-ink">Nama</label>
                     <Input required placeholder="Nama kamu" className="mt-2" />
                   </div>
                   <div>
-                    <label className="font-body text-sm font-medium text-charcoal dark:text-warm-white">Email</label>
+                    <label className="font-body text-sm font-medium text-ink">Email</label>
                     <Input required type="email" placeholder="you@example.com" className="mt-2" />
                   </div>
                 </div>
                 <div>
-                  <label className="font-body text-sm font-medium text-charcoal dark:text-warm-white">Pesan</label>
+                  <label className="font-body text-sm font-medium text-ink">Pesan</label>
                   <Textarea required rows={5} placeholder="Ceritakan kebutuhan kamu..." className="mt-2" />
                 </div>
                 <Button type="submit" size="lg" className="w-fit">
@@ -85,16 +85,16 @@ export default function ContactPage() {
           </AnimatePresence>
         </Card>
 
-        <Card className="flex flex-col gap-4 bg-aluminum/60 p-6 dark:bg-white/5">
-          <h3 className="font-display text-lg font-bold text-charcoal dark:text-warm-white">Kanal lain</h3>
+        <Card className="flex flex-col gap-4 bg-white/[0.04] p-6 bg-white/5">
+          <h3 className="font-display text-lg font-bold text-ink">Kanal lain</h3>
           {CHANNELS.map((c) => (
             <div key={c.label} className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-warm-white dark:bg-dark-base">
-                <c.icon className="h-4 w-4 text-graphite dark:text-white/70" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.06]">
+                <c.icon className="h-4 w-4 text-muted text-white/70" />
               </div>
               <div>
-                <p className="font-body text-sm font-medium text-charcoal dark:text-warm-white">{c.label}</p>
-                <p className="font-body text-xs text-graphite dark:text-white/50">{c.value}</p>
+                <p className="font-body text-sm font-medium text-ink">{c.label}</p>
+                <p className="font-body text-xs text-muted">{c.value}</p>
               </div>
             </div>
           ))}

@@ -1,132 +1,99 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Search, Compass, HeartHandshake, PartyPopper } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { fadeInUp, staggerContainer } from "@/lib/motion";
+import { motion } from "framer-motion";
+import { Search, Map, Users } from "lucide-react";
+import { revealUp, staggerGroup, cardHover } from "@/lib/motion";
 
 const STEPS = [
   {
     id: "01",
     icon: Search,
-    title: "Cari",
-    description: "Ketik topik atau nama komunitas yang kamu minati langsung di SUTU.",
-    accent: "#FF7A59",
-    rotate: "-rotate-2",
+    title: "Find your signal",
+    description: "Pilih minat, nilai, atau kota yang ingin kamu dekati. Temukan ruang yang sefrekuensi.",
   },
   {
     id: "02",
-    icon: Compass,
-    title: "Temukan",
-    description: "Lihat profil komunitas beserta semua kanal dukungannya di satu halaman.",
-    accent: "#C6F135",
-    rotate: "rotate-1",
+    icon: Map,
+    title: "Enter the room",
+    description: "Bergabung dalam komunitas dengan ritme dan konteks yang jelas, bukan sekadar join channel.",
   },
   {
     id: "03",
-    icon: HeartHandshake,
-    title: "Support",
-    description: "Bantu komunitas pilihanmu langsung dari SUTU, tanpa pindah-pindah situs.",
-    accent: "#2563EB",
-    rotate: "-rotate-1",
+    icon: Users,
+    title: "Show up together",
+    description: "Ikut percakapan, acara, atau proyek yang berarti. Konsistensi mengalahkan intensitas.",
   },
-  {
-    id: "04",
-    icon: PartyPopper,
-    title: "Afirmasi",
-    description: "Dapat ucapan terima kasih dan badge komunitas — bukti kamu bagian dari mereka.",
-    accent: "#F72585",
-    rotate: "rotate-2",
-  },
-] as const;
+];
 
 export function HowItWorksSection() {
-  const [showAffirmation, setShowAffirmation] = useState(false);
-
-  const runSimulation = () => {
-    setShowAffirmation(true);
-    setTimeout(() => setShowAffirmation(false), 2600);
-  };
-
   return (
-    <div className="relative">
-      <motion.h2
-        variants={fadeInUp}
+    <div className="relative py-20 rounded-[32px] bg-gradient-to-b from-ink-950 via-[#0a0a14] to-[#040914] px-6 sm:px-12">
+      <motion.div
+        variants={staggerGroup}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "-80px" }}
-        className="font-display text-3xl font-extrabold tracking-tight text-charcoal dark:text-warm-white sm:text-4xl"
+        viewport={{ once: true }}
+        className="text-center mx-auto max-w-2xl"
       >
-        Cara kerja <span className="text-[#FF7A59]">SUTU</span>
-      </motion.h2>
+        <motion.span 
+          variants={revealUp}
+          className="font-mono text-[11px] font-semibold tracking-[0.12em] uppercase text-cyan-400"
+        >
+          SMALL STEPS, SHARED ENERGY
+        </motion.span>
+        <motion.h2
+          variants={revealUp}
+          className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.05] text-white"
+        >
+          Cara kerja SUTU
+        </motion.h2>
+      </motion.div>
 
       <motion.div
-        variants={staggerContainer}
+        variants={staggerGroup}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "-80px" }}
-        className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        viewport={{ once: true }}
+        className="mt-16 grid gap-6 sm:grid-cols-3"
       >
-        {STEPS.map((step) => {
+        {STEPS.map((step, idx) => {
           const Icon = step.icon;
-          const isAffirmation = step.id === "04";
+          // Tengah (idx 1) dibuat sedikit lebih tinggi di desktop sebagai focal point
+          const isCenter = idx === 1;
+          
           return (
             <motion.div
               key={step.id}
-              variants={fadeInUp}
-              whileHover={{ rotate: 0, scale: 1.02 }}
-              className={`relative overflow-hidden rounded-3xl bg-warm-white p-6 shadow-xl transition-transform duration-300 ease-quintic-out dark:bg-charcoal ${step.rotate}`}
-              style={{ boxShadow: `0 20px 45px -20px ${step.accent}66` }}
+              variants={revealUp}
+              initial="rest"
+              whileHover="hover"
+              className={`h-full ${isCenter ? "lg:-mt-4 lg:mb-4" : ""}`}
             >
-              <span
-                className="pointer-events-none absolute -right-3 -top-6 font-display text-7xl font-extrabold opacity-10"
-                style={{ color: step.accent }}
+              <motion.div
+                variants={cardHover}
+                className="relative flex h-full flex-col overflow-hidden rounded-[20px] border border-white/11 bg-ink-800 p-1"
               >
-                {step.id}
-              </span>
-
-              <div
-                className="flex h-11 w-11 items-center justify-center rounded-2xl"
-                style={{ backgroundColor: `${step.accent}26` }}
-              >
-                <Icon className="h-5 w-5" style={{ color: step.accent }} />
-              </div>
-              <h3 className="relative mt-4 font-display text-lg font-bold text-charcoal dark:text-warm-white">
-                {step.title}
-              </h3>
-              <p className="relative mt-1.5 font-body text-sm text-graphite dark:text-white/60">
-                {step.description}
-              </p>
-
-              {isAffirmation && (
-                <div className="relative mt-4">
-                  <Button
-                    size="sm"
-                    className="bg-[#F72585] text-warm-white hover:bg-[#F72585]/90"
-                    onClick={runSimulation}
-                  >
-                    Coba simulasi
-                  </Button>
-
-                  <AnimatePresence>
-                    {showAffirmation && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.9, rotate: -3 }}
-                        animate={{ opacity: 1, y: 0, scale: 1, rotate: -2 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute inset-x-2 bottom-14 z-10 rounded-2xl bg-[#F72585] p-3 text-warm-white shadow-xl shadow-[#F72585]/40"
-                      >
-                        <p className="font-display text-sm font-bold">Thanks! 🎉</p>
-                        <p className="mt-0.5 font-body text-xs text-warm-white/80">
-                          Badge diperoleh: Supporter of Web3 Builders
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                {/* Thumbnail Header placeholder */}
+                <div className="relative h-40 w-full overflow-hidden rounded-t-[16px] bg-ink-900 border-b border-white/5 flex items-center justify-center">
+                  <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')]" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-cyan-900/40 blur-xl rounded-full" />
+                  <div className="relative flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-ink-800 text-white">
+                    <Icon className="h-5 w-5" />
+                  </div>
                 </div>
-              )}
+
+                <div className="flex flex-1 flex-col p-6">
+                  <span className="font-mono text-xs font-semibold tracking-widest text-cyan-400">
+                    STEP {step.id}
+                  </span>
+                  <h3 className="mt-3 font-display text-lg font-semibold text-white">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 font-body text-sm text-muted">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
             </motion.div>
           );
         })}

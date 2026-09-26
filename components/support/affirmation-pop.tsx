@@ -23,15 +23,15 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   charity: Heart,
 };
 
-/** Warna aksen ringan per kategori (tailwind class), biar tiap gestur beda rasa. */
+/** Warna aksen ringan per kategori (trio brand DESIGN.MD), biar tiap gestur beda rasa. */
 const CATEGORY_ACCENTS: Record<string, string> = {
-  game: "text-emerald-500",
-  music: "text-fuchsia-500",
-  charity: "text-rose-500",
+  game: "text-cyan",
+  music: "text-magenta",
+  charity: "text-violet",
 };
 
 const FALLBACK_ICON = Sparkles;
-const FALLBACK_ACCENT = "text-cobalt";
+const FALLBACK_ACCENT = "text-violet";
 
 /** Ikon gestur kecil untuk dipakai di list (mis. ringkasan basket sukses). */
 export function GestureIcon({ category, className = "h-4 w-4" }: { category: string | null | undefined; className?: string }) {
@@ -107,7 +107,7 @@ export function AffirmationPop({
         initial={{ scale: 0, rotate: -12 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: "spring", stiffness: 320, damping: 16, delay: 0.1 }}
-        className={`flex h-20 w-20 items-center justify-center rounded-full bg-cobalt/10 ${accent}`}
+        className={`flex h-20 w-20 items-center justify-center rounded-full bg-violet/10 ${accent}`}
       >
         <Icon className="h-10 w-10" />
       </motion.div>
@@ -119,7 +119,7 @@ export function AffirmationPop({
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.25, type: "spring", stiffness: 260, damping: 18 }}
-          className={`font-display text-5xl font-extrabold tracking-tight ${accent}`}
+          className={`font-display text-5xl font-bold tracking-tight ${accent}`}
         >
           {affirmation.word}
         </motion.p>
@@ -127,7 +127,7 @@ export function AffirmationPop({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.45 }}
-          className="mt-1 font-body text-sm text-graphite dark:text-white/50"
+          className="mt-1 font-body text-sm text-muted"
         >
           {affirmation.caption}
         </motion.p>
@@ -137,7 +137,7 @@ export function AffirmationPop({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.55 }}
-        className="max-w-sm font-body text-sm text-graphite dark:text-white/60"
+        className="max-w-sm font-body text-sm text-muted"
       >
         {affirmation.message}
       </motion.p>

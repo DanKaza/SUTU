@@ -54,7 +54,7 @@ function donationRow(d: DonationRecord): SupportRow {
 function StatusBadge({ statusUi }: { statusUi: SupportRow["statusUi"] }) {
   if (statusUi === "confirmed") {
     return (
-      <span className="flex items-center gap-1 rounded-full bg-cobalt/10 px-2 py-1 font-body text-[11px] font-medium text-cobalt">
+      <span className="flex items-center gap-1 rounded-full bg-violet/10 px-2 py-1 font-body text-[11px] font-medium text-violet">
         <Check className="h-3 w-3" />
         Completed
       </span>
@@ -164,32 +164,32 @@ export default function MySupportsPage() {
         variants={fadeInUp}
         initial="hidden"
         animate="show"
-        className="font-display text-4xl font-bold tracking-tight text-charcoal dark:text-warm-white sm:text-5xl"
+        className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl"
       >
         My Supports
       </motion.h1>
 
       <div className="mt-8 grid grid-cols-2 gap-4 sm:w-80">
         <Card className="p-5">
-          <p className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">
+          <p className="font-display text-2xl font-bold text-ink">
             {isAuthenticated ? totalLabel : "—"}
           </p>
-          <p className="mt-1 font-body text-xs text-graphite dark:text-white/50">Total Supported</p>
+          <p className="mt-1 font-body text-xs text-muted">Total Supported</p>
         </Card>
         <Card className="p-5">
-          <p className="font-display text-2xl font-bold text-charcoal dark:text-warm-white">
+          <p className="font-display text-2xl font-bold text-ink">
             {isAuthenticated ? rows.length : "—"}
           </p>
-          <p className="mt-1 font-body text-xs text-graphite dark:text-white/50">Supports</p>
+          <p className="mt-1 font-body text-xs text-muted">Supports</p>
         </Card>
       </div>
 
       <div className="mt-10">
-        <h2 className="font-display text-xl font-bold text-charcoal dark:text-warm-white">Recent Supports</h2>
+        <h2 className="font-display text-xl font-bold text-ink">Recent Supports</h2>
 
         {!isAuthenticated ? (
           <div className="mt-6 py-16 text-center">
-            <p className="font-body text-sm text-graphite dark:text-white/60">
+            <p className="font-body text-sm text-muted">
               Connect your wallet to see your support history.
             </p>
           </div>
@@ -197,18 +197,18 @@ export default function MySupportsPage() {
           <div className="mt-5 flex flex-col gap-3">
             {Array.from({ length: 3 }).map((_, i) => (
               <Card key={i} className="flex items-center gap-4 p-4">
-                <div className="h-10 w-10 animate-pulse rounded-full bg-aluminum dark:bg-white/10" />
-                <div className="h-4 w-40 animate-pulse rounded bg-aluminum dark:bg-white/10" />
+                <div className="h-10 w-10 animate-pulse rounded-full bg-white/[0.06]" />
+                <div className="h-4 w-40 animate-pulse rounded bg-white/[0.06]" />
               </Card>
             ))}
           </div>
         ) : error ? (
           <div className="mt-6 py-12 text-center">
-            <p className="font-body text-sm text-graphite dark:text-white/60">{error}</p>
+            <p className="font-body text-sm text-muted">{error}</p>
           </div>
         ) : rows.length === 0 ? (
           <div className="mt-6 py-16 text-center">
-            <p className="font-body text-sm text-graphite dark:text-white/60">
+            <p className="font-body text-sm text-muted">
               You haven&apos;t supported any communities yet.
             </p>
             <Link href="/discover">
@@ -222,19 +222,19 @@ export default function MySupportsPage() {
             {rows.map((row) => (
               <motion.div key={row.id} variants={fadeInUp}>
                 <Link href={row.kind === "onchain" ? `/my-supports/${row.id}` : `/my-supports/${row.id}`}>
-                  <Card className="flex items-center gap-4 p-4 transition-colors duration-200 ease-quintic-out hover:border-cobalt">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-charcoal font-display text-sm font-bold text-warm-white dark:bg-warm-white dark:text-charcoal">
+                  <Card className="flex items-center gap-4 p-4 transition-colors duration-200 ease-quintic-out hover:border-violet">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-bold text-void">
                       {row.kind === "demo" ? "$" : "⛓"}
                     </div>
                     <div className="flex-1">
-                      <p className="font-body text-sm font-medium text-charcoal dark:text-warm-white">{row.title}</p>
-                      <p className="font-body text-xs text-graphite dark:text-white/50">{row.date}</p>
+                      <p className="font-body text-sm font-medium text-ink">{row.title}</p>
+                      <p className="font-body text-xs text-muted">{row.date}</p>
                     </div>
-                    <span className="font-display text-base font-bold text-charcoal dark:text-warm-white">
+                    <span className="font-display text-base font-bold text-ink">
                       {row.amountLabel}
                     </span>
                     <StatusBadge statusUi={row.statusUi} />
-                    <ArrowRight className="h-4 w-4 text-graphite" />
+                    <ArrowRight className="h-4 w-4 text-muted" />
                   </Card>
                 </Link>
               </motion.div>
