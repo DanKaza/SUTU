@@ -1,146 +1,214 @@
-# Design Brief — Web3 Community Platform
+# SUTU Design System
 
-Arah visual: **maksimalis, dengan struktur minimalis, dan sentuhan futuristik.**
+Supersedes the original "Design Brief" (aurora mesh, glassmorphism, bento
+grid, glow borders, iridescent gradient). That brief described the default
+AI-generated dark landing page. This one is built from what the product
+actually is, with every choice carrying a reason.
 
----
-
-## 1. Filosofi Desain
-
-### Maksimalis (kekayaan visual)
-
-- Gradient mesh berlapis / aurora background
-- Kartu glassmorphism dengan depth dan bayangan
-- Tipografi display besar dan berani
-- Ikonografi padat, badge, avatar stack
-- Visual abstrak generatif sebagai aksen
-
-### Minimalis (struktur & restraint)
-
-- Negative space lega di antara elemen padat
-- Palet warna dibatasi: 1 warna dasar + 1–2 aksen
-- Grid rapi dan konsisten
-- Satu focal point per section
-- Hirarki informasi yang jelas, tidak berebut perhatian
-
-### Futuristik (sentuhan akhir)
-
-- Glow neon tipis di border dan hover state
-- Gradient iridescent (violet → cyan → magenta)
-- Tekstur grain/noise halus di atas gradient
-- Motif wireframe dan geometris
-- Micro-interaction: shimmer, glow, parallax lembut
+**The product:** people back Web3 communities. Not join them, not chat in
+them. A contribution is a gesture that gets acknowledged, not a transaction
+row. Everything below serves that.
 
 ---
 
-## 2. Design Token
+## 1. Position
 
-### Warna
+> Support is a gesture, not a payment.
 
-| Peran            | Nilai                                                | Catatan                     |
-| ---------------- | ---------------------------------------------------- | --------------------------- |
-| Background utama | `#0A0A0F`                                            | Near-black kebiruan         |
-| Surface / card   | `rgba(255,255,255,0.05)`                             | Glassmorphism + blur        |
-| Border           | `rgba(255,255,255,0.12)`                             | Tipis, dengan glow opsional |
-| Teks utama       | `#F5F5F7`                                            | Off-white                   |
-| Teks sekunder    | `#8A8A99`                                            | Muted grey                  |
-| Aksen 1          | `#7C5CFF`                                            | Violet                      |
-| Aksen 2          | `#22D3EE`                                            | Cyan                        |
-| Aksen 3          | `#F472B6`                                            | Magenta                     |
-| Gradient utama   | `linear-gradient(135deg, #7C5CFF, #22D3EE, #F472B6)` | Iridescent                  |
+The interface should feel like giving something to a project you follow,
+then seeing it land. Calm, specific, a little warm. It is not a trading app,
+not a social network, and not a marketplace.
 
-### Tipografi
-
-| Peran                | Font                          | Keterangan                       |
-| -------------------- | ----------------------------- | -------------------------------- |
-| Display / headline   | Space Grotesk, Clash Display  | Geometris, tebal, tracking rapat |
-| Body                 | Inter, Manrope                | Bersih, netral, mudah dibaca     |
-| Angka / label teknis | JetBrains Mono, IBM Plex Mono | Untuk statistik, address, kode   |
-
-Skala: `72 / 48 / 32 / 24 / 18 / 16 / 14 / 12` px
-
-### Spacing & Bentuk
-
-- Base spacing: kelipatan 8px
-- Border radius: 16px (card), 999px (pill/badge), 12px (input)
-- Padding section: 96–128px vertikal di desktop
-- Max width konten: 1200px
+**Deliberately not:** neon crypto, token charts, rocket/robot/matrix
+imagery, "join the community" growth language, chat-first framing.
 
 ---
 
-## 3. Komponen Kunci
+## 2. Colour
 
-- **Hero section** — headline display besar, gradient mesh background, orb 3D/wireframe abstrak
-- **Bento grid** — layout asimetris berisi statistik komunitas, highlight, dan CTA
-- **Glass card** — background blur, border tipis bercahaya, hover glow
-- **Badge / title card** — untuk menampilkan title atau apresiasi unik yang didapat user
-- **Avatar stack** — menampilkan anggota atau kontributor komunitas
-- **CTA button** — gradient fill, glow halus saat hover, radius pill
-- **Stat counter** — angka besar dengan font monospace, label kecil muted
+Dark-only. The reason is product, not trend: a support flow is a short,
+focused, often one-handed action, and a dark ground keeps the amount, the
+community mark, and the affirmation as the only lit things on screen.
 
----
+| Role | Value | Reason |
+|---|---|---|
+| Canvas | `#07060A` | Near-black with a blue cast, not neutral black. Holds the violet accent without vibrating. |
+| Surface 1 (resting card) | `#17131F` | One step off the canvas. Present, not loud. |
+| Surface 2 (raised) | `#0D0B12`→`#1E1930` | Reserved for the one or two things per screen that matter. |
+| Border | `rgba(255,255,255,0.11)` | Defines edges without drawing them. |
+| Text primary | `#F7F5FB` | 18.7:1 on canvas. |
+| Text secondary | `#AAA3B6` | 8.3:1 on canvas, 7.5:1 on card. |
+| Text tertiary | `#837B8F` | 5.0:1 on canvas, 4.5:1 on card. Smallest step that still clears AA. |
+| Accent | `#7C3AED` | The one accent. 5.3:1 against text primary, so it can carry a filled button. |
 
-## 4. Mood
+### Accent discipline
 
-> Bold tapi tetap lapang. Futuristik tapi terasa manusiawi. Energi komunitas digital-native tanpa kesan dingin atau korporat.
+The accent appears on: the primary button of a screen, the active tab
+indicator, the focus ring, and the affirmation moment. That is the whole
+list.
 
-**Referensi rasa:** POAP, Farcaster, Zora, Linear, Rainbow Wallet
+`#8B5CF6` is available for accent *surfaces* only (a 10% wash behind an
+active row) — never behind body text, where it drops to 3.9:1 and fails AA.
 
----
-
-## 5. Prompt Siap Pakai
-
-### Versi Panjang (untuk v0, Galileo, Figma AI, Lovable)
-
-```
-Design a Web3 community platform interface. Style: maximalist digital
-design with restrained minimalist structure and a subtle futuristic
-edge — bold layered gradients and rich glassmorphic cards balanced by
-generous negative space and clean grid alignment.
-
-Color palette: deep near-black background (#0A0A0F) with iridescent
-violet-cyan-magenta gradient accents (#7C5CFF, #22D3EE, #F472B6),
-off-white neutral text (#F5F5F7), muted grey secondary text (#8A8A99).
-
-Typography: bold geometric display font (Space Grotesk / Clash Display)
-for headlines, clean minimal sans (Inter / Manrope) for body text,
-monospace accents (JetBrains Mono) for numbers, stats, and labels.
-
-Layout: asymmetric bento-grid, generous vertical rhythm, max content
-width 1200px, 8px spacing scale, 16px card radius.
-
-Include: glassmorphism cards with subtle border glow, gradient mesh /
-aurora backgrounds, fine grain texture overlay, glowing hover states,
-abstract 3D or wireframe orb visuals, community badge and achievement
-cards, avatar stacks, large stat counters.
-
-Mood: bold yet breathable, futuristic but human, digital-native
-community energy. Not corporate, not cold.
-```
-
-### Versi Pendek (untuk Midjourney / image generator)
-
-```
-Web3 community platform UI, maximalist yet minimal, dark near-black
-background, iridescent violet cyan magenta gradient mesh, glassmorphism
-cards with glowing borders, bold geometric display typography,
-asymmetric bento grid, grain texture, abstract 3D orb, futuristic,
-generous negative space, high detail --ar 16:9
-```
-
-### Versi Satu Baris (quick prompt)
-
-```
-Dark maximalist-minimal Web3 community UI: iridescent gradient mesh,
-glassmorphic bento cards with glow borders, bold geometric type,
-futuristic and breathable.
-```
+No second accent. Cyan and magenta are not in the palette. An iridescent
+violet-to-cyan-to-magenta gradient is the single most recognisable
+generated-UI tell and it is banned here.
 
 ---
 
-## 6. Yang Perlu Dihindari
+## 3. Type
 
-- Terlalu banyak warna aksen sekaligus — batasi maksimal 3
-- Semua section maksimalis — selingi dengan section tenang
-- Glow berlebihan sampai teks sulit dibaca
-- Klise crypto: gambar koin, grafik naik, robot, matrix rain
-- Kontras rendah antara teks dan background gradient
+| Role | Face | Reason |
+|---|---|---|
+| Display | Space Grotesk | Geometric, slightly odd letterforms. Carries the "web3 but not casino" register. |
+| Body | Inter | Neutral, high x-height, survives long paragraphs. |
+| Numerals, addresses, tx hashes | JetBrains Mono | Anything a user might copy or compare must be monospaced. |
+
+Scale: `88 / 64 / 48 / 32 / 24 / 18 / 16 / 14 / 12`. Body floor is 16px;
+12px is reserved for labels and never for sentences.
+
+### Banned typographic habits
+
+- Uppercase with wide tracking as a section eyebrow. Six of these were on the
+  landing page and every one duplicated information the heading below it
+  already carried.
+- Monospace as a decorative display face.
+- A label in mono above a heading in mono.
+
+---
+
+## 4. Surfaces and depth
+
+Depth comes from **surface level**, not from glow. Three levels, no more:
+
+```
+canvas        #07060A    the page
+surface 1     #17131F    cards, list rows, inputs
+surface 2     gradient    at most one element per screen
+```
+
+`shadow-glow-violet` is for the primary action of a screen and nothing else.
+A card that lifts on hover gets a 1px border-colour shift, not a glow.
+
+**Why this replaces the old approach.** The unused utilities in
+`globals.css` — `aurora`, `aurora-orb`, `grid-lines`, `grain`,
+`pointer-glow` — are a blurred-orb hero, a blueprint grid and a grain
+overlay. That trio is the stock generated dark-landing recipe. They stay
+unused. If a future screen genuinely needs texture, it gets a reason written
+here first.
+
+Glass stays at 1–2 elements per screen. `glass` on every card flattens the
+hierarchy it is supposed to create.
+
+---
+
+## 5. Layout
+
+**Content width** 1200px, page gutters 24px mobile / 48px desktop.
+
+**Section rhythm — vary it.** The old landing page wrapped all eight
+sections in an identical `py-[clamp(80px,10vw,140px)]`, which reads as one
+flat strip. Spacing is a signal, so it carries meaning:
+
+| Section kind | Top / bottom padding |
+|---|---|
+| Statement (one line of argument) | 128 / 128 |
+| Feature set | 96 / 96 |
+| Dense content (search, grid, list) | 64 / 64 |
+| Transition into a CTA | 160 / 96 |
+| CTA itself | 96 / 160 |
+
+Adjacent sections must not share a padding value.
+
+**Composition varies too.** Not every section is centred-heading-plus-card-
+grid. Alternate text-heavy and visual, symmetric and asymmetric. If two
+consecutive sections share a composition, one of them is wrong.
+
+**Cards are not uniform.** When several cards carry equal weight, they are a
+list, not a mosaic. A mosaic is only honest when the content genuinely has
+items of different sizes. The flagship item may take the full width.
+
+---
+
+## 6. Components
+
+- **Primary button** — filled `#7C3AED`, pill, one per screen. Carries the
+  glow on hover only.
+- **Secondary** — outline, no fill.
+- **Ghost** — text only, for tertiary actions.
+- **Card** — surface 1, 1px border, 20px radius. Hover shifts border to
+  `rgba(255,255,255,0.2)`. No glow.
+- **Amount button** — the support flow's real control. Selected state is a
+  filled accent wash with an accent border, not a colour change alone.
+- **Affirmation** — the moment support lands. The one place a large,
+  confident, animated treatment is correct, because it is the product's
+  payoff. `lib/affirmations.ts` already models it as a gesture word plus a
+  caption.
+- **Empty state** — names the cause and gives the one action that fills it.
+  "No supports yet. Back a community to start your history." Never a bare
+  "No data".
+
+### Radius
+
+Three values only: `8px` (inputs, small chips), `20px` (cards),
+`999px` (pills and buttons). A fourth ad-hoc radius is a decision that was
+not made.
+
+### Icons
+
+Relevance first, library second. Lucide is fine but it is the project's
+default and uniformity is its own tell, so an icon that carries no meaning
+gets dropped rather than filled in. No emoji in the interface at all.
+
+---
+
+## 7. Motion
+
+Motion answers "what just happened". It is never ambient.
+
+- Entrance: one staggered reveal per section, `once`, 300ms, quintic-out.
+- Interaction: 150–200ms on colour and border.
+- The affirmation: the one place with a spring entrance.
+- Nothing loops forever. A pulsing dot that marks no state is deleted, not
+  styled.
+
+`prefers-reduced-motion` is already honoured globally in `globals.css`; keep
+it that way.
+
+---
+
+## 8. Honesty rules
+
+These are product rules that happen to be visible.
+
+- No invented metrics. The hero's "12,000+ people already showing up" with
+  five placeholder avatars is removed or labelled as placeholder.
+- No invented activity, names, avatars or event feeds.
+- Empty form fields stay empty or use obvious placeholders (`Your name`,
+  `you@example.com`) — never `John Doe`.
+- Every nav item and control has a real destination or is removed. `/join`
+  and `/stories` do not exist as routes and must not appear in the nav.
+- Placeholder values that are still mock are visible as placeholders.
+
+---
+
+## 9. Accessibility floor
+
+Not optional, and the current state is below it.
+
+- Every interactive control has a visible focus indicator. `focus-visible`
+  ring at minimum; the current build has none.
+- Every `<label>` is bound to its input via `htmlFor`/`id`. Four labels are
+  currently unbound.
+- Icon-only controls carry `aria-label`.
+- Body text clears 4.5:1; large text and non-text clears 3:1.
+- Touch targets are at least 44×44px.
+
+---
+
+## 10. What this document is for
+
+When a change is proposed, it either cites a section here or it does not
+belong in the interface. Anything that adds a glow, a gradient mesh, a
+background grid, an uppercase eyebrow, an emoji icon or a decorative status
+dot needs a written reason in this file before it ships.
