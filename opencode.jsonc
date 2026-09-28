@@ -4,7 +4,8 @@
     "codegraph": {
       "type": "local",
       "command": [
-        "codegraph",
+        "node",
+        "node_modules/@colbymchenry/codegraph/npm-shim.js",
         "serve",
         "--mcp"
       ],
