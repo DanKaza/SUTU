@@ -5,7 +5,9 @@ import { motion } from "framer-motion";
 import { ArrowRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { communities } from "@/lib/mock-data";
+import { formatNumber } from "@/lib/api/format";
 import { revealUp, staggerGroup } from "@/lib/motion";
+import { ParallaxLayer } from "@/components/landing/parallax";
 
 const PROOFS = [
   "Every community's support and donation details on one page",
@@ -16,7 +18,10 @@ const PROOFS = [
 export function ShowcasePanel() {
   return (
     <section>
-      <div className="relative overflow-hidden rounded-card border border-white/11 bg-ink-900 px-8 py-16 sm:px-16 sm:py-20">
+      <ParallaxLayer
+        distance={64}
+        className="relative overflow-hidden rounded-card border border-white/11 bg-ink-900 px-8 py-16 sm:px-16 sm:py-20"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <motion.div
             variants={staggerGroup}
@@ -71,13 +76,13 @@ export function ShowcasePanel() {
                   <p className="truncate font-body text-sm text-muted">{c.description}</p>
                 </div>
                 <span className="shrink-0 font-mono text-xs text-faint">
-                  {c.supporterCount.toLocaleString()} supporters
+                  {formatNumber(c.supporterCount)} supporters
                 </span>
               </Link>
             ))}
           </motion.div>
         </div>
-      </div>
+      </ParallaxLayer>
     </section>
   );
 }

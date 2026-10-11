@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { communities } from "@/lib/mock-data";
 import { getAffirmation } from "@/lib/affirmations";
-import { displayMon } from "@/lib/api/format";
+import { displayMon, formatNumber } from "@/lib/api/format";
 import { revealUp } from "@/lib/motion";
 
 const PRESETS = [3, 5, 10, 25];
@@ -58,7 +58,7 @@ export function SupportFlowPreview() {
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/11 pt-4 font-mono text-[11px] text-faint">
           <span>
-            {community.supporterCount.toLocaleString()} supporters · {displayMon(community.totalSupported)} MON received
+            {formatNumber(community.supporterCount)} supporters · {displayMon(community.totalSupported)} MON received
           </span>
           <span>5 MON · 0x1a2b…c3d4</span>
         </div>
