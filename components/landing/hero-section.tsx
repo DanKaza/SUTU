@@ -4,7 +4,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SupportTerminal } from "@/components/landing/support-terminal";
+import { CrtTerminal } from "@/components/landing/crt-terminal";
+import { AsciiField } from "@/components/landing/ascii-field";
+import { ParallaxLayer } from "@/components/landing/parallax";
+import { ScrambleText } from "@/components/landing/scramble-text";
 import { revealUp, staggerGroup } from "@/lib/motion";
+// test arbitrary value regen
 
 const PROOFS = [
   "Every community's support and donation details on one page",
@@ -15,7 +21,11 @@ const PROOFS = [
 export function HeroSection() {
   return (
     <section className="relative min-h-[820px] flex items-center pt-12 pb-24 overflow-hidden">
-      <div className="mx-auto w-full max-w-[1280px]">
+      {/* Background plane: drifts slowest, so the copy above reads as nearer. */}
+      <ParallaxLayer distance={90} className="absolute inset-0">
+        <AsciiField />
+      </ParallaxLayer>
+      <div className="relative z-10 mx-auto w-full max-w-[1280px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
           <motion.div
@@ -26,10 +36,10 @@ export function HeroSection() {
           >
             <motion.h1
               variants={revealUp}
-              className="font-display text-[48px] sm:text-[64px] lg:text-[88px] font-semibold tracking-[-0.03em] leading-[0.95] text-white"
+              className="font-display text-[48px] sm:text-[64px] xl:text-[88px] font-semibold tracking-[-0.03em] leading-[0.95] text-white"
             >
               Back something<br />
-              that <span className="text-violet-400">matters</span>.
+              that <ScrambleText text="matters" className="text-[#A855F7]" />.
             </motion.h1>
 
             <motion.p 
@@ -49,7 +59,7 @@ export function HeroSection() {
               </Link>
               <Button size="lg" variant="ghost" className="h-14 rounded-full px-8 text-[16px] font-semibold text-white hover:bg-white/5">
                 <Play className="mr-2 h-4 w-4 fill-white" />
-                Watch the intro
+                Watch the Intro
               </Button>
             </motion.div>
 
@@ -70,29 +80,9 @@ export function HeroSection() {
             animate="show"
             className="lg:col-span-5 relative flex items-center justify-center"
           >
-            <div className="w-full max-w-[420px] rounded-card border border-white/11 bg-ink-800 p-6">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[11px] text-faint">SUPPORT SENT</span>
-                <span className="font-mono text-[11px] text-muted">just now</span>
-              </div>
-
-              <div className="mt-8 text-center">
-                <p className="font-display text-5xl font-semibold text-violet-400">GG</p>
-                <p className="mt-3 font-body text-sm text-muted">
-                  your support just landed
-                </p>
-              </div>
-
-              <div className="mt-8 flex items-center gap-3 border-t border-white/11 pt-4">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-ink-900 font-display text-sm font-bold text-ink">
-                  P
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate font-body text-sm text-white">Pixel Forge</p>
-                  <p className="font-mono text-[11px] text-muted">5 MON · 0x1a2b…c3d4</p>
-                </div>
-              </div>
-            </div>
+            <ParallaxLayer distance={36} className="flex w-full justify-center">
+              <SupportTerminal />
+            </ParallaxLayer>
           </motion.div>
 
         </div>

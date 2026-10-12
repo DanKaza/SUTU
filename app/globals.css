@@ -136,9 +136,89 @@ body {
   .pointer-glow:hover::before {
     opacity: 1;
   }
+
+  /* ── CRT hero terminal (decorative) ──────────────────────────────────
+     Two physical layers — a near-black monitor shell and a recessed,
+     subtly convex screen — built only from gradients, borders and
+     shadows so nothing here costs a paint pass beyond layout. */
+  .crt-housing {
+    background: linear-gradient(155deg, #17151d 0%, #111014 42%, #0a090d 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+      inset 0 1px 0 rgba(217, 199, 255, 0.07),
+      inset 0 -3px 10px rgba(0, 0, 0, 0.8),
+      0 30px 70px -20px rgba(0, 0, 0, 0.85);
+  }
+
+  .crt-bezel {
+    background: linear-gradient(180deg, #0b0a10, #060509);
+    box-shadow:
+      inset 0 2px 14px rgba(0, 0, 0, 0.92),
+      inset 0 -1px 0 rgba(217, 199, 255, 0.03);
+  }
+
+  /* A centre-weighted radial lift, paired with the vignette below, reads as
+     glass bulging toward the viewer. Shading only — no geometric warp. */
+  .crt-screen {
+    background: radial-gradient(115% 100% at 50% 38%, #171020 0%, #100c18 58%, #0a0710 100%);
+    box-shadow: inset 0 0 46px rgba(0, 0, 0, 0.9);
+  }
+
+  /* Fine, low-opacity scanlines that sit above the text without hiding it. */
+  .crt-scanlines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.24) 0px,
+      rgba(0, 0, 0, 0.24) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  /* Restrained top-centre glass highlight — the visible half of the convex
+     illusion. Straight text, straight housing; only the shading curves. */
+  .crt-convex {
+    background: radial-gradient(70% 56% at 50% 32%, rgba(217, 199, 255, 0.06), transparent 60%);
+  }
+
+  /* Edge falloff that keeps the centre clear for terminal content. */
+  .crt-vignette {
+    background: radial-gradient(122% 110% at 50% 44%, transparent 58%, rgba(0, 0, 0, 0.48) 100%);
+  }
+
+  /* Tight phosphor halation — close to the glyphs, never a broad blur. */
+  .crt-glow {
+    text-shadow: 0 0 6px rgba(169, 112, 255, 0.4);
+  }
+
+  .crt-glow-strong {
+    text-shadow: 0 0 9px rgba(169, 112, 255, 0.6);
+  }
+
+  .crt-cursor {
+    animation: crt-blink 1.1s steps(1, end) infinite;
+  }
+}
+
+@keyframes crt-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* The global reset below only shortens animations; the blinking cursor
+     would land opacity:0. Pin it on as a static block instead. */
+  .crt-cursor {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
   *,
   *::before,
   *::after {
