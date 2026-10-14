@@ -86,8 +86,8 @@ donation page.
 |---|---|---|
 | 1. Discover | `/discover` | Search by name or description, filter by category, sort by supporters or total volume. |
 | 2. Open a community | `/communities/[id]` | Profile: description, active projects, funding goals in MON, supporter count, payout address. |
-| 3. Choose an amount | `/communities/[id]/support` | The backend returns a quote — fee and discount — before anything is signed. |
-| 4. Pay | same | Pick a rail: the **demo wallet** — a seeded USD ledger with no gas, for walking the flow during development — or **on-chain MON** on Monad testnet. Creating a donation intent locks the quoted amount. |
+| 3. Choose an amount | `/communities/[id]/support` | The backend returns a quote before anything is signed: gross amount, any active campaign rebate, platform fee, and what is actually payable. |
+| 4. Pay | same | Pick a rail: the **demo wallet** — a seeded USD ledger with no gas, for walking the flow during development — or **on-chain MON** on Monad testnet. Creating a donation intent locks the quoted amount so it cannot shift before the signature. |
 | 5. Confirm | same | The wallet signs. The transaction hash is reported back so the backend can verify it, and the intent settles to confirmed. |
 | 6. Return later | `/my-supports` | Every contribution with its amount, status, date, and transaction hash. |
 
@@ -105,8 +105,10 @@ your history and basket.
 - **Community directory** — search, category filter, and sorting over live data
 - **Community profiles** — projects, funding goals, supporter counts, and the
   on-chain payout address
-- **Quoted support** — fee and discount are returned and locked before you sign,
-  so the amount cannot shift between quote and confirmation
+- **Quoted support** — the backend returns gross amount, campaign rebate,
+  platform fee, and net payable before you sign. Creating a donation intent
+  locks that quote, so the amount cannot change between the quote and the
+  signature
 - **Two payment rails** — real on-chain MON settlement on Monad testnet, plus a
   **demo wallet** that runs the same flow against a seeded USD ledger with no
   gas. The demo wallet is a development and demonstration aid, not a production
@@ -174,8 +176,8 @@ Being precise about what is and is not on-chain today:
 - **On-chain:** a direct transfer from the supporter's wallet to the community's
   registered payout address. The transaction hash is reported to the backend,
   which verifies it against chain before marking the donation confirmed.
-- **Server-side, not on-chain:** the quote, the fee and discount, and the locked
-  amount for an intent.
+- **Server-side, not on-chain:** the quote, the campaign rebate, the platform
+  fee, and the locked amount for an intent.
 - **Not built yet:** any SUTU smart contract. Contract-based settlement is
   intentionally deferred until the frontend experience is stable, so today SUTU
   moves funds straight to each community's own address rather than routing them
@@ -207,6 +209,7 @@ This project is under active development. Being specific about what exists:
 | Gap | Detail |
 |---|---|
 | **Community self-registration** | Self-registration is the intended model, but no create endpoint or signup flow exists in this repository yet. The directory is currently populated from backend-managed seed data. This is the main gap between the product's two-sided design and what is built. |
+| **Multi-community incentive** | The intended incentive for backing several communities at once is not wired up. The basket creates one intent and one transfer per community without requesting a quote, so no basket-level discount is calculated or shown. The rebate that *is* implemented is per-project campaign, and it only appears in the single-community support flow. |
 | **Mobile wallet connection** | Only an injected-extension connector is registered, so iOS Safari and Android Chrome cannot connect. The MetaMask SDK connector is the fix; until then the connect button points at a desktop download. |
 | **Explorer links** | Transaction detail shows a disabled "View on Explorer" control. |
 | **Saved communities** | Placeholder row on the profile page. |
@@ -218,6 +221,17 @@ This project is under active development. Being specific about what exists:
 Card payments and third-party payment providers, recurring support,
 memberships, community campaigns, recommendation systems, community analytics,
 and social features. These are documented as later work rather than gaps.
+
+---
+
+## Team
+
+| Name | Role |
+|---|---|
+| **Wildan** | Project Manager & Fullstack Developer |
+| **Raihan** | Backend & Smart Contract Developer |
+| **Haidar** | Frontend Developer |
+| **Almaira** | UI Designer |
 
 ---
 
