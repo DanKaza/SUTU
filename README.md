@@ -3,7 +3,7 @@
 
   <h1>SUTU</h1>
   <p><strong>S</strong>upport <strong>U</strong>s <strong>T</strong>ogether</p>
-  <p>One place to find, back, and stay with the Web3 communities you care about.</p>
+  <p><strong>One place. Every community.</strong></p>
 
   <p>
     <img src="https://img.shields.io/badge/Next.js-15.5-000000?style=flat-square&logo=nextdotjs" alt="Next.js 15.5" />
@@ -13,72 +13,190 @@
   </p>
 </div>
 
----
-
 ![The SUTU landing page — the fold, navigation, and the support object](./docs/images/spotlight.webp)
 
-## The problem it solves
+---
 
-Web3 funding is scattered across a dozen tabs. The music collective drops a
-wallet address in a Discord channel. The indie studio runs a separate donation
-page with its own checkout. The mutual-aid group has a form that emails you a
-wallet to send to. You end up holding donation addresses in bookmarks, with no
-way to tell what a project will actually build or whether last month's money
-arrived.
+## Overview
 
-Most of that is unanswerable on purpose. There is no shared profile, no funding
-goal, no history, and no receipt. You are asked for trust before you are given
-evidence.
+SUTU is a consumer-facing platform for discovering and supporting online
+communities, creators, and causes from a single place.
 
-## What SUTU does
+The idea is deliberately plain: someone who wants to back several communities
+should not have to search for each one separately, visit a different website,
+and learn a different support flow every time. SUTU brings discovery and
+support together into one layer.
 
-**Find.** One directory of communities with a profile each — who they are, what
-they are building, what the projects cost, and the payout address on-chain.
-
-**Price it.** Before you pay, `/donations/quote` returns the fee and discount
-breakdown. Creating a donation intent locks that discount so it cannot change
-under you between the quote and the signature.
-
-**Back it.** Two rails, both real. *On-chain* settles in MON over Monad testnet.
-*Demo wallet* runs on a USD ledger with no gas, so you can walk the whole flow
-before spending anything.
-
-**Do it in one go.** A basket holds several communities and settles them in a
-single pass — one signature per community rather than one per tab.
-
-**Keep the record.** Every contribution is written to the intent and confirmed
-against chain. The receipt is verifiable rather than promised, so "did my money
-land" stops being a question you have to ask someone.
-
-## How a support runs
-
-| Route | What happens there |
-|---|---|
-| `/discover` | Search, filter by category, sort by supporters or volume |
-| `/communities/[id]` | Profile — projects, funding goals, payout address |
-| `/communities/[id]/support` | `quote` → `intent` → sign → report tx → confirmed |
-| `/basket` | Several communities, settled in one pass |
-| `/my-supports` | History, per-record detail, transaction hash |
-
-The endpoint behind each step is listed under [Data layer](#data-layer).
+SUTU is being built in the **Monad ecosystem**. Blockchain is treated as
+infrastructure rather than as the interface — it is there because it makes
+multi-recipient settlement and a durable record possible, not because the user
+asked for jargon. The everyday vocabulary stays familiar: discover, support,
+pay, history, profile.
 
 ---
 
-## Stack
+## The problem
 
-| Layer | Choice | Note |
+Two things are fragmented at once, and the friction compounds.
+
+**Discovery is fragmented.** Communities are scattered across Discord, forums,
+social posts, and directories. There is no single place to see what a community
+is actually building.
+
+**Support is fragmented.** Even after you find one, paying it is a new website,
+a new checkout, and often a wallet address copied from a message you cannot
+verify later. There is no shared profile, no funding goal, no history, and no
+receipt.
+
+The result is a lot of small friction: time lost between tabs, no way to tell
+whether money arrived, and no way to keep supporting the same community next
+month without starting over. You are asked for trust before you are given
+evidence.
+
+---
+
+## Our approach
+
+One support layer, with a short path through it:
+
+```
+Find a community  →  choose an amount  →  pay  →  done
+```
+
+**Consumer first.** The product is designed for ordinary users, including people
+who do not think of themselves as crypto users. Terms like RPC, nonce, gas, and
+chain id stay out of the primary journey. `prefers-reduced-motion`, keyboard
+navigation, and honest empty states are treated as part of the feature, not as
+polish.
+
+**Multi-community support is the differentiator.** A basket holds several
+communities and settles them in a single pass, so backing three projects costs
+one visit instead of three. It is what separates SUTU from a single-purpose
+donation page.
+
+---
+
+## How SUTU works
+
+| Step | Route | What happens |
 |---|---|---|
-| Framework | **Next.js 15.5** (App Router, RSC) | `reactStrictMode` on |
-| UI | **React 19** + **TypeScript 5.7** | strict |
-| Styling | **Tailwind CSS 3.4** | tokens live in `tailwind.config.ts`, not in `@theme` |
-| Motion | **Framer Motion 11** | one token file: `lib/motion.ts` |
-| Web3 | **wagmi 3** + **viem 2** | Monad testnet, chain id `10143` |
-| Server state | **TanStack Query 5** | mounted once in `lib/web3/web3-provider.tsx` |
-| Icons | **lucide-react** | |
-| Backend | SUTU REST API behind a same-origin rewrite | see [Data layer](#data-layer) |
+| 1. Discover | `/discover` | Search by name or description, filter by category, sort by supporters or total volume. |
+| 2. Open a community | `/communities/[id]` | Profile: description, active projects, funding goals in MON, supporter count, payout address. |
+| 3. Choose an amount | `/communities/[id]/support` | The backend returns a quote — fee and discount — before anything is signed. |
+| 4. Pay | same | Pick a rail: the **demo wallet** (USD ledger, no gas) or **on-chain MON** on Monad testnet. Creating a donation intent locks the quoted amount. |
+| 5. Confirm | same | The wallet signs. The transaction hash is reported back so the backend can verify it, and the intent settles to confirmed. |
+| 6. Return later | `/my-supports` | Every contribution with its amount, status, date, and transaction hash. |
+
+Backing several communities at once runs through `/basket`: add communities from
+any profile, then settle them together in one flow — one transaction and one
+confirmation per community.
+
+`/profile` shows the connected wallet, its demo balance, and the routes into
+your history and basket.
+
+---
+
+## Key features
+
+- **Community directory** — search, category filter, and sorting over live data
+- **Community profiles** — projects, funding goals, supporter counts, and the
+  on-chain payout address
+- **Quoted support** — fee and discount are returned and locked before you sign,
+  so the amount cannot shift between quote and confirmation
+- **Two payment rails** — a no-gas demo wallet for trying the flow, and real
+  on-chain MON settlement
+- **Support basket** — several communities, one flow
+- **Support history** — per-record detail including the transaction hash
+- **Visible states** — loading, empty, and error states throughout; when the
+  backend is unreachable the UI says so and labels the data it is showing as
+  sample data rather than passing it off as real
+
+---
+
+## Who it is for
+
+- **People who want to back several communities** and are tired of hunting for
+  donation addresses across a dozen tabs
+- **Creators and small collectives** without a polished support page or a
+  dependable way to show what funding went toward
+- **People new to crypto** who want to support a cause without first becoming a
+  blockchain operator
+- **The Monad ecosystem** — communities already building on Monad who need a
+  shared, consumer-facing front door
+
+---
+
+## Technology
+
+| Layer | Choice |
+|---|---|
+| Framework | Next.js 15.5 (App Router, RSC) |
+| UI | React 19 + TypeScript 5.7 (strict) |
+| Styling | Tailwind CSS 3.4 |
+| Motion | Framer Motion 11 |
+| Web3 | wagmi 3 + viem 2 |
+| Server state | TanStack Query 5 |
+| Icons | lucide-react |
+| Backend | SUTU REST API behind a same-origin rewrite |
 
 Typefaces load through `next/font`: **Space Grotesk** for display, **Inter** for
 body, **JetBrains Mono** for figures and technical labels.
+
+### Monad integration
+
+SUTU targets **Monad testnet**, chain id `10143`, with two public RPC endpoints
+behind a fallback so a rate-limited node cannot hang a confirmation forever.
+
+Being precise about what is and is not on-chain today:
+
+- **On-chain:** a direct transfer from the supporter's wallet to the community's
+  payout address. The transaction hash is reported to the backend, which verifies
+  it against chain before marking the donation confirmed.
+- **Server-side, not on-chain:** the quote, the fee and discount, and the locked
+  amount for an intent.
+- **Not built yet:** any SUTU smart contract. Contract-based settlement is
+  intentionally deferred until the frontend experience is stable, so today SUTU
+  moves funds straight to each community's own address rather than routing them
+  through a contract it controls.
+
+---
+
+## Current status
+
+This project is under active development. Being specific about what exists:
+
+### Built and working
+
+| Area | Detail |
+|---|---|
+| Landing | Marketing page with live community data |
+| Directory | Search, category filter, sort, responsive card grid |
+| Profiles | Projects, funding goals, supporter counts, payout address |
+| Support flow | Quote → intent → sign → verify → confirmed |
+| Demo wallet | USD ledger, no gas, funds the whole flow |
+| On-chain rail | Direct MON transfer to the community's payout address |
+| Basket | Several communities settled in one flow |
+| History | List and per-record detail with transaction hash |
+| Profile | Wallet address, demo balance, entry points |
+| States | Loading, empty, error, and a labelled fallback when the backend is down |
+
+### Known gaps
+
+| Gap | Detail |
+|---|---|
+| **Mobile wallet connection** | Only an injected-extension connector is registered, so iOS Safari and Android Chrome cannot connect. The MetaMask SDK connector is the fix; until then the connect button points at a desktop download. |
+| **Explorer links** | Transaction detail shows a disabled "View on Explorer" control. |
+| **Saved communities** | Placeholder row on the profile page. |
+| **Notifications** | No toast or notification system yet. |
+| **Contract settlement** | Deferred; see [Monad integration](#monad-integration). |
+
+### Deliberately out of scope for the MVP
+
+Card payments and third-party payment providers, recurring support,
+memberships, community campaigns, recommendation systems, community analytics,
+and social features. These are documented as later work rather than gaps.
+
+---
 
 ## Getting started
 
@@ -144,142 +262,41 @@ lib/
   web3/               wagmi config, auth context, wallet errors
   mock-data.ts        Seed communities, used only when the API is unreachable
 
-docs/                 Backend contract, design spec, redesign record
+docs/                 Product plan, backend contract, design spec, redesign record
 ```
 
----
+## Implementation notes
 
-## Design system
+Two constraints are load-bearing and easy to undo by accident.
 
-### Colour
+**The page shell lives in one file.** `components/layout/container.tsx` owns the
+1200px column, and `GlobalNav` and `Footer` consume it too, so content on every
+route starts on the same vertical edge as the header. `ContainerNarrow` is the
+reading measure nested inside it for pages that should stay narrow. A new route
+that skips this reintroduces the misalignment.
 
-Defined in `tailwind.config.ts`. The app is dark-only by decision rather than by
-trend — `void` and `ink-950` are both `#07060A`.
+**Motion rules live in `lib/motion.ts`.** Two are not stylistic:
 
-| Token | Value | Role |
-|---|---|---|
-| `ink-950` | `#07060A` | Canvas |
-| `ink-900` | `#0D0B12` | Dark section |
-| `ink-800` | `#17131F` | Raised surface |
-| `ink-700` | `#24202E` | Border |
-| `white` / `ink` | `#F7F5FB` | Headline |
-| `muted` | `#AAA3B6` | Secondary text |
-| `faint` | `#837B8F` | Caption |
-| `violet-400` | `#A78BFA` | Highlight / accent text |
-| `violet-500` | `#8B5CF6` | Primary accent |
-| `violet-700` | `#5B21B6` | Deep glow |
-
-**One accent: violet.** The logo is the only place a wider gradient appears, and
-that is artwork rather than UI.
-
-### Radii, easing, glow
-
-`card` 20px · `section` 32px · `button` 999px · easing
-`cubic-bezier(0.22, 1, 0.36, 1)` exposed as `ease-quintic-out`. Glow is capped
-at the closing CTA rather than used as a surface default.
-
-### Layout shell
-
-`components/layout/container.tsx` is the only place the page shell is defined:
-
-- **`Container`** — the 1200px column with `px-6 sm:px-12`. `GlobalNav` and
-  `Footer` consume it too, so content on every route starts on the same vertical
-  edge as the header. Adding a route that skips it reintroduces the
-  misalignment this exists to prevent.
-- **`ContainerNarrow`** — the reading measure nested inside the column, for pages
-  that should stay narrow: profile, support flow, basket.
-
-### Motion
-
-Every transition comes from `lib/motion.ts`. Two rules are load-bearing:
-
-1. **Entrances never start at `opacity: 0`.** An element painted at zero opacity
-   is not eligible to be the largest contentful paint, so a fade above the fold
-   pushes LCP out by the length of the animation. Entrances start at `0.001`. The
-   `h1` is a single reveal for the same reason — it is never word-staggered.
-2. **No ambient loops.** Motion is triggered by the reader: on scroll, on hover,
-   or on pointer. The fold's light follows the cursor rather than pulsing on a
-   timer, because perpetual motion nobody asked for competes with the copy.
-
-Springs (`softSpring`, `snappySpring`, `heavySpring`) carry anything tracking the
-pointer. The quintic curve is for one-shot entrances.
+1. *Entrances never start at `opacity: 0`.* A zero-opacity element is not
+   eligible to be the largest contentful paint, so a fade above the fold pushes
+   LCP out by the animation length. Entrances start at `0.001`.
+2. *No ambient loops.* Motion is triggered by the reader — on scroll, hover, or
+   pointer. The fold's light follows the cursor instead of pulsing on a timer,
+   because perpetual motion nobody asked for competes with the copy.
 
 `MotionProvider` sets `MotionConfig reducedMotion="always"`, so
-`prefers-reduced-motion` drops transform animations while opacity fades remain.
-`app/globals.css` carries a second net for motion that runs outside that
-context; `.motion-live` opts out anything functional — the nav scroll-progress
-line — which has to keep tracking.
+`prefers-reduced-motion` drops transform animations while keeping opacity fades.
 
----
-
-## Data layer
-
-`lib/community-data.ts` is the single read path for communities. It calls
-`fetchCommunities()` and `fetchStats()` in parallel, falls back to
-`lib/mock-data.ts` if either fails, and reports which it used through
-`isFallback`.
-
-| Endpoint | Auth | Used by |
-|---|---|---|
-| `GET /health` | key | status check |
-| `GET /communities` | key | directory, landing rail, hero object |
-| `GET /communities/:slug` | key | community profile |
-| `GET /stats` | key | supporter counts and totals |
-| `POST /donations/quote` | key | support flow — discount preview |
-| `POST /donations/intents` | key + wallet | locks the discount before payment |
-| `POST /donations/intents/:id/tx` | key + wallet | reports a broadcast hash for instant confirm |
-| `GET /users/me`, `/wallet/*`, `/donations/mine` | key + wallet | profile, basket, history |
-
-Identity travels in the `x-wallet-address` header rather than SIWE. The
-documented SIWE routes were never deployed, so `lib/api/endpoints.ts` records
-them as absent instead of importing functions that would 404.
-
-**The fallback is visible.** When the API is unreachable the UI shows seed data
-labelled as sample data. `/stats` counts confirmed donations only, so a community
-with nothing confirmed reads "No supporters yet" rather than a flat `0`.
-
-### Wei handling
-
-On-chain values are **decimal strings**, and every calculation goes through
-`BigInt`. `parseFloat` on a wei value loses precision. `lib/api/format.ts` holds
-the converters — format at the point of display, never in storage.
-
----
-
-## Brand asset
-
-`public/brand/sutu-mark.png` is the supplied artwork with its transparent margin
-trimmed. The original 2000×2000 held the mark in only 1512×1297 of that, so
-untrimmed it rendered at roughly 65% of whatever box it was given, sitting
-bottom-heavy inside it.
-
-`public/brand/sutu_logo.png` is the untouched original — re-run the trim if the
-artwork is ever replaced. `BrandLogo` renders the mark, and its `alt` stays
-`"SUTU"`, because the image is now the only place the product is named.
-
-## Known issues
-
-- **Wallet connection is desktop-only right now.** `lib/web3/config.ts`
-  registers a single `injected()` connector, which needs a browser extension to
-  exist. iOS Safari and Android Chrome have no extension model, so `signIn()`
-  refuses and the connect button points at a desktop download. The fix is the
-  `metaMask()` connector, which deep-links into the MetaMask mobile app and falls
-  back to a QR code on desktop.
-- **`auth-context.tsx` picks `connectors[0]` by index.** Harmless with one
-  connector, wrong the moment a second one is registered.
-- **Community slugs are live.** `/communities/lofi-collective` existed only in
-  seed data. With the API reachable the real slugs — `beatforge`,
-  `pixelpilgrims`, `rinjai-aid` — are what resolve, and anything absent from
-  `GET /communities` 404s.
-- **`Card` uses the `glass` utility** (16px blur), and `GlobalNav` blurs too once
-  scrolled. Each is within the dose cap alone, but they are the app's two frosted
-  surfaces at the same time.
+**On-chain values are decimal strings.** Every calculation goes through `BigInt`;
+`parseFloat` on a wei value loses precision. `lib/api/format.ts` holds the
+converters — format at the point of display, never in storage.
 
 ## Documentation
 
 | File | What it holds |
 |---|---|
+| `docs/plan.md` | Product plan: vision, scope, user journey, MVP boundaries |
 | `docs/backend.md` | Backend contract, proxy layout, status log |
 | `docs/backend_update.md` | Endpoint and auth rules |
-| `docs/sutu_desain_spesification.md` | Original design specification |
+| `docs/sutu_desain_spesifikation.md` | Original design specification |
 | `docs/redesign-landing.md` | Landing redesign record, measurements, decisions |
