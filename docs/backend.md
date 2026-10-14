@@ -17,13 +17,13 @@
            ▼
 ┌─────────────────────────────┐
 │  Next.js (rewrites proxy)   │   next.config.ts:
-│  /api/v1/:path*  ─────────► │   https://sutu.tixrouter.my.id/api/v1/:path*
-│  /health         ─────────► │   https://sutu.tixrouter.my.id/health
+│  /api/v1/:path*  ─────────► │   https://sutu.rynaqrtz.my.id/api/v1/:path*
+│  /health         ─────────► │   https://sutu.rynaqrtz.my.id/health
 └──────────┬──────────────────┘
            │
            ▼
 ┌──────────────────────────────────────────────────────┐
-│  SUTU Backend (https://sutu.tixrouter.my.id)         │
+│  SUTU Backend (https://sutu.rynaqrtz.my.id)          │
 │  ┌────────────┐ ┌─────────────┐ ┌─────────────────┐  │
 │  │ REST API   │ │ Demo Wallet │ │ On-chain Watcher│  │
 │  │ /api/v1/*  │ │ Ledger (USD)│ │ (Monad testnet) │  │
@@ -105,7 +105,24 @@ Frontend membungkus semua kegagalan non-2xx ke `ApiError` (`lib/api/client.ts`),
 
 ## 4. Katalog Endpoint
 
-Base: `https://sutu.tixrouter.my.id` (via proxy `/api/v1`). Semua request wajib `x-api-key`.
+Base: `https://sutu.rynaqrtz.my.id` (via proxy `/api/v1`). Semua request wajib `x-api-key`,
+termasuk `/health`. Host dapat dioverride lewat `NEXT_PUBLIC_SUTU_API_ORIGIN` (lihat
+`.env.example`); nilai kode saat ini tetap menjadi fallback.
+
+> **Status 14 Okt 2026 — host pindah, backend jalan.** `sutu.tixrouter.my.id`
+> sudah **tidak dipakai** (membalas 404 untuk semua path). Host aktif sekarang
+> `https://sutu.rynaqrtz.my.id`, didokumentasikan di `implementation_backend.md`:
+> Cloudflare tunnel, origin bind ke `127.0.0.1:3000`.
+>
+> Diverifikasi 14 Okt 2026: `/health` dan `/api/v1/communities` membalas **200**
+> dengan `x-api-key` yang benar (`db: up`, `cache: up`, `monadRpc: up`). Tanpa key
+> keduanya membalas **401** — jadi host ini hidup dan gerbang key-nya yang
+> menolak, bukan origin yang mati seperti pada catatan 13 Okt.
+>
+> Katalog sekarang berisi 20 komunitas demo (`beatforge`, `pixelpilgrims`, …), jadi
+> `/discover`, `/communities/[id]`, `/basket`, dan `/support` berjalan di data
+> live. `lib/mock-data.ts` tetap ada sebagai fallback ketika request gagal;
+> fallback itu tidak lagi menampilkan label apa pun di UI.
 
 | Method | Path | Identitas | Fungsi | Dipakai di frontend |
 |---|---|---|---|---|
