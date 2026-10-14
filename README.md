@@ -20,18 +20,22 @@
 ## Overview
 
 SUTU is a consumer-facing platform for discovering and supporting online
-communities, creators, and causes from a single place.
+communities from a single place.
+
+It is two-sided. Communities register on SUTU and publish what they are
+building, with a payout address and funding goals. Supporters find those
+communities in one directory and back them without leaving the app. SUTU moves
+money from a supporter to a community's own address and keeps the record.
 
 The idea is deliberately plain: someone who wants to back several communities
 should not have to search for each one separately, visit a different website,
 and learn a different support flow every time. SUTU brings discovery and
 support together into one layer.
 
-SUTU is being built in the **Monad ecosystem**. Blockchain is treated as
-infrastructure rather than as the interface — it is there because it makes
-multi-recipient settlement and a durable record possible, not because the user
-asked for jargon. The everyday vocabulary stays familiar: discover, support,
-pay, history, profile.
+Blockchain is treated as infrastructure rather than as the interface — it is
+there because it makes multi-recipient settlement and a durable record
+possible, not because the user asked for jargon. The everyday vocabulary stays
+familiar: discover, support, pay, history, profile.
 
 ---
 
@@ -83,7 +87,7 @@ donation page.
 | 1. Discover | `/discover` | Search by name or description, filter by category, sort by supporters or total volume. |
 | 2. Open a community | `/communities/[id]` | Profile: description, active projects, funding goals in MON, supporter count, payout address. |
 | 3. Choose an amount | `/communities/[id]/support` | The backend returns a quote — fee and discount — before anything is signed. |
-| 4. Pay | same | Pick a rail: the **demo wallet** (USD ledger, no gas) or **on-chain MON** on Monad testnet. Creating a donation intent locks the quoted amount. |
+| 4. Pay | same | Pick a rail: the **demo wallet** — a seeded USD ledger with no gas, for walking the flow during development — or **on-chain MON** on Monad testnet. Creating a donation intent locks the quoted amount. |
 | 5. Confirm | same | The wallet signs. The transaction hash is reported back so the backend can verify it, and the intent settles to confirmed. |
 | 6. Return later | `/my-supports` | Every contribution with its amount, status, date, and transaction hash. |
 
@@ -103,8 +107,10 @@ your history and basket.
   on-chain payout address
 - **Quoted support** — fee and discount are returned and locked before you sign,
   so the amount cannot shift between quote and confirmation
-- **Two payment rails** — a no-gas demo wallet for trying the flow, and real
-  on-chain MON settlement
+- **Two payment rails** — real on-chain MON settlement on Monad testnet, plus a
+  **demo wallet** that runs the same flow against a seeded USD ledger with no
+  gas. The demo wallet is a development and demonstration aid, not a production
+  payment method
 - **Support basket** — several communities, one flow
 - **Support history** — per-record detail including the transaction hash
 - **Visible states** — loading, empty, and error states throughout; when the
@@ -115,14 +121,24 @@ your history and basket.
 
 ## Who it is for
 
-- **People who want to back several communities** and are tired of hunting for
+**Supporters**
+
+- People who want to back several communities and are tired of hunting for
   donation addresses across a dozen tabs
-- **Creators and small collectives** without a polished support page or a
-  dependable way to show what funding went toward
-- **People new to crypto** who want to support a cause without first becoming a
+- People new to crypto who want to support a cause without first becoming a
   blockchain operator
-- **The Monad ecosystem** — communities already building on Monad who need a
-  shared, consumer-facing front door
+
+**Communities**
+
+- Creators and small collectives without a polished support page or a
+  dependable way to show what funding went toward
+- Groups already building on Monad that need a shared, consumer-facing front
+  door
+- Any community that can publish a payout address and wants to receive support
+  without standing up its own checkout
+
+The two sides meet in the directory: a registered community appears in search
+and gets a profile; a supporter backs it without ever handling a raw address.
 
 ---
 
@@ -147,11 +163,17 @@ body, **JetBrains Mono** for figures and technical labels.
 SUTU targets **Monad testnet**, chain id `10143`, with two public RPC endpoints
 behind a fallback so a rate-limited node cannot hang a confirmation forever.
 
+**Why Monad:** SUTU is being built as a hackathon entry in the Monad ecosystem,
+so the chain is a fixed constraint of the brief rather than a result of
+benchmarking. The design leans on what the chain makes possible — cheap,
+multi-recipient settlement and a durable record — without making the user
+engage with any of it.
+
 Being precise about what is and is not on-chain today:
 
 - **On-chain:** a direct transfer from the supporter's wallet to the community's
-  payout address. The transaction hash is reported to the backend, which verifies
-  it against chain before marking the donation confirmed.
+  registered payout address. The transaction hash is reported to the backend,
+  which verifies it against chain before marking the donation confirmed.
 - **Server-side, not on-chain:** the quote, the fee and discount, and the locked
   amount for an intent.
 - **Not built yet:** any SUTU smart contract. Contract-based settlement is
@@ -173,7 +195,7 @@ This project is under active development. Being specific about what exists:
 | Directory | Search, category filter, sort, responsive card grid |
 | Profiles | Projects, funding goals, supporter counts, payout address |
 | Support flow | Quote → intent → sign → verify → confirmed |
-| Demo wallet | USD ledger, no gas, funds the whole flow |
+| Demo wallet | Seeded USD ledger, no gas — **demonstration only**, not a production payment rail |
 | On-chain rail | Direct MON transfer to the community's payout address |
 | Basket | Several communities settled in one flow |
 | History | List and per-record detail with transaction hash |
@@ -184,6 +206,7 @@ This project is under active development. Being specific about what exists:
 
 | Gap | Detail |
 |---|---|
+| **Community self-registration** | Self-registration is the intended model, but no create endpoint or signup flow exists in this repository yet. The directory is currently populated from backend-managed seed data. This is the main gap between the product's two-sided design and what is built. |
 | **Mobile wallet connection** | Only an injected-extension connector is registered, so iOS Safari and Android Chrome cannot connect. The MetaMask SDK connector is the fix; until then the connect button points at a desktop download. |
 | **Explorer links** | Transaction detail shows a disabled "View on Explorer" control. |
 | **Saved communities** | Placeholder row on the profile page. |
