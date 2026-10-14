@@ -6,7 +6,7 @@ SUTU puts community discovery, backing, and on-chain record-keeping in a single
 dark-editorial interface. Payments settle on **Monad testnet**; every contribution
 is recorded on-chain, so the record *is* the receipt.
 
-![SUTU spotlight — hero, navigation, and the support object](./docs/images/spotlight.png)
+![SUTU spotlight — the fold, navigation, and the support object](./docs/images/spotlight.webp)
 
 ---
 
