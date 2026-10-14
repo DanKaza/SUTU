@@ -1,185 +1,248 @@
 ---
 name: design-system
-description: Comprehensive system design skill - triggered when designing new systems, features, or architectures. Uses the 4-step framework from Alex Xu with knowledge from DDIA, Clean Architecture, and distributed systems best practices. Scales depth to the project's Complexity level (Simple/Medium/Complex).
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch, WebSearch, Agent
+description: Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations.
+argument-hint: "[component or token]"
+license: MIT
+metadata:
+  author: claudekit
+  version: "1.0.0"
 ---
 
-# System Design Skill
+# Design System
 
-You are designing a new system. The depth of your design output scales to the
-project's **Complexity** level (see Rule 21).
+Token architecture, component specifications, systematic design, slide generation.
 
-## Read Complexity First
+## When to Use
 
-Before doing anything:
-1. Check for active project in `projects/<name>/PROJECT.md`
-2. Read the `**Complexity**:` field (Simple | Medium | Complex)
-3. If no project or no complexity, ASK the user
-4. Apply the right depth (outlined below)
+- Design token creation
+- Component state definitions
+- CSS variable systems
+- Spacing/typography scales
+- Design-to-code handoff
+- Tailwind theme configuration
+- **Slide/presentation generation**
 
-## By Complexity
+## Token Architecture
 
-### Simple — fast design, start coding fast
+Load: `references/token-architecture.md`
 
-Produce ONE architecture diagram (drawn as ASCII in chat, saved as Mermaid to file — Rule 20), a component list,
-and 3-5 key endpoints. No requirements/estimation/deep-dive.
+### Three-Layer Structure
 
-### Medium — light 4-step
-
-Steps 1-2 of the framework, with a shallow deep-dive. Render 2 diagrams inline
-(architecture + data flow).
-
-### Complex — full 4-step + production readiness
-
-All four steps. Enter Discovery phase first.
-
-## Discovery Phase (Complex only)
-
-When a project starts, enter Discovery mode:
-1. Ask the user to describe their idea in their own words
-2. Ask clarifying questions: Who are the users? What problem does it solve? What scale?
-3. Discuss and debate the approach freely
-4. Research open source alternatives (/opensource)
-5. Draw diagrams as understanding develops — **ASCII in chat (Rule 20) + Mermaid saved to file**:
-   - Architecture diagrams -> save to `projects/<project>/discovery/diagrams/architecture.md`
-   - Data flow diagrams -> save to `projects/<project>/discovery/diagrams/data-flow.md`
-   - ER diagrams -> save to `projects/<project>/discovery/diagrams/er-diagram.md`
-6. Save discussion notes to `projects/<project>/discovery/DISCUSSION.md`
-7. Save draft requirements to `projects/<project>/discovery/requirements-draft.md`
-8. Do NOT create plans or write code until user says "start planning"
-
-### Mermaid Diagram Format (Rule 20)
-
-Always use this format — subgraphs, comments, labeled edges, renders inline in chat:
-
-````markdown
-```mermaid
-%% <System Name> — <Diagram purpose>
-graph TB
-    subgraph Client
-        Web[Web App]
-        Mobile[Mobile App]
-    end
-    subgraph Backend
-        LB[Load Balancer]
-        API[API Server]
-    end
-    subgraph Data
-        DB[(PostgreSQL)]
-        Cache[(Redis)]
-        Q[[Message Queue]]
-    end
-    subgraph Workers
-        W[Background Worker]
-    end
-
-    Web --> LB
-    Mobile --> LB
-    LB --> API
-    API --> DB
-    API --> Cache
-    API --> Q
-    Q --> W
 ```
-````
+Primitive (raw values)
+       ↓
+Semantic (purpose aliases)
+       ↓
+Component (component-specific)
+```
 
-Node shapes:
-- `[Rect]` — services
-- `[(Cylinder)]` — databases
-- `[[Queue]]` — message queues
-- `{Diamond}` — decisions/gateways
-- `((Circle))` — external/third-party
-- Label edges with protocol: `-->|REST|`, `-->|gRPC|`, `-->|Kafka|`
+**Example:**
+```css
+/* Primitive */
+--color-blue-600: #2563EB;
 
-## Pre-Design Checklist
-Before formal design (after discovery):
-1. Identify if this resembles a known system design pattern (check knowledge base — project first, then global)
-2. Understand the domain and business context from discovery notes
-3. Confirm requirements with the user from discovery/requirements-draft.md
+/* Semantic */
+--color-primary: var(--color-blue-600);
 
-## Step 1: Requirements & Scope
+/* Component */
+--button-bg: var(--color-primary);
+```
 
-### Functional Requirements
-Ask the user to confirm:
-- What are the core features? (must-have vs nice-to-have)
-- Who are the users? (end users, admins, internal services)
-- What are the main use cases?
+## Script Paths
 
-### Non-Functional Requirements
-Define explicitly as a table (inline in chat):
+Script paths in this skill and its `references/` are relative to the directory that contains this SKILL.md, not to the project: `scripts/<file>` is this skill's own `scripts/` folder, and `../<skill>/scripts/<file>` is a sibling sub-skill installed alongside it. Build the full path from that directory (Claude Code reports it as the skill's base directory when the skill loads) and keep the working directory at the project root — the scripts read and write project files such as `docs/brand-guidelines.md`, `assets/design-tokens.json` or `src/` relative to it.
 
-| Requirement | Target |
-|-------------|--------|
-| Scale | DAU, peak concurrent |
-| Latency | p99 target |
-| Availability | SLA |
-| Consistency | Strong / eventual |
-| Durability | Data loss tolerance |
+## Quick Start
 
-### Back-of-Envelope Estimation
-Calculate: QPS, storage, bandwidth, cache size, server count. Show as a table
-with the formula used for each number.
+**Generate tokens:**
+```bash
+node scripts/generate-tokens.cjs --config tokens.json -o tokens.css
+```
 
-## Step 2: High-Level Design
+**Validate usage:**
+```bash
+node scripts/validate-tokens.cjs --dir src/
+```
 
-### API Design
-- Render the endpoint list as a Markdown table
-- RESTful by default (GraphQL for flexible client queries, gRPC for internal)
-- Version all APIs from day 1
-- Include auth, rate limiting, pagination, idempotency
+## References
 
-### Data Model
-- Choose database based on access patterns (see rules/09-data-model.md)
-- Design schema with proper indexes
-- Render as a table: `| Table | Column | Type | Constraints | Index |`
-- Include an ER diagram as ASCII in chat; full Mermaid `erDiagram` saved in the file (Rule 20)
+| Topic | File |
+|-------|------|
+| Token Architecture | `references/token-architecture.md` |
+| Primitive Tokens | `references/primitive-tokens.md` |
+| Semantic Tokens | `references/semantic-tokens.md` |
+| Component Tokens | `references/component-tokens.md` |
+| Component Specs | `references/component-specs.md` |
+| States & Variants | `references/states-and-variants.md` |
+| Tailwind Integration | `references/tailwind-integration.md` |
 
-### Architecture
-Draw the component diagram as ASCII in chat, save Mermaid to file (Rule 20). Show:
-- Client -> CDN -> Load Balancer -> API Gateway
-- API Servers (stateless) -> Cache -> Database
-- Message Queue -> Workers
-- Object Storage, Search Engine, etc.
+## Component Spec Pattern
 
-## Step 3: Deep Dive
+| Property | Default | Hover | Active | Disabled |
+|----------|---------|-------|--------|----------|
+| Background | primary | primary-dark | primary-darker | muted |
+| Text | white | white | white | muted-fg |
+| Border | none | none | none | muted-border |
+| Shadow | sm | md | none | none |
 
-Select 2-3 critical components and design in detail:
-- Algorithm and data structure choices
-- Technology selection with trade-off analysis (as a table)
-- Failure modes and recovery
-- Scaling approach
+## Scripts
 
-### Reference Patterns (from books)
-Apply these patterns where appropriate:
-- **Fan-Out** (News Feed): Push for normal users, pull for celebrities
-- **URL Shortening**: Base62 encoding, 301 vs 302 redirects
-- **Rate Limiting**: Token Bucket with Redis
-- **Chat**: WebSocket, message sync queue, presence service
-- **Search Autocomplete**: Trie with top-K caching
-- **Payment**: Idempotency, double-entry bookkeeping, reconciliation
-- **File Sync**: Block-level delta sync, conflict resolution
-- **Video**: DAG transcoding, adaptive bitrate, CDN
-- **Leaderboard**: Redis Sorted Sets
-- **Proximity**: Geohash or Quadtree
-- **Stock Exchange**: Single-server, shared memory, sequential processing
+| Script | Purpose |
+|--------|---------|
+| `generate-tokens.cjs` | Generate CSS from JSON token config |
+| `validate-tokens.cjs` | Check for hardcoded values in code |
+| `search-slides.py` | BM25 search + contextual recommendations |
+| `slide-token-validator.py` | Validate slide HTML for token compliance |
+| `fetch-background.py` | Fetch images from Pexels/Unsplash |
 
-## Step 4: Production Readiness
+## Templates
 
-Address all items from the checklist command.
-Focus on: failure scenarios, monitoring, security, scaling plan.
+| Template | Purpose |
+|----------|---------|
+| `design-tokens-starter.json` | Starter JSON with three-layer structure |
 
-All outputs rendered inline as tables (Rule 20).
+## Integration
 
-## Output
+**With brand:** Extract primitives from brand colors/typography
+**With ui-styling:** Component tokens → Tailwind config
 
-- Render all diagrams/tables inline in chat
-- Use the System Design Document template in `.claude/skills/design-system/templates/`
-- Save to `projects/<active>/design/DESIGN.md`
+**Skill Dependencies:** brand, ui-styling
+**Primary Agents:** ui-ux-designer, frontend-developer
 
-## Research Mode
+## Slide System
 
-If the design involves technologies you're not confident about:
-1. Search the web for latest best practices
-2. Check official documentation
-3. Look for real-world case studies
-4. Update recommendations based on findings
+Brand-compliant presentations using design tokens + Chart.js + contextual decision system.
+
+### Source of Truth
+
+| File | Purpose |
+|------|---------|
+| `docs/brand-guidelines.md` | Brand identity, voice, colors |
+| `assets/design-tokens.json` | Token definitions (primitive→semantic→component) |
+| `assets/design-tokens.css` | CSS variables (import in slides) |
+| `assets/css/slide-animations.css` | CSS animation library |
+
+### Slide Search (BM25)
+
+```bash
+# Basic search (auto-detect domain)
+python scripts/search-slides.py "investor pitch"
+
+# Domain-specific search
+python scripts/search-slides.py "problem agitation" -d copy
+python scripts/search-slides.py "revenue growth" -d chart
+
+# Contextual search (Premium System)
+python scripts/search-slides.py "problem slide" --context --position 2 --total 9
+python scripts/search-slides.py "cta" --context --position 9 --prev-emotion frustration
+```
+
+### Decision System CSVs
+
+| File | Purpose |
+|------|---------|
+| `data/slide-strategies.csv` | 15 deck structures + emotion arcs + sparkline beats |
+| `data/slide-layouts.csv` | 25 layouts + component variants + animations |
+| `data/slide-layout-logic.csv` | Goal → Layout + break_pattern flag |
+| `data/slide-typography.csv` | Content type → Typography scale |
+| `data/slide-color-logic.csv` | Emotion → Color treatment |
+| `data/slide-backgrounds.csv` | Slide type → Image category (Pexels/Unsplash) |
+| `data/slide-copy.csv` | 25 copywriting formulas (PAS, AIDA, FAB) |
+| `data/slide-charts.csv` | 25 chart types with Chart.js config |
+
+### Contextual Decision Flow
+
+```
+1. Parse goal/context
+        ↓
+2. Search slide-strategies.csv → Get strategy + emotion beats
+        ↓
+3. For each slide:
+   a. Query slide-layout-logic.csv → layout + break_pattern
+   b. Query slide-typography.csv → type scale
+   c. Query slide-color-logic.csv → color treatment
+   d. Query slide-backgrounds.csv → image if needed
+   e. Apply animation class from slide-animations.css
+        ↓
+4. Generate HTML with design tokens
+        ↓
+5. Validate with slide-token-validator.py
+```
+
+### Pattern Breaking (Duarte Sparkline)
+
+Premium decks alternate between emotions for engagement:
+```
+"What Is" (frustration) ↔ "What Could Be" (hope)
+```
+
+System calculates pattern breaks at 1/3 and 2/3 positions.
+
+### Slide Requirements
+
+**ALL slides MUST:**
+1. Import `assets/design-tokens.css` - single source of truth
+2. Use CSS variables: `var(--color-primary)`, `var(--slide-bg)`, etc.
+3. Use Chart.js for charts (NOT CSS-only bars)
+4. Include navigation (keyboard arrows, click, progress bar)
+5. Center align content
+6. Focus on persuasion/conversion
+
+### Chart.js Integration
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<canvas id="revenueChart"></canvas>
+<script>
+new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+        labels: ['Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            data: [5, 12, 28, 45],
+            borderColor: '#FF6B6B',  // Use brand coral
+            backgroundColor: 'rgba(255, 107, 107, 0.1)',
+            fill: true,
+            tension: 0.4
+        }]
+    }
+});
+</script>
+```
+
+### Token Compliance
+
+```css
+/* CORRECT - uses token */
+background: var(--slide-bg);
+color: var(--color-primary);
+font-family: var(--typography-font-heading);
+
+/* WRONG - hardcoded */
+background: #0D0D0D;
+color: #FF6B6B;
+font-family: 'Space Grotesk';
+```
+
+### Reference Implementation
+
+Working example with all features:
+```
+assets/designs/slides/claudekit-pitch-251223.html
+```
+
+### Command
+
+```bash
+/slides:create "10-slide investor pitch for ClaudeKit Marketing"
+```
+
+## Best Practices
+
+1. Never use raw hex in components - always reference tokens
+2. Semantic layer enables theme switching (light/dark)
+3. Component tokens enable per-component customization
+4. Use HSL format for opacity control
+5. Document every token's purpose
+6. **Slides must import design-tokens.css and use var() exclusively**
