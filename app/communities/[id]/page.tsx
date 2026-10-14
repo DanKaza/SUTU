@@ -8,8 +8,9 @@ import { ArrowLeft, Check, ShoppingBasket } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Container, ContainerNarrow } from "@/components/layout/container";
 import { useCommunity } from "@/lib/community-data";
-import { displayMon, formatMon } from "@/lib/api/format";
+import { displayMon, formatMon, formatNumber } from "@/lib/api/format";
 import { fadeInUp } from "@/lib/motion";
 import { useAppState } from "@/lib/app-state";
 
@@ -22,7 +23,8 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
 
   if (isLoading || !community) {
     return (
-      <div className="mx-auto min-h-[580px] max-w-3xl px-6 py-16">
+      <Container className="py-16">
+        <ContainerNarrow width="max-w-3xl">
         <Card className="p-8">
           <div className="flex items-center gap-4">
             <div className="h-16 w-16 animate-pulse rounded-full bg-white/[0.06]" />
@@ -33,7 +35,8 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
             <div className="h-4 w-3/4 animate-pulse rounded bg-white/[0.06]" />
           </div>
         </Card>
-      </div>
+        </ContainerNarrow>
+      </Container>
     );
   }
 
@@ -41,7 +44,8 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
   const activeProjects = projects.filter((p) => p.is_active);
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
+    <Container className="py-16">
+      <ContainerNarrow width="max-w-3xl">
       <Link
         href="/discover"
         className="flex items-center gap-1 font-body text-sm font-medium text-muted hover:text-ink"
@@ -53,7 +57,7 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
       <motion.div variants={fadeInUp} initial="hidden" animate="show" className="mt-6">
         <Card className="p-8">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-ink font-display text-xl font-bold text-void">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-ink-800 font-display text-xl font-bold text-ink">
               {community.logoInitial}
             </div>
             <div>
@@ -67,7 +71,7 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
           <div className="mt-6 grid grid-cols-2 gap-4 sm:w-64">
             <div>
               <p className="font-display text-xl font-bold text-ink">
-                {community.supporterCount.toLocaleString()}
+                {formatNumber(community.supporterCount)}
               </p>
               <p className="font-body text-xs text-muted">Supporters</p>
             </div>
@@ -129,6 +133,7 @@ export default function CommunityDetailPage({ params }: { params: Promise<{ id: 
           </div>
         </Card>
       </motion.div>
-    </div>
+      </ContainerNarrow>
+    </Container>
   );
 }

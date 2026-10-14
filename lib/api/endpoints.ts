@@ -7,7 +7,6 @@ import type {
   DonationRecord,
   DonationTxReport,
   MeResponse,
-  Paginated,
   StatsResponse,
   WalletBalance,
   WalletHistoryEntry,
@@ -61,10 +60,15 @@ export function fetchDonationIntent(intentId: string) {
   return apiGet<DonationRecord>(`/donations/intents/${encodeURIComponent(intentId)}`, { auth: true });
 }
 
-/** List endpoints unwrap the backend's Paginated envelope into { data, meta }. */
+/**
+ * List endpoints put the page in the envelope's `data` and the counters in
+ * `meta`. `apiGet` has already unwrapped that envelope, so `res.data` IS the
+ * array — reaching for `res.data.data` returned undefined and silently emptied
+ * every history list on My Supports.
+ */
 export async function fetchMyDonations(limit = 20, offset = 0) {
-  const res = await apiGet<Paginated<DonationRecord>>(`/donations/mine?limit=${limit}&offset=${offset}`, { auth: true });
-  return { data: res.data.data ?? [], meta: res.data.meta };
+  const res = await apiGet<DonationRecord[]>(`/donations/mine?limit=${limit}&offset=${offset}`, { auth: true });
+  return { data: res.data ?? [], meta: res.meta };
 }
 
 // Demo wallet
@@ -84,13 +88,13 @@ export function transferFromWallet(input: {
 }
 
 export async function fetchWalletHistory(limit = 20, offset = 0) {
-  const res = await apiGet<Paginated<WalletHistoryEntry>>(`/wallet/history?limit=${limit}&offset=${offset}`, { auth: true });
-  return { data: res.data.data ?? [], meta: res.data.meta };
+  const res = await apiGet<WalletHistoryEntry[]>(`/wallet/history?limit=${limit}&offset=${offset}`, { auth: true });
+  return { data: res.data ?? [], meta: res.meta };
 }
 
 export async function fetchWalletTransfers(limit = 20, offset = 0) {
-  const res = await apiGet<Paginated<WalletTransferRecord>>(`/wallet/transfers?limit=${limit}&offset=${offset}`, { auth: true });
-  return { data: res.data.data ?? [], meta: res.data.meta };
+  const res = await apiGet<WalletTransferRecord[]>(`/wallet/transfers?limit=${limit}&offset=${offset}`, { auth: true });
+  return { data: res.data ?? [], meta: res.meta };
 }
 
 // Stats (public)

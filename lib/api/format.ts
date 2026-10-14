@@ -39,9 +39,14 @@ export function parseMon(value: string | number): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/** Format a plain count for display, e.g. 12400 -> "12,400". */
+export function formatNumber(value: string | number): string {
+  return parseMon(value).toLocaleString();
+}
+
 /** Format a MON total for display, e.g. 12400 -> "12,400". */
 export function displayMon(value: string | number): string {
-  return parseMon(value).toLocaleString();
+  return formatNumber(value);
 }
 
 /** Map backend donation status to UI state. */

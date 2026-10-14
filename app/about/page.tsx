@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { fadeInUp, hoverInteraction, orientationTransition, staggerContainer } from "@/lib/motion";
+import { Container, ContainerNarrow } from "@/components/layout/container";
+import { fadeInUp, hoverInteraction, orientationTransition, staggerContainer, viewportOnce } from "@/lib/motion";
 
 const WHY_SUTU = [
   {
@@ -35,7 +36,8 @@ const WHY_SUTU = [
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16">
+    <Container className="py-16">
+      <ContainerNarrow width="max-w-5xl">
       <motion.div variants={fadeInUp} initial="hidden" animate="show" className="max-w-2xl">
         <h1 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
           About SUTU
@@ -54,7 +56,7 @@ export default function AboutPage() {
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={viewportOnce}
           className="mt-5 grid gap-5 sm:grid-cols-2"
         >
           {WHY_SUTU.map((p) => (
@@ -73,7 +75,7 @@ export default function AboutPage() {
         variants={fadeInUp}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={viewportOnce}
       >
         <Card className="mt-14 flex flex-col items-start justify-between gap-4 bg-white/5 p-8 sm:flex-row sm:items-center">
           <div>
@@ -87,6 +89,7 @@ export default function AboutPage() {
           </Link>
         </Card>
       </motion.div>
-    </div>
+    </ContainerNarrow>
+    </Container>
   );
 }

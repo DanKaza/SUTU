@@ -1,10 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { Compass, ShieldCheck, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { revealUp, staggerGroup, cardHover } from "@/lib/motion";
+import { revealUp, iconPop, staggerGroup, staggerGroupImmediate, viewportOnce } from "@/lib/motion";
 
 const BENEFITS = [
   {
@@ -24,83 +22,67 @@ const BENEFITS = [
   },
 ];
 
+/**
+ * A fact strip, not a card grid.
+ *
+ * Three equal cards would give every item the same weight, which leaves the eye
+ * nowhere to land; the decorative orb cluster that used to sit beside the copy
+ * was also the page's second accent.
+ *
+ * The three items are verbs — find, keep, trust — so they arrive on a wider
+ * stagger than the other sections. A sequence you can read is the difference
+ * between a list of features and an argument.
+ *
+ * Each item answers the pointer with its glyph only: the mark takes the accent
+ * and lifts, the copy stays put. A whole column that moves under the cursor
+ * pulls the eye off the sentence it is trying to read.
+ */
 export function BenefitsSection() {
   return (
     <section>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <motion.div
-          variants={staggerGroup}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="lg:col-span-5 flex flex-col items-start"
-        >
-          <motion.h2 
-            variants={revealUp}
-            className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.05] text-white"
-          >
-              Support that compounds.
-          </motion.h2>
-          <motion.p 
-            variants={revealUp}
-            className="mt-6 font-body text-base sm:text-lg leading-relaxed text-muted"
-          >
-            Back communities that have a rhythm, a purpose and shared values — not another loud
-            channel nobody reads.
-          </motion.p>
-          <motion.div variants={revealUp} className="mt-8">
-            <Link href="/discover">
-              <Button className="h-12 px-7 text-[15px] font-semibold">
-                Find a community
-              </Button>
-            </Link>
-          </motion.div>
+      <motion.h2
+        variants={revealUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportOnce}
+        className="max-w-[520px] font-display text-[32px] font-semibold leading-[1.15] text-white"
+      >
+        Support that compounds.
+      </motion.h2>
+      <motion.p
+        variants={revealUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportOnce}
+        className="mt-4 max-w-[520px] font-body text-[16px] leading-[1.6] text-muted"
+      >
+        Back communities that have a rhythm, a purpose and shared values — not another loud channel
+        nobody reads.
+      </motion.p>
 
-          <motion.div 
-            variants={revealUp}
-            aria-hidden
-            className="mt-12 hidden lg:block relative w-48 h-32 opacity-60"
-          >
-            <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-2 border-violet-500/40" />
-            <div className="absolute top-4 left-10 h-12 w-12 rounded-full bg-violet-500/15 blur-md" />
-            <div className="absolute bottom-0 right-4 h-10 w-10 rounded-full border border-pink/30" />
-            <div className="absolute bottom-2 right-8 h-6 w-6 rounded-full bg-pink/10 blur-sm" />
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          variants={staggerGroup}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="lg:col-span-7 flex flex-col gap-4"
-        >
-          {BENEFITS.map((b) => {
-            const Icon = b.icon;
-            return (
-            <motion.div
-              key={b.title}
-              variants={revealUp}
-              initial="rest"
-              whileHover="hover"
-            >
-              <motion.div
-                variants={cardHover}
-                className="flex items-start gap-5 rounded-card border border-white/11 bg-ink-800 p-6 cursor-default transition-colors duration-300"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink-700 text-violet-400">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-white">{b.title}</h3>
-                  <p className="mt-2 font-body text-sm text-muted">{b.description}</p>
-                </div>
-              </motion.div>
-            </motion.div>
-            );
-          })}
-        </motion.div>
-      </div>
+      <motion.ul
+        variants={staggerGroupImmediate}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportOnce}
+        className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-3"
+      >
+        {BENEFITS.map((b) => {
+          const Icon = b.icon;
+          return (
+            <motion.li key={b.title} variants={revealUp} className="group">
+              <motion.span variants={iconPop} className="inline-flex">
+                <Icon
+                  className="h-5 w-5 text-muted transition-all duration-200 ease-quintic-out group-hover:-translate-y-0.5 group-hover:text-violet-400"
+                  aria-hidden="true"
+                />
+              </motion.span>
+              <h3 className="mt-4 font-display text-[16px] font-semibold text-white">{b.title}</h3>
+              <p className="mt-2 font-body text-[16px] leading-[1.6] text-muted">{b.description}</p>
+            </motion.li>
+          );
+        })}
+      </motion.ul>
     </section>
   );
 }

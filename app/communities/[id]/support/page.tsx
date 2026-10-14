@@ -25,6 +25,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Container, ContainerNarrow } from "@/components/layout/container";
 import { cn } from "@/lib/utils";
 import { useCommunity } from "@/lib/community-data";
 import { orientationTransition } from "@/lib/motion";
@@ -277,12 +278,14 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
 
   if (isLoading) {
     return (
-      <div className="mx-auto min-h-[420px] max-w-lg px-6 py-16">
+      <Container className="py-16">
+        <ContainerNarrow width="max-w-lg">
         <Card className="p-8">
           <div className="h-6 w-48 animate-pulse rounded bg-white/[0.06]" />
           <div className="mt-6 h-24 animate-pulse rounded-2xl bg-white/[0.06]" />
         </Card>
-      </div>
+        </ContainerNarrow>
+      </Container>
     );
   }
 
@@ -294,7 +297,8 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
     // No entrance animation here: this is an error, and delaying it also made
     // the message the last and largest thing painted on the page.
     return (
-      <div className="mx-auto max-w-lg px-6 py-16">
+      <Container className="py-16">
+        <ContainerNarrow width="max-w-lg">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10">
             <CircleAlert className="h-6 w-6 text-amber-500" />
@@ -317,7 +321,8 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
             </Link>
           </div>
         </div>
-      </div>
+        </ContainerNarrow>
+      </Container>
     );
   }
 
@@ -325,7 +330,8 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
   const effectiveAmount = Number(amountMon) || 0;
 
   return (
-    <div className="mx-auto max-w-lg px-6 py-16">
+    <Container className="py-16">
+      <ContainerNarrow width="max-w-lg">
       {step !== "success" && step !== "processing" && step !== "error" && (
         <button
           onClick={() => router.back()}
@@ -588,6 +594,7 @@ export default function SupportFlowPage({ params }: { params: Promise<{ id: stri
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+      </ContainerNarrow>
+    </Container>
   );
 }

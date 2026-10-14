@@ -6,9 +6,13 @@
  *   quota). Identity endpoints additionally send `X-Wallet-Address` from the
  *   connected wallet, persisted in localStorage under `sutu_wallet`.
  * - Response envelope: { data, meta? } on success, { error: { code, message } } on failure.
- * - All `/api/v1/*` calls go same-origin through a Next.js rewrite →
- *   https://sutu.tixrouter.my.id (see next.config.ts). CORS is now open on
- *   the backend, so the proxy is an optimization, not a requirement.
+ * - All `/api/v1/*` calls go same-origin through a Next.js rewrite → the
+ *   backend origin in NEXT_PUBLIC_SUTU_API_ORIGIN (see next.config.ts). CORS is
+ *   open on the backend, so the proxy is an optimization, not a requirement.
+ * - The key is required on EVERY request, `/health` included. Without it the
+ *   backend allows 2 requests/minute per IP, then answers 429 for 60s.
+ * - A 429 carries `Retry-After` in seconds; it is surfaced as
+ *   `ApiError.retryAfterSec` so callers can wait rather than hammer the gate.
  */
 
 import type { ApiErrorBody, ApiEnvelope } from "./types";
@@ -46,13 +50,26 @@ export class ApiError extends Error {
   code: string;
   status: number;
   details?: unknown;
+  /**
+   * Seconds to wait before retrying, from the `Retry-After` header. Only the 429
+   * responses set it; every other status leaves it undefined rather than 0, so a
+   * caller cannot mistake "no header" for "retry immediately".
+   */
+  retryAfterSec?: number;
 
-  constructor(status: number, code: string, message: string, details?: unknown) {
+  constructor(
+    status: number,
+    code: string,
+    message: string,
+    details?: unknown,
+    retryAfterSec?: number,
+  ) {
     super(`${code}: ${message}`);
     this.name = "ApiError";
     this.status = status;
     this.code = code;
     this.details = details;
+    this.retryAfterSec = retryAfterSec;
   }
 }
 
@@ -104,6 +121,7 @@ export async function request<T>(
       err?.code ?? "INTERNAL",
       err?.message ?? `Request failed (${res.status})`,
       err?.details,
+      Number(res.headers.get("retry-after")) || undefined,
     );
   }
 

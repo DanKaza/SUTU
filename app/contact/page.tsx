@@ -6,6 +6,7 @@ import { Mail, MessageCircle, Github } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Container, ContainerNarrow } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { fadeInUp, orientationTransition } from "@/lib/motion";
 
@@ -19,7 +20,8 @@ export default function ContactPage() {
   const [sent, setSent] = useState(false);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16">
+    <Container className="py-16">
+      <ContainerNarrow width="max-w-5xl">
       <motion.h1
         variants={fadeInUp}
         initial="hidden"
@@ -100,6 +102,7 @@ export default function ContactPage() {
           ))}
         </Card>
       </div>
-    </div>
+    </ContainerNarrow>
+    </Container>
   );
 }

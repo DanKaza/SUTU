@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Container, ContainerNarrow } from "@/components/layout/container";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 import { useAuth } from "@/lib/web3/auth-context";
 import { ConnectButton } from "@/components/layout/connect-button";
@@ -66,7 +67,8 @@ export default function ProfilePage() {
   const displayAddress = address ?? user?.walletAddress ?? null;
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16">
+    <Container className="py-16">
+      <ContainerNarrow width="max-w-2xl">
       <motion.h1
         variants={fadeInUp}
         initial="hidden"
@@ -78,7 +80,7 @@ export default function ProfilePage() {
 
       <motion.div variants={fadeInUp} initial="hidden" animate="show" className="mt-8">
         <Card className="flex items-center gap-4 p-6">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-ink font-display text-lg font-bold text-void">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-ink-800 font-display text-lg font-bold text-ink">
             {displayAddress ? displayAddress.slice(2, 3).toUpperCase() : <User className="h-5 w-5" />}
           </div>
           <div className="flex-1">
@@ -203,6 +205,7 @@ export default function ProfilePage() {
         <User className="h-3.5 w-3.5" />
         {isAuthenticated ? "Signed in with Ethereum (SIWE)" : "Connected via Wallet (mock)"}
       </div>
-    </div>
+      </ContainerNarrow>
+    </Container>
   );
 }

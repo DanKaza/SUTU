@@ -17,6 +17,7 @@ import { ArrowLeft, Check, Clock, CircleAlert } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Container, ContainerNarrow } from "@/components/layout/container";
 import { fadeInUp } from "@/lib/motion";
 import { useAppState } from "@/lib/app-state";
 import { useAuth } from "@/lib/web3/auth-context";
@@ -29,30 +30,30 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 export default function SupportDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { supports } = useAppState();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isRestoring } = useAuth();
 
   const local = supports.find((s) => s.id === id || `demo-${s.id}` === id || `chain-${s.id}` === id);
   const isIntentId = UUID_RE.test(id);
 
   const [donation, setDonation] = useState<DonationRecord | null>(null);
-  const [isLoading, setIsLoading] = useState(isIntentId && isAuthenticated);
-  const [loadError, setLoadError] = useState(false);
+  // A state rather than a boolean: "idle" is a real state on a deep link, and
+  // collapsing it into `false` is what made notFound() fire before the fetch
+  // had even been queued.
+  const [loadState, setLoadState] = useState<"idle" | "loading" | "done" | "error">("idle");
 
   useEffect(() => {
     if (!isIntentId || !isAuthenticated) return;
     let cancelled = false;
-    setIsLoading(true);
-    setLoadError(false);
+    setLoadState("loading");
 
     fetchDonationIntent(id)
       .then(({ data }) => {
-        if (!cancelled) setDonation(data);
+        if (cancelled) return;
+        setDonation(data);
+        setLoadState("done");
       })
       .catch(() => {
-        if (!cancelled) setLoadError(true);
-      })
-      .finally(() => {
-        if (!cancelled) setIsLoading(false);
+        if (!cancelled) setLoadState("error");
       });
 
     return () => {
@@ -60,7 +61,22 @@ export default function SupportDetailPage({ params }: { params: Promise<{ id: st
     };
   }, [id, isIntentId, isAuthenticated]);
 
-  if (!isLoading && !donation && !local && !loadError) notFound();
+  const loadError = loadState === "error";
+
+  /* Still resolving, and therefore not a 404 yet. Three windows have to be
+     excluded, not one:
+       - the persisted session is being restored, during which
+         `isAuthenticated` is false for a signed-in visitor too;
+       - auth just resolved, but the effect that starts the fetch has not run
+         yet, so the record is neither loading nor absent;
+       - the fetch is in flight.
+     Missing the middle one still replaced a real donation with a 404. */
+  const resolving =
+    isRestoring ||
+    loadState === "loading" ||
+    (isIntentId && isAuthenticated && loadState === "idle");
+
+  if (!resolving && !donation && !local && !loadError) notFound();
 
   const amountLabel = donation
     ? `${formatMon(donation.net_amount_wei, 2)} MON`
@@ -77,7 +93,8 @@ export default function SupportDetailPage({ params }: { params: Promise<{ id: st
   const createdAt = donation?.created_at ?? (local?.date ? new Date(local.date).toISOString() : null);
 
   return (
-    <div className="mx-auto max-w-lg px-6 py-16">
+    <Container className="py-16">
+      <ContainerNarrow width="max-w-lg">
       <Link
         href="/my-supports"
         className="flex items-center gap-1 font-body text-sm font-medium text-muted hover:text-ink"
@@ -143,6 +160,7 @@ export default function SupportDetailPage({ params }: { params: Promise<{ id: st
           </Button>
         </Card>
       </motion.div>
-    </div>
+      </ContainerNarrow>
+    </Container>
   );
 }

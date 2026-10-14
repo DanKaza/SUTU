@@ -14,8 +14,10 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, Clock, Link2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Container, ContainerNarrow } from "@/components/layout/container";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 import { useAuth } from "@/lib/web3/auth-context";
+import { useCommunities } from "@/lib/community-data";
 import { fetchDonationIntent, fetchMyDonations, fetchWalletTransfers } from "@/lib/api/endpoints";
 import { formatMon, statusToUi } from "@/lib/api/format";
 import type { DonationRecord, WalletTransferRecord } from "@/lib/api/types";
@@ -25,8 +27,11 @@ type SupportRow = {
   kind: "demo" | "onchain";
   title: string;
   amountLabel: string;
+  /** Raw ISO timestamp. Sorts correctly; `date` below is for display only. */
+  at: string;
   date: string;
   statusUi: "pending" | "confirmed" | "failed";
+  href: string;
 };
 
 function transferRow(t: WalletTransferRecord): SupportRow {
@@ -35,19 +40,31 @@ function transferRow(t: WalletTransferRecord): SupportRow {
     kind: "demo",
     title: t.community_name,
     amountLabel: `$${t.amount_usd}`,
+    at: t.created_at,
     date: new Date(t.created_at).toLocaleDateString(),
     statusUi: t.status === "COMPLETED" ? "confirmed" : "pending",
+    // The API has no single-transfer endpoint, so a demo row cannot resolve to a
+    // detail page — it goes to the community it supported instead, which is what
+    // the reader wants to see again anyway.
+    href: t.community_slug ? `/communities/${t.community_slug}` : "/discover",
   };
 }
 
-function donationRow(d: DonationRecord): SupportRow {
+function donationRow(d: DonationRecord, communityName?: string): SupportRow {
   return {
     id: `chain-${d.id}`,
     kind: "onchain",
-    title: `Donation ${formatMon(d.net_amount_wei, 2)} MON`,
+    // Name the community, not the amount: the amount is already the row's own
+    // figure on the right, and "Donation 1 MON" never told you who received it.
+    title: communityName ?? "On-chain donation",
     amountLabel: `${formatMon(d.net_amount_wei, 2)} MON`,
+    at: d.created_at,
     date: new Date(d.created_at).toLocaleDateString(),
     statusUi: statusToUi(d.status),
+    // The raw intent UUID, which is what the detail page resolves. The row's own
+    // `id` is prefixed, and a prefixed id fails the detail page's UUID test —
+    // that mismatch is why every row used to land on a 404.
+    href: `/my-supports/${d.id}`,
   };
 }
 
@@ -149,17 +166,34 @@ export default function MySupportsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingKey, isAuthenticated]);
 
-  const rows = [
-    ...transfers.map(transferRow),
-    ...donations.map(donationRow),
-  ].sort((a, b) => b.date.localeCompare(a.date));
+  // A donation record only carries `community_id` (a UUID), so the name has to
+  // come from the community list. Keyed off `apiId`, because `id` on a view is
+  // the slug the routes use.
+  const { communities } = useCommunities();
+  const nameByApiId = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const c of communities) map.set(c.apiId, c.name);
+    return map;
+  }, [communities]);
+
+  // Newest first, ordered on the raw timestamp. Sorting the formatted date
+  // string put October ahead of September: "10/8/2026" sorts below "9/9/2026".
+  const rows = useMemo(
+    () =>
+      [
+        ...transfers.map(transferRow),
+        ...donations.map((d) => donationRow(d, nameByApiId.get(d.community_id))),
+      ].sort((a, b) => b.at.localeCompare(a.at)),
+    [transfers, donations, nameByApiId],
+  );
 
   const totalLabel = user
     ? `$${user.wallet.totalDonatedUsd}`
     : `$${transfers.reduce((sum, t) => sum + Number(t.amount_usd), 0).toFixed(2)}`;
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
+    <Container className="py-16">
+      <ContainerNarrow width="max-w-3xl">
       <motion.h1
         variants={fadeInUp}
         initial="hidden"
@@ -221,9 +255,9 @@ export default function MySupportsPage() {
           <motion.div variants={staggerContainer} initial="hidden" animate="show" className="mt-5 flex flex-col gap-3">
             {rows.map((row) => (
               <motion.div key={row.id} variants={fadeInUp}>
-                <Link href={row.kind === "onchain" ? `/my-supports/${row.id}` : `/my-supports/${row.id}`}>
+                <Link href={row.href}>
                   <Card className="flex items-center gap-4 p-4 transition-colors duration-200 ease-quintic-out hover:border-violet-400">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-bold text-void">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink-800 font-display text-sm font-bold text-ink">
                       {row.kind === "demo" ? "$" : <Link2 className="h-4 w-4" />}
                     </div>
                     <div className="flex-1">
@@ -242,6 +276,7 @@ export default function MySupportsPage() {
           </motion.div>
         )}
       </div>
-    </div>
+      </ContainerNarrow>
+    </Container>
   );
 }

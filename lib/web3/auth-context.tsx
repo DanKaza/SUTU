@@ -27,6 +27,15 @@ type AuthStatus = "disconnected" | "connecting-wallet" | "connected";
 type AuthContextValue = {
   /** Wallet is connected and its address is available for API auth. */
   isAuthenticated: boolean;
+  /**
+   * True while the persisted session is still being restored.
+   *
+   * During this window `isAuthenticated` is false for a signed-in visitor too,
+   * because `fetchMe` has not answered yet. A page that treats that false as
+   * "not signed in" will flash its signed-out view — or, if it calls
+   * `notFound()`, replace a real deep link with a 404 on every refresh.
+   */
+  isRestoring: boolean;
   status: AuthStatus;
   address: `0x${string}` | undefined;
   user: MeResponse | null;
@@ -46,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const [status, setStatus] = useState<AuthStatus>("disconnected");
   const [user, setUser] = useState<MeResponse | null>(null);
+  const [restored, setRestored] = useState(false);
 
   const loadUser = useCallback(async () => {
     const { fetchMe } = await import("@/lib/api/endpoints");
@@ -58,7 +68,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // in localStorage → load the profile so protected pages work after refresh.
   useEffect(() => {
     const stored = getWalletAddress();
-    if (!stored) return;
+    if (!stored) {
+      // Nothing to restore, so the answer is already known.
+      setRestored(true);
+      return;
+    }
     let cancelled = false;
     loadUser()
       .then((me) => {
@@ -71,6 +85,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           clearWalletAddress();
           setStatus("disconnected");
         }
+      })
+      .finally(() => {
+        if (!cancelled) setRestored(true);
       });
     return () => {
       cancelled = true;
@@ -146,6 +163,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextValue>(
     () => ({
       isAuthenticated: status === "connected" && !!getWalletAddress(),
+      isRestoring: !restored,
       status,
       address,
       user,
@@ -155,7 +173,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }),
     // getWalletAddress() is read on every render on purpose — it's a sync
     // localStorage read that tracks the persisted session.
-    [status, address, user, signIn, signOut, refreshUser],
+    [status, restored, address, user, signIn, signOut, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

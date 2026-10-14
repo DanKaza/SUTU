@@ -19,6 +19,7 @@ import { orientationTransition, fadeInUp, staggerContainer } from "@/lib/motion"
 import { useAppState, type SupportRecord } from "@/lib/app-state";
 import { useAuth } from "@/lib/web3/auth-context";
 import { AffirmationPop, GestureIcon } from "@/components/support/affirmation-pop";
+import { Container, ContainerNarrow } from "@/components/layout/container";
 import { getAffirmation } from "@/lib/affirmations";
 import { Gamepad2, Music2, Heart, Sparkles, type LucideIcon } from "lucide-react";
 import { walletErrorMessage } from "@/lib/web3/wallet-errors";
@@ -233,7 +234,8 @@ export default function BasketPage() {
 
   if (step === "basket" && basket.length === 0) {
     return (
-      <div className="mx-auto max-w-lg px-6 py-24 text-center">
+      <Container className="py-24 text-center">
+        <ContainerNarrow width="max-w-lg">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/[0.06]">
           <ShoppingBasket className="h-7 w-7 text-muted" />
         </div>
@@ -246,12 +248,14 @@ export default function BasketPage() {
             Discover Communities
           </Button>
         </Link>
-      </div>
+        </ContainerNarrow>
+      </Container>
     );
   }
 
   return (
-    <div className="mx-auto max-w-lg px-6 py-16">
+    <Container className="py-16">
+      <ContainerNarrow width="max-w-lg">
       <AnimatePresence mode="wait">
         {step === "basket" && (
           <motion.div key="basket" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={orientationTransition}>
@@ -261,7 +265,7 @@ export default function BasketPage() {
               {basket.map((item) => (
                 <motion.div key={item.communityId} variants={fadeInUp}>
                   <Card className="flex items-center gap-3 p-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-bold text-void">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink-800 font-display text-sm font-bold text-ink">
                       {item.logoInitial}
                     </div>
                     <p className="flex-1 font-body text-sm font-medium text-ink">
@@ -467,6 +471,7 @@ export default function BasketPage() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+      </ContainerNarrow>
+    </Container>
   );
 }

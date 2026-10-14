@@ -1,6 +1,6 @@
 /**
  * SUTU backend API types.
- * Source of truth: backend_to_front_end.md
+ * Source of truth: implementation_backend.md
  *
  * Rules from the guide:
  * - All on-chain wei values are decimal STRINGS. Never parseFloat them; use BigInt.
@@ -12,9 +12,24 @@ export type ApiEnvelope<T> = {
   meta?: Record<string, unknown>;
 };
 
+/**
+ * The codes the backend actually returns.
+ *
+ * `CONFLICT` is deliberately absent: the API documents 409 as unused, because a
+ * repeated request is answered with the same result through idempotency rather
+ * than with an error. `RATE_LIMITED` (429) is the one callers should branch on —
+ * it carries `Retry-After`, surfaced as `ApiError.retryAfterSec`.
+ */
+export type ApiErrorCode =
+  | "VALIDATION_ERROR"
+  | "UNAUTHORIZED"
+  | "NOT_FOUND"
+  | "RATE_LIMITED"
+  | "INTERNAL";
+
 export type ApiErrorBody = {
   error: {
-    code: "VALIDATION_ERROR" | "UNAUTHORIZED" | "NOT_FOUND" | "CONFLICT" | "INTERNAL";
+    code: ApiErrorCode;
     message: string;
     details?: unknown;
   };
@@ -114,9 +129,19 @@ export type DonationTxReport = {
   reason?: string;
 };
 
+/**
+ * Envelope shape of every list endpoint: the page sits in `data`, the counters
+ * sit beside it in `meta`.
+ *
+ *   { "data": [ ... ], "meta": { "limit": 20, "offset": 0 } }
+ *
+ * `request()` already unwraps that envelope, so a list call resolves to
+ * `{ data: T[], meta }` — reading `res.data.data` finds nothing, because
+ * `res.data` is the array itself.
+ */
 export type Paginated<T> = {
   data: T[];
-  meta?: { limit: number; offset: number };
+  meta?: { limit: number; offset: number; total?: number };
 };
 
 // Demo wallet (USD, off-chain ledger)

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { revealUp, staggerGroup } from "@/lib/motion";
+import { revealUp, staggerGroup, viewportOnce } from "@/lib/motion";
 
 const BLOCKS = [
   {
@@ -24,39 +24,41 @@ const BLOCKS = [
 
 export function NarrativeSection() {
   return (
-    <section className="">
+    <section>
       <motion.div
         variants={staggerGroup}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true }}
-        className="mx-auto max-w-[860px] px-6"
+        viewport={viewportOnce}
+        className="mx-auto max-w-[720px]"
       >
         <motion.h2
           variants={revealUp}
-          className="font-display text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-[1.05] text-white"
+          className="font-display text-[24px] font-semibold leading-[1.15] text-white sm:text-[32px] lg:text-[48px]"
         >
           What we believe
         </motion.h2>
 
         <div className="mt-14 space-y-12">
-          {BLOCKS.map((block) => (
-            <motion.div 
-              key={block.title}
-              variants={revealUp}
-              className="flex gap-6"
-            >
-              <div className="hidden sm:block w-0.5 shrink-0 rounded-full bg-violet-500/50" />
-              <div>
-                <h3 className="font-display text-xl sm:text-2xl font-semibold text-white">
+          {BLOCKS.map((block, index) => {
+            // The first block leads the list, so the eye has an entry point
+            // instead of four blocks of equal weight.
+            const lead = index === 0;
+            return (
+              <motion.div key={block.title} variants={revealUp}>
+                <h3
+                  className={`font-display font-semibold text-white ${
+                    lead ? "text-[24px]" : "text-[18px]"
+                  }`}
+                >
                   {block.title}
                 </h3>
-                <p className="mt-3 font-body text-base sm:text-lg leading-relaxed text-muted">
+                <p className={`font-body text-[16px] leading-[1.6] text-muted ${lead ? "mt-4" : "mt-2"}`}>
                   {block.body}
                 </p>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </motion.div>
     </section>

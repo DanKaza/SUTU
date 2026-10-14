@@ -6,10 +6,11 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
+import { Container } from "@/components/layout/container";
 import { TopCommunities } from "@/components/community/top-communities";
-import { DirectoryCard } from "@/components/community/directory-card";
+import { DirectoryCard, DIRECTORY_GRID } from "@/components/community/directory-card";
 import { useCommunities } from "@/lib/community-data";
-import { displayMon, parseMon } from "@/lib/api/format";
+import { parseMon } from "@/lib/api/format";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 
 const SORTS = ["Most supported", "Most funded", "A to Z"];
@@ -32,7 +33,7 @@ function DirectoryCardSkeleton() {
 }
 
 export default function DiscoverPage() {
-  const { communities, isLoading: isLoadingCommunities, isFallback } = useCommunities();
+  const { communities, isLoading: isLoadingCommunities } = useCommunities();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("Most supported");
@@ -62,18 +63,10 @@ export default function DiscoverPage() {
     });
   }, [communities, search, category, sort]);
 
-  // Every figure below is summed from the loaded rows, never hardcoded.
-  const totals = useMemo(() => {
-    const supporters = communities.reduce((sum, c) => sum + c.supporterCount, 0);
-    const funded = communities.reduce((sum, c) => sum + parseMon(c.totalSupported), 0);
-    const withPayout = communities.filter((c) => c.payoutAddress).length;
-    return { supporters, funded, withPayout };
-  }, [communities]);
-
   const showTop = search.trim() === "" && category === "All";
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16">
+    <Container className="py-16">
       <motion.div variants={fadeInUp} initial="hidden" animate="show" className="text-center">
         <h1 className="font-display text-5xl font-bold tracking-tight text-ink sm:text-6xl">
           Discover communities
@@ -83,35 +76,7 @@ export default function DiscoverPage() {
         </p>
       </motion.div>
 
-      {/* Reserved whether or not it shows, so the tabs below never move. */}
-      <div className="mx-auto mt-6 min-h-[58px] max-w-xl">
-        {isFallback && !isLoadingCommunities && (
-          <p className="rounded-card border border-white/11 bg-ink-800 px-4 py-3 text-center font-body text-sm text-muted">
-            Showing sample communities. Live figures appear once the backend is reachable.
-          </p>
-        )}
-      </div>
-
-      {/* Always mounted so the block below never moves when the data lands. */}
-      <div className="mx-auto mt-10 min-h-[228px] max-w-3xl sm:min-h-[104px]">
-        {!isLoadingCommunities && communities.length > 0 && (
-          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-white/11 bg-white/11 sm:grid-cols-4">
-            {[
-              { label: "Communities", value: communities.length.toLocaleString() },
-              { label: "Confirmed supports", value: totals.supporters.toLocaleString() },
-              { label: "Total supported", value: `${displayMon(totals.funded)} MON` },
-              { label: "Ready to receive", value: `${totals.withPayout} of ${communities.length}` },
-            ].map((stat) => (
-              <div key={stat.label} className="bg-ink-800 px-4 py-5 text-center">
-                <dt className="font-mono text-[11px] text-faint">{stat.label}</dt>
-                <dd className="mt-2 font-display text-2xl font-semibold text-ink">{stat.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-      </div>
-
-      <div className="mx-auto mt-8 max-w-xl">
+      <div className="mx-auto mt-10 max-w-xl">
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <Input
@@ -145,7 +110,7 @@ export default function DiscoverPage() {
         </div>
 
         {isLoadingCommunities ? (
-          <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className={`mt-5 ${DIRECTORY_GRID}`}>
             {Array.from({ length: 5 }).map((_, i) => (
               <DirectoryCardSkeleton key={i} />
             ))}
@@ -157,7 +122,7 @@ export default function DiscoverPage() {
               variants={staggerContainer}
               initial="hidden"
               animate="show"
-              className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+              className={`mt-5 ${DIRECTORY_GRID}`}
             >
               {filteredAndSorted.length > 0 ? (
                 filteredAndSorted.map((community) => (
@@ -172,6 +137,6 @@ export default function DiscoverPage() {
           </AnimatePresence>
         )}
       </div>
-    </div>
+    </Container>
   );
 }

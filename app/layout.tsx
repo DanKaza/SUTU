@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { GlobalNav } from "@/components/layout/global-nav";
 import { Footer } from "@/components/layout/footer";
+import { MotionProvider } from "@/components/layout/motion-provider";
 import { AppStateProvider } from "@/lib/app-state";
 import { Web3Provider } from "@/lib/web3/web3-provider";
 import { AuthProvider } from "@/lib/web3/auth-context";
@@ -41,11 +42,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Web3Provider>
           <AuthProvider>
             <AppStateProvider>
-              <div className="flex min-h-screen flex-col bg-ink-950">
-                <GlobalNav />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
+              <MotionProvider>
+                <div className="flex min-h-screen flex-col bg-ink-950">
+                  <GlobalNav />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                </div>
+              </MotionProvider>
             </AppStateProvider>
           </AuthProvider>
         </Web3Provider>

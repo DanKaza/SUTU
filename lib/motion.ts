@@ -1,4 +1,4 @@
-import type { Transition, Variants } from "framer-motion";
+import type { MotionProps, Transition, Variants } from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -14,6 +14,31 @@ export const microInteraction: Transition = {
 };
 
 export const orientationTransition: Transition = standardTransition;
+
+/**
+ * Springs for anything that tracks the pointer or settles after a layout
+ * change. The quintic curve above is correct for a one-shot entrance but reads
+ * mechanical when the element is already following the user.
+ */
+export const softSpring: Transition = {
+  type: "spring",
+  stiffness: 260,
+  damping: 30,
+  mass: 0.9,
+};
+
+export const snappySpring: Transition = {
+  type: "spring",
+  stiffness: 420,
+  damping: 34,
+};
+
+export const heavySpring: Transition = {
+  type: "spring",
+  stiffness: 180,
+  damping: 26,
+  mass: 1.1,
+};
 
 /**
  * Entrance reveals move and fade, but never start at opacity 0. An element
@@ -32,11 +57,42 @@ export const revealUp: Variants = {
   },
 };
 
+/**
+ * Opacity only, no transform. For copy that may be the largest contentful
+ * paint, where even a 20px offset moves the reported candidate.
+ */
+export const revealFade: Variants = {
+  hidden: { opacity: 0.001 },
+  show: { opacity: 1, transition: standardTransition },
+};
+
 export const staggerGroup: Variants = {
   hidden: {},
   show: {
     transition: {
       staggerChildren: 0.05,
+      delayChildren: 0,
+    },
+  },
+};
+
+/**
+ * Icons resolve with a spring while the surrounding copy rises on the quintic.
+ * A glyph that settles differently from its own label reads as "appearing",
+ * which is the whole point of the glyph — but the difference stays small enough
+ * that it does not compete with the text for attention.
+ */
+export const iconPop: Variants = {
+  hidden: { opacity: 0.001, scale: 0.86 },
+  show: { opacity: 1, scale: 1, transition: softSpring },
+};
+
+/** Reveal a list when it is already fully in view — no leading offset. */
+export const staggerGroupImmediate: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
       delayChildren: 0,
     },
   },
@@ -63,3 +119,10 @@ export const hoverInteraction = {
   borderColor: "#8B5CF6",
 };
 
+/**
+ * One viewport config, so the trigger point is not re-typed per section. The
+ * negative margin starts the reveal before the element's top edge reaches the
+ * fold, which is what stops a section from popping in only once it is fully
+ * visible.
+ */
+export const viewportOnce: MotionProps["viewport"] = { once: true, margin: "-80px 0px -80px 0px" };

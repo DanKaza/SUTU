@@ -8,6 +8,8 @@ import { Menu, X, ShoppingBasket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ConnectButton } from "@/components/layout/connect-button";
+import { Container } from "@/components/layout/container";
+import { BrandLogo } from "@/components/layout/brand-logo";
 import { orientationTransition } from "@/lib/motion";
 import { useAppState } from "@/lib/app-state";
 
@@ -60,17 +62,17 @@ export function GlobalNav() {
         scrolled ? "bg-ink-950/78 backdrop-blur-[18px]" : "bg-transparent"
       )}
     >
-      <div className="mx-auto flex h-full max-w-[1280px] items-center justify-between px-6 sm:px-12">
+      <Container className="flex h-full items-center justify-between">
         <Link
           href="/"
           onClick={() => setMobileOpen(false)}
-          className="font-display text-xl font-bold tracking-[-0.04em] text-white"
+          className="flex min-h-11 items-center"
         >
-          <span className="bg-gradient-to-r from-violet-400 to-pink bg-clip-text text-transparent">SUTU</span>
+          <BrandLogo priority />
         </Link>
 
         {(!isApp || isApp) && (
-          <nav className="hidden items-center gap-12 lg:flex">
+          <nav className="hidden items-center gap-8 lg:flex">
             {links.map((link) => {
               const active = pathname === link.href;
               return (
@@ -78,7 +80,9 @@ export function GlobalNav() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "font-body text-[15px] transition-colors duration-300",
+                    // px-2 + min-h-11 gives every destination a 44px-tall target
+                    // without changing how far apart the labels read.
+                    "flex min-h-11 items-center rounded-full px-2 font-body text-base transition-colors duration-300 ease-quintic-out",
                     active ? "text-white" : "text-muted hover:text-white"
                   )}
                 >
@@ -92,7 +96,10 @@ export function GlobalNav() {
         <div className="flex items-center gap-6">
           {!isApp ? (
             <>
-              <Link href="/discover" className="hidden text-[15px] font-medium text-muted hover:text-white sm:block">
+              <Link
+                href="/discover"
+                className="hidden min-h-11 items-center font-body text-base font-medium text-muted transition-colors duration-300 ease-quintic-out hover:text-white sm:flex"
+              >
                 Find a community
               </Link>
               <Button size="lg">
@@ -128,10 +135,10 @@ export function GlobalNav() {
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
-      </div>
+      </Container>
 
       <motion.div 
-        className="motion-live absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-violet-400 to-pink"
+        className="motion-live absolute bottom-0 left-0 h-[2px] w-full origin-left bg-violet-500"
         style={{ scaleX }}
       />
 
@@ -145,7 +152,7 @@ export function GlobalNav() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={orientationTransition}
-            className="overflow-hidden border-t border-white/10 bg-void md:hidden"
+            className="overflow-hidden border-t border-white/10 bg-ink-950 md:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4 sm:px-6">
               <div className="pb-2 sm:hidden">
@@ -177,7 +184,7 @@ export function GlobalNav() {
                 >
                   Basket
                   {basket.length > 0 && (
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-violet text-[11px] font-bold text-white">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-violet-500 text-[12px] font-bold text-ink-950">
                       {basket.length}
                     </span>
                   )}

@@ -49,7 +49,7 @@ export function ConnectButton() {
   return (
       <div className="flex items-center gap-2">
         {user && (
-          <span className="hidden rounded-full bg-violet/15 px-2.5 py-1 font-body text-xs font-medium text-cyan sm:block">
+          <span className="hidden rounded-full bg-violet/15 px-2.5 py-1 font-body text-xs font-medium text-violet-400 sm:block">
             ${user.wallet.balanceUsd}
           </span>
         )}

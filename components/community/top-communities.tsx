@@ -8,6 +8,10 @@ import { DirectoryCard } from "@/components/community/directory-card";
 /**
  * Highest ranked by confirmed support count. The API exposes no featured
  * flag, so the order comes from the data rather than a hardcoded list.
+ *
+ * Exactly three cards, so this keeps an explicit column count: the fluid grid
+ * below is sized for a list whose length nobody knows, and reusing it here
+ * would leave the fourth column empty.
  */
 export function TopCommunities({ communities }: { communities: CommunityView[] }) {
   const top = [...communities]
