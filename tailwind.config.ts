@@ -24,7 +24,6 @@ const config: Config = {
           700: "#5B21B6", // Glow dalam
         },
         lilac: "#DDD6FE",
-        pink: "#F0ABFC",
         // Legacy (avoiding breakage during transition)
         void: "#07060A",
       },
@@ -42,18 +41,28 @@ const config: Config = {
         button: "999px",
       },
       backgroundImage: {
-        "hero": "radial-gradient(circle at 70% 30%, #4C1D95 0%, #1B1230 28%, #07060A 72%)",
-        "violet": "linear-gradient(135deg, #A78BFA 0%, #7C3AED 48%, #EC4899 100%)",
         "card": "linear-gradient(145deg, rgba(167,139,250,.18), rgba(255,255,255,.035))",
-        "section": "linear-gradient(180deg, #07060A 0%, #100B1C 55%, #07060A 100%)",
+        // `section` was removed with the band it painted: a canvas-to-canvas
+        // gradient cannot define a surface, and nothing else referenced it.
       },
       boxShadow: {
         "glow-violet": "0 0 80px rgba(124,58,237,.20), 0 24px 80px rgba(0,0,0,.45)",
         "glow-violet-lg": "0 0 120px rgba(124,58,237,.25), 0 32px 100px rgba(0,0,0,.5)",
-        "glow-pink": "0 0 40px rgba(240,171,252,.15)",
       },
       transitionTimingFunction: {
         "quintic-out": "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
+      /*
+       * 11 is the design system's border value (DESIGN §2, "Border
+       * rgba(255,255,255,0.11)") and it is written as `border-white/11` in nine
+       * places. Tailwind's default opacity scale steps by 5, so `/11` generated
+       * no utility at all: every one of those hairlines silently fell back to
+       * preflight's `#e5e7eb`, painting a light grey line on a near-black page
+       * where an 11% white edge was intended. Declaring the step here fixes all
+       * nine at the source instead of rewriting each call site.
+       */
+      opacity: {
+        11: "0.11",
       },
     },
   },
